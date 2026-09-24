@@ -14,6 +14,21 @@ V:V2 name="Violino II" snm="Vn. II"
 V:V3 name="Viola" snm="Va." clef=alto
 V:V4 name="Continuo" snm="Cont." clef=bass
 K:D
+% 再生時の音色と音量。主旋律（第1ヴァイオリン）がはっきり聞こえるよう、伴奏の声部は弱めにする
+% %%MIDI program: 40 バイオリン / 41 ビオラ / 43 コントラバス（General MIDI）
+% %%MIDI beat: 小節の1拍目・表拍・裏拍の強さ（0〜127）
+V:V1
+%%MIDI program 40
+%%MIDI beat 110 105 100 1
+V:V2
+%%MIDI program 40
+%%MIDI beat 50 45 40 1
+V:V3
+%%MIDI program 41
+%%MIDI beat 50 45 40 1
+V:V4
+%%MIDI program 43
+%%MIDI beat 65 60 55 1
 [V:V1] |: f8- | f8- | f2bg edcd | c4 BA3 |
 [V:V2] |: d8- | d8- | d4 B4 | A8- |
 [V:V3] |: A8 | B8 | B,4 E4 | E8- |
