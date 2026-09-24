@@ -160,10 +160,17 @@ const groups = computed(() => {
 	transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
-.card:hover {
+.card:active {
 	border-color: var(--accent);
-	transform: translateY(-2px);
-	box-shadow: 0 4px 10px rgba(31, 42, 38, 0.08);
+}
+
+/* タッチ端末ではタップ後にホバー表示が残るので、ホバーできる端末だけで浮かせる */
+@media (hover: hover) {
+	.card:hover {
+		border-color: var(--accent);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 10px rgba(31, 42, 38, 0.08);
+	}
 }
 
 .title {

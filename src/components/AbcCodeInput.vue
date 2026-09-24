@@ -99,6 +99,13 @@ code-input {
 	font-size: 14px;
 	background: #fff;
 }
+
+/* iOS Safari は 16px 未満の入力欄にフォーカスすると画面を拡大してしまう */
+@media (pointer: coarse) {
+	code-input {
+		font-size: 16px;
+	}
+}
 </style>
 
 <style>

@@ -10,6 +10,7 @@
 import abcjs, { type AbcElem, type SynthObjectController, type TuneObject } from "abcjs";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { t } from "../i18n";
+import { observeLayout, scoreLayout } from "../lib/abc-utils";
 import { CursorControl } from "../lib/cursor-control";
 
 const props = withDefaults(defineProps<{ abc: string; transpose?: number }>(), { transpose: 0 });
@@ -18,6 +19,7 @@ const paperEl = ref<HTMLElement>();
 const audioEl = ref<HTMLElement>();
 const audioMessage = ref("");
 
+let stopObserving: (() => void) | undefined;
 let synthControl: SynthObjectController | null = null;
 let visualObj: TuneObject | null = null;
 const cursor = new CursorControl(() => paperEl.value ?? null);
@@ -35,8 +37,8 @@ async function render() {
 	visualObj =
 		abcjs.renderAbc(paperEl.value, props.abc, {
 			responsive: "resize",
-			// 横幅の広い画面で音符が大きくなりすぎないよう、広い画面では五線の基準幅を広めにとる
-			staffwidth: paperEl.value.clientWidth > 800 ? 900 : 740,
+			// 広い画面では五線の基準幅を広めにとり、スマートフォンでは小節を折り返す
+			...scoreLayout(paperEl.value.clientWidth),
 			add_classes: true,
 			oneSvgPerLine: true,
 			visualTranspose: props.transpose,
@@ -66,11 +68,13 @@ onMounted(() => {
 		audioMessage.value = t.score.noAudio;
 	}
 	render();
+	if (paperEl.value) stopObserving = observeLayout(paperEl.value, render);
 });
 
 watch(() => [props.abc, props.transpose], render);
 
 onBeforeUnmount(() => {
+	stopObserving?.();
 	try {
 		synthControl?.pause();
 	} catch {

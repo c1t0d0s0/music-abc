@@ -1,4 +1,4 @@
-import abcjs from "abcjs";
+import abcjs, { type AbcVisualParams } from "abcjs";
 import { t } from "../i18n";
 
 /** ABC 文字列から最初の T: 行のタイトルを取り出す */
@@ -75,4 +75,41 @@ export function storageSet(key: string, value: string) {
 	} catch {
 		/* プライベートモードなどで保存できない場合は無視する */
 	}
+}
+
+/** これより狭い表示幅では、スマートフォン向けに小節を折り返して譜面を描く */
+const NARROW_WIDTH = 600;
+
+/**
+ * 譜面を描く領域の幅に応じたレイアウト設定。
+ * 広い画面では ABC どおりの改行で描き、狭い画面では五線の基準幅を画面幅に合わせて小節を自動で折り返す
+ * （PC 用の幅のまま縮小すると、スマートフォンでは音符や歌詞が読めないほど小さくなるため）。
+ */
+export function scoreLayout(width: number): Pick<AbcVisualParams, "staffwidth" | "wrap"> {
+	if (width >= NARROW_WIDTH) return { staffwidth: width > 800 ? 900 : 740 };
+	return {
+		// 画面幅より少し広めに描いて縮小表示し、音符の読みやすさと 1 行に入る小節数の釣り合いをとる
+		staffwidth: Math.max(380, Math.round(width * 1.3)),
+		wrap: { minSpacing: 1.5, maxSpacing: 2.7, preferredMeasuresPerLine: 4 },
+	};
+}
+
+/** レイアウトの区分が変わるほど幅が変わったときだけ onChange を呼ぶ（画面の回転など） */
+export function observeLayout(el: HTMLElement, onChange: () => void): () => void {
+	let key = JSON.stringify(scoreLayout(el.clientWidth));
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	const ro = new ResizeObserver(() => {
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			const next = JSON.stringify(scoreLayout(el.clientWidth));
+			if (next === key) return;
+			key = next;
+			onChange();
+		}, 150);
+	});
+	ro.observe(el);
+	return () => {
+		clearTimeout(timer);
+		ro.disconnect();
+	};
 }

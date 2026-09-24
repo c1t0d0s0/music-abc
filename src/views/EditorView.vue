@@ -58,7 +58,15 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AbcCodeInput from "../components/AbcCodeInput.vue";
 import DownloadButtons from "../components/DownloadButtons.vue";
-import { EDITOR_STORAGE_KEY, abcTitle, safeFilename, storageGet, storageSet } from "../lib/abc-utils";
+import {
+	EDITOR_STORAGE_KEY,
+	abcTitle,
+	observeLayout,
+	safeFilename,
+	scoreLayout,
+	storageGet,
+	storageSet,
+} from "../lib/abc-utils";
 import { CursorControl } from "../lib/cursor-control";
 import { findSong, localizedAbc, songs } from "../lib/songs";
 import { messagesFor, t, tr } from "../i18n";
@@ -77,6 +85,7 @@ const paperEl = ref<HTMLElement>();
 
 let textarea: HTMLTextAreaElement | null = null;
 let editor: Editor | null = null;
+let stopObserving: (() => void) | undefined;
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
 /** 最後に読み込んでから編集したか */
 let dirty = false;
@@ -104,8 +113,10 @@ function pickInitial(): string {
 }
 
 function clickListener(abcElem: AbcElem) {
-	// 楽譜の音符をクリックしたら、対応する ABC のテキストを選択して音を鳴らす（abcjs-editor と同じ動作）
-	if (textarea && abcElem.startChar !== undefined && abcElem.endChar !== undefined) {
+	// 楽譜の音符をクリックしたら、対応する ABC のテキストを選択して音を鳴らす（abcjs-editor と同じ動作）。
+	// タッチ操作の端末ではフォーカスするとキーボードが開いて入力欄へスクロールしてしまうので、音を鳴らすだけにする
+	const touch = window.matchMedia("(pointer: coarse)").matches;
+	if (!touch && textarea && abcElem.startChar !== undefined && abcElem.endChar !== undefined) {
 		textarea.focus();
 		textarea.setSelectionRange(abcElem.startChar, abcElem.endChar);
 	}
@@ -114,6 +125,16 @@ function clickListener(abcElem: AbcElem) {
 			.playEvent(abcElem.midiPitches, abcElem.midiGraceNotePitches ?? [], editor.millisecondsPerMeasure())
 			.catch(() => {});
 	}
+}
+
+function visualParams() {
+	return {
+		responsive: "resize" as const,
+		add_classes: true,
+		oneSvgPerLine: true,
+		clickListener,
+		...scoreLayout(paperEl.value!.clientWidth),
+	};
 }
 
 function onReady(ta: HTMLTextAreaElement) {
@@ -126,13 +147,9 @@ function onReady(ta: HTMLTextAreaElement) {
 			cursorControl: new CursorControl(() => paperEl.value ?? null),
 			options: { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true },
 		},
-		abcjsParams: {
-			responsive: "resize",
-			add_classes: true,
-			oneSvgPerLine: true,
-			clickListener,
-		},
+		abcjsParams: visualParams(),
 	});
+	stopObserving = observeLayout(paperEl.value!, () => editor?.paramChanged(visualParams()));
 }
 
 function onInput(value: string) {
@@ -176,6 +193,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+	stopObserving?.();
 	clearTimeout(saveTimer);
 	storageSet(EDITOR_STORAGE_KEY, abc.value);
 	try {
@@ -301,5 +319,12 @@ onBeforeUnmount(() => {
 	padding: 12px 8px;
 	min-height: 200px;
 	color: #111;
+}
+
+@media (max-width: 599px) {
+	/* 入力欄の下にある楽譜まで、スクロールせずに届きやすくする */
+	.input-pane :deep(code-input) {
+		min-height: 260px;
+	}
 }
 </style>

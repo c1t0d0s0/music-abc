@@ -76,7 +76,7 @@ nav {
 nav a {
 	color: var(--accent-ink);
 	text-decoration: none;
-	padding: 4px 12px;
+	padding: 6px 12px;
 	border-radius: 999px;
 	font-size: 0.95rem;
 }
@@ -92,6 +92,7 @@ nav a.router-link-exact-active {
 
 main {
 	min-height: calc(100vh - 200px);
+	min-height: calc(100dvh - 200px);
 	padding-bottom: 48px;
 }
 
@@ -99,7 +100,7 @@ main {
 	border-top: 1px solid var(--line);
 	color: var(--ink-soft);
 	font-size: 0.82rem;
-	padding: 16px 0 32px;
+	padding: 16px 0 calc(32px + env(safe-area-inset-bottom));
 }
 
 .copyright {
