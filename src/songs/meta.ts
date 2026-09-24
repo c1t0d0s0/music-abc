@@ -445,6 +445,19 @@ export const SONGS: SongMeta[] = [
 		},
 	},
 	{
+		id: "vivaldi-summer-3",
+		category: "classical-folk",
+		title: { ja: "四季「夏」第3楽章", en: "The Four Seasons: Summer, 3rd movement" },
+		subtitle: { ja: "L'estate RV 315 より Presto（冒頭）", en: "L'estate, RV 315: Presto (opening)" },
+		creators: [{ role: "composer", name: { ja: "アントニオ・ヴィヴァルディ", en: "Antonio Vivaldi" }, born: 1678, died: 1741 }],
+		published: 1725,
+		lyrics: "none",
+		note: {
+			ja: "嵐を描いた第3楽章の冒頭（第1〜40小節）を、独奏ヴァイオリンと通奏低音の2段で収録しています。第40小節は独奏パッセージに入る直前の D で終えています。",
+			en: "The opening of the stormy third movement (bars 1–40), for solo violin and basso continuo. The excerpt ends on the D in bar 40, just before the solo passage begins.",
+		},
+	},
+	{
 		id: "greensleeves",
 		category: "classical-folk",
 		title: { ja: "グリーンスリーブス", en: "Greensleeves" },

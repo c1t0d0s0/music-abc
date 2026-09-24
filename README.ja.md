@@ -3,7 +3,7 @@
 [English](README.md) | 日本語
 
 ABC 記法で書かれた楽譜を表示・再生・編集し、MIDI / WAV / ABC でダウンロードできる Web アプリです。
-著作権の保護期間が満了した唱歌、各国の国歌、クラシックの名旋律など 29 曲を収録しています。
+著作権の保護期間が満了した唱歌、各国の国歌、クラシックの名旋律など 30 曲を収録しています。
 
 - 譜面の描画・再生: [abcjs](https://github.com/paulrosen/abcjs)
 - エディタ: [abcjs-editor](https://github.com/abcjs-music/abcjs-editor) の一部を改変して利用
