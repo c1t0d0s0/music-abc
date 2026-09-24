@@ -10,7 +10,7 @@
 	--focus: #c98a2b;
 	--chip: #ebe3d5;
 	--font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
-	--font-head: "Zen Old Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+	--font-head: var(--font-body);
 	--font-mono: "Fira Mono", ui-monospace, Menlo, monospace;
 	color-scheme: light;
 }
@@ -39,7 +39,7 @@ h1,
 h2,
 h3 {
 	font-family: var(--font-head);
-	font-weight: 600;
+	font-weight: 700;
 	line-height: 1.35;
 	letter-spacing: 0.02em;
 }
@@ -94,6 +94,12 @@ h3 {
 	background: var(--chip);
 	color: var(--ink-soft);
 	font-size: 0.78rem;
+}
+
+/* 楽譜の中の文字（曲名・作者・歌詞など）もゴシック体にする。abcjs は既定でセリフ体を指定するため上書きする */
+.score-paper svg text,
+.score-paper svg tspan {
+	font-family: var(--font-body);
 }
 
 /* 再生中の音符とカーソル */
