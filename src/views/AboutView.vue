@@ -65,13 +65,15 @@
 							<th scope="row">
 								<RouterLink :to="`/song/${s.id}`">{{ tr(s.title) }}</RouterLink>
 							</th>
-							<td>
-								<span v-for="c in s.creators" :key="c.role + tr(c.name)" class="creator">
-									{{ t.roles[c.role] }}: {{ tr(c.name) }}<template v-if="c.died">{{ t.about.died(c.died) }}</template>
-								</span>
+							<td :data-label="t.about.thCreators">
+								<div>
+									<span v-for="c in s.creators" :key="c.role + tr(c.name)" class="creator">
+										{{ t.roles[c.role] }}: {{ tr(c.name) }}<template v-if="c.died">{{ t.about.died(c.died) }}</template>
+									</span>
+								</div>
 							</td>
-							<td>{{ t.library.year(s.published) }}</td>
-							<td>{{ t.about.lyricsTable[s.lyrics] }}</td>
+							<td :data-label="t.about.thPublished">{{ t.library.year(s.published) }}</td>
+							<td :data-label="t.about.thLyrics">{{ t.about.lyricsTable[s.lyrics] }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -238,6 +240,59 @@ td:nth-child(3) {
 
 .creator {
 	display: block;
+}
+
+/* スマートフォンでは4列の表が収まらないので、1曲を1枚のカードとして縦に並べる */
+@media (max-width: 640px) {
+	table,
+	tbody,
+	tr,
+	th,
+	td {
+		display: block;
+	}
+
+	thead {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+	}
+
+	table {
+		background: none;
+	}
+
+	tr {
+		background: var(--score);
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		padding: 8px 12px;
+		margin-bottom: 8px;
+	}
+
+	th,
+	td {
+		border-bottom: none;
+		padding: 2px 0;
+	}
+
+	tbody th {
+		white-space: normal;
+		font-size: 1rem;
+	}
+
+	td[data-label] {
+		display: grid;
+		grid-template-columns: 7.5em 1fr;
+		gap: 8px;
+	}
+
+	td[data-label]::before {
+		content: attr(data-label);
+		color: var(--ink-soft);
+	}
 }
 
 .oss {

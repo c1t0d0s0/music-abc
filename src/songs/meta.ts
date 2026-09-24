@@ -296,6 +296,38 @@ export const SONGS: SongMeta[] = [
 		},
 	},
 
+	{
+		id: "italy",
+		category: "anthems",
+		title: "Il Canto degli Italiani",
+		subtitle: { ja: "イタリア人の歌", en: "The Song of the Italians" },
+		country: { ja: "イタリア", en: "Italy" },
+		creators: [
+			{ role: "lyricist", name: "Goffredo Mameli", born: 1827, died: 1849 },
+			{ role: "composer", name: "Michele Novaro", born: 1818, died: 1885 },
+		],
+		published: 1847,
+		lyrics: "sung",
+		note: {
+			ja: "2017年の法律で国歌とされたノヴァーロの原譜に基づき、独唱の第1節と、合唱のリフレイン（テノールの上声）を収録しています。一般によく演奏される吹奏楽版とは、リフレインの旋律が異なります。",
+			en: "Based on Novaro's original score, which a 2017 law made the national anthem: the solo first verse and the choral refrain (the upper tenor part). The refrain melody differs from the band arrangement that is often performed.",
+		},
+	},
+	{
+		id: "russia",
+		category: "anthems",
+		title: { ja: "ロシア連邦国歌", en: "State Anthem of the Russian Federation" },
+		subtitle: "Государственный гимн Российской Федерации",
+		country: { ja: "ロシア", en: "Russia" },
+		creators: [{ role: "composer", name: { ja: "アレクサンドル・アレクサンドロフ", en: "Alexander Alexandrov" }, born: 1883, died: 1946 }],
+		published: 1944,
+		lyrics: "none",
+		note: {
+			ja: "旋律のみ。歌詞（セルゲイ・ミハルコフ、2009年没）は保護期間中のため収録していません。旋律は2000年の連邦憲法法律で定められた公式楽譜によります。",
+			en: "Melody only. The lyrics (by Sergey Mikhalkov, d. 2009) are still under copyright. The melody follows the official score set by the Federal Constitutional Law of 2000.",
+		},
+	},
+
 	// ---- クラシック・世界の民謡 ----
 	{
 		id: "ode-to-joy",
