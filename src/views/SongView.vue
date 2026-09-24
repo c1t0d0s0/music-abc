@@ -18,6 +18,8 @@
 					{{ tr(c.name) }}<span v-if="c.died" class="years">{{ t.song.years(c.born, c.died) }}</span>
 				</dd>
 			</template>
+			<dt>{{ t.about.thLyrics }}</dt>
+			<dd>{{ t.about.lyricsTable[song.lyrics] }}</dd>
 			<dt>{{ t.song.published }}</dt>
 			<dd>{{ t.library.year(song.published) }}</dd>
 			<dt>{{ t.song.rights }}</dt>

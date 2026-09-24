@@ -96,12 +96,6 @@ h3 {
 	font-size: 0.78rem;
 }
 
-/* 楽譜の中の文字（曲名・作者・歌詞など）もゴシック体にする。abcjs は既定でセリフ体を指定するため上書きする */
-.score-paper svg text,
-.score-paper svg tspan {
-	font-family: var(--font-body);
-}
-
 /* 再生バー: abcjs の再生コントロールと音量調整を 1 本の帯に並べる */
 .player {
 	display: flex;

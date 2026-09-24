@@ -65,8 +65,10 @@ import VolumeControl from "../components/VolumeControl.vue";
 import {
 	EDITOR_STORAGE_KEY,
 	abcTitle,
+	loadScoreFonts,
 	observeLayout,
 	safeFilename,
+	scoreFontFormat,
 	scoreLayout,
 	storageGet,
 	storageSet,
@@ -90,6 +92,7 @@ const paperEl = ref<HTMLElement>();
 let textarea: HTMLTextAreaElement | null = null;
 let editor: Editor | null = null;
 let stopObserving: (() => void) | undefined;
+let unmounted = false;
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
 /** 最後に読み込んでから編集したか */
 let dirty = false;
@@ -137,12 +140,18 @@ function visualParams() {
 		add_classes: true,
 		oneSvgPerLine: true,
 		clickListener,
+		format: scoreFontFormat(),
 		...scoreLayout(paperEl.value!.clientWidth),
 	};
 }
 
-function onReady(ta: HTMLTextAreaElement) {
+async function onReady(ta: HTMLTextAreaElement) {
 	textarea = ta;
+	// 楽譜の文字の大きさを正しく測れるよう、描く前に必要なフォントを読み込む
+	const fonts = await loadScoreFonts(ta.value);
+	if (unmounted) return;
+	// 待ちきれなかったフォントが届いたら描き直す
+	if (!fonts.loadedInTime) void fonts.loaded.then(() => !unmounted && editor?.paramChanged(visualParams()));
 	editor = new abcjs.Editor(ta, {
 		canvas_id: paperEl.value!,
 		warnings_id: warningsEl.value!,
@@ -169,7 +178,10 @@ function replaceContent(value: string) {
 	abc.value = value;
 	dirty = false;
 	storageSet(EDITOR_STORAGE_KEY, value);
-	editor?.fireChanged();
+	// 新しい内容の文字に必要なフォントを読み込んでから描き直す
+	void loadScoreFonts(value).then(() => {
+		if (!unmounted) editor?.fireChanged();
+	});
 	return true;
 }
 
@@ -197,6 +209,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+	unmounted = true;
 	stopObserving?.();
 	clearTimeout(saveTimer);
 	storageSet(EDITOR_STORAGE_KEY, abc.value);

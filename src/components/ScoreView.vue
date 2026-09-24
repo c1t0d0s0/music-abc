@@ -13,7 +13,7 @@
 import abcjs, { type AbcElem, type SynthObjectController, type TuneObject } from "abcjs";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { t } from "../i18n";
-import { observeLayout, scoreLayout } from "../lib/abc-utils";
+import { loadScoreFonts, observeLayout, scoreFontFormat, scoreLayout } from "../lib/abc-utils";
 import { CursorControl } from "../lib/cursor-control";
 import VolumeControl from "./VolumeControl.vue";
 
@@ -24,6 +24,8 @@ const audioEl = ref<HTMLElement>();
 const audioMessage = ref("");
 
 let stopObserving: (() => void) | undefined;
+/** 描画の要求ごとに増やす。フォントの読み込みを待つ間に新しい要求が来たら、古い要求は描かない */
+let renderSeq = 0;
 let synthControl: SynthObjectController | null = null;
 let visualObj: TuneObject | null = null;
 const cursor = new CursorControl(() => paperEl.value ?? null);
@@ -67,10 +69,20 @@ function createSynth() {
 }
 
 async function render() {
-	if (!paperEl.value) return;
+	const seq = ++renderSeq;
+	// 楽譜の文字の大きさを正しく測れるよう、描く前に必要なフォントを読み込む
+	const fonts = await loadScoreFonts(props.abc);
+	if (seq !== renderSeq || !paperEl.value) return;
+	// 待ちきれなかったフォントが届いたら描き直す（再生中は止めないよう描き直さない）
+	if (!fonts.loadedInTime) {
+		void fonts.loaded.then(() => {
+			if (seq === renderSeq && !isPlaying()) render();
+		});
+	}
 	visualObj =
 		abcjs.renderAbc(paperEl.value, props.abc, {
 			responsive: "resize",
+			format: scoreFontFormat(),
 			// 広い画面では五線の基準幅を広めにとり、スマートフォンでは小節を折り返す
 			...scoreLayout(paperEl.value.clientWidth),
 			add_classes: true,
@@ -98,10 +110,16 @@ onMounted(() => {
 	if (paperEl.value) stopObserving = observeLayout(paperEl.value, render);
 });
 
+/** abcjs の再生ボタンが押された状態（再生中）か */
+function isPlaying() {
+	return !!audioEl.value?.querySelector(".abcjs-midi-start.abcjs-pushed");
+}
+
 watch(() => [props.abc, props.transpose], render);
 
 onBeforeUnmount(() => {
 	stopObserving?.();
+	renderSeq++;
 	destroySynth();
 });
 </script>

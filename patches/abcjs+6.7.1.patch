@@ -1,0 +1,13 @@
+diff --git a/node_modules/abcjs/src/write/creation/elements/bottom-text.js b/node_modules/abcjs/src/write/creation/elements/bottom-text.js
+index 5d55538..fa451ce 100644
+--- a/node_modules/abcjs/src/write/creation/elements/bottom-text.js
++++ b/node_modules/abcjs/src/write/creation/elements/bottom-text.js
+@@ -68,7 +68,7 @@ BottomText.prototype.extraText = function (metaText, marginLeft, spacing, should
+ 	addSingleLine(this.rows, "Source: ", metaText.source, marginLeft, 'abcjs-source', shouldAddClasses, getTextSize)
+ 	addSingleLine(this.rows, "Discography: ", metaText.discography, marginLeft, 'abcjs-discography', shouldAddClasses, getTextSize)
+ 
+-	addMultiLine(this.rows, 'Notes:', metaText.notes, marginLeft, 'historyfont', "extraText", "notes", 'abcjs-notes', "description", spacing, shouldAddClasses, getTextSize)
++	// music-abc: 注記（N: 行）は楽譜に描かない（曲ページでは楽譜の外に表示している）
+ 
+ 	addSingleLine(this.rows, "Transcription: ", metaText.transcription, marginLeft, 'abcjs-transcription', shouldAddClasses, getTextSize)
+ 

@@ -113,3 +113,79 @@ export function observeLayout(el: HTMLElement, onChange: () => void): () => void
 		ro.disconnect();
 	};
 }
+
+/** 楽譜の中の文字（曲名・作者・歌詞・注記など）に使う書体。サイト全体と同じゴシック体 */
+const SCORE_FONT_FAMILY = "Zen Kaku Gothic New, Hiragino Sans, Noto Sans JP, sans-serif";
+
+/**
+ * フォントが遅れて届いた回数。
+ * abcjs は文字の大きさの測定結果を「文字列＋書体の指定」をキーにしてページを開いている間ずっと使い回すので、
+ * フォントの読み込み前に測った値が残ってしまう。フォントが遅れて届いたら書体の指定の末尾に
+ * 実在しない名前（見た目には影響しない）を足してキーを変え、新しいフォントで測り直させる。
+ */
+let fontGeneration = 0;
+
+function scoreFont(): string {
+	return `"${SCORE_FONT_FAMILY}${fontGeneration ? `, score-font-${fontGeneration}` : ""}"`;
+}
+
+/**
+ * abcjs の書体の設定。abcjs は既定でセリフ体を使うので、ゴシック体を指定する。
+ * CSS で表示だけを差し替えると、abcjs が配置の計算に使う文字の大きさと実際の大きさがずれ、
+ * 行が重なることがあるため、abcjs 自身に書体を渡す。文字の大きさは abcjs の既定と同じ。
+ */
+export function scoreFontFormat(): Record<string, string> {
+	const font = scoreFont();
+	const f = (size: number, bold = false) => `${font} ${size}${bold ? " bold" : ""}`;
+	return {
+		titlefont: f(20),
+		subtitlefont: f(16),
+		composerfont: f(14),
+		partsfont: f(15),
+		tempofont: f(15, true),
+		gchordfont: f(12),
+		annotationfont: f(12),
+		footerfont: f(12),
+		headerfont: f(12),
+		historyfont: f(16),
+		infofont: f(14),
+		measurefont: f(14),
+		repeatfont: f(13),
+		textfont: f(16),
+		tripletfont: f(11),
+		vocalfont: f(13, true),
+		wordsfont: f(16),
+		voicefont: f(13, true),
+	};
+}
+
+/**
+ * 楽譜に出てくる文字に必要な Web フォントを読み込む（最長 timeoutMs まで待つ）。
+ * 待ちきれなかったときは loadedInTime が false になる。その場合は loaded が解決したとき（フォントが届いたとき）に描き直す。
+ * abcjs は短い文字列の大きさを一度測ると使い回すので、フォントの読み込み前に描くと、
+ * 読み込み後も誤った大きさのまま配置されてしまう。描く前に読み込んでおく。
+ * 日本語の Web フォントは文字の範囲ごとに分かれているので、実際に使う文字を渡して必要な分だけ読み込む。
+ */
+export async function loadScoreFonts(
+	abc: string,
+	timeoutMs = 1500,
+): Promise<{ loadedInTime: boolean; loaded: Promise<unknown> }> {
+	const fonts = typeof document !== "undefined" ? document.fonts : undefined;
+	if (!fonts?.load) return { loadedInTime: true, loaded: Promise.resolve() };
+	const text = [...new Set(abc.replace(/\s+/g, ""))].join("") + "0123456789";
+	const loaded = Promise.all(
+		["400", "700"].map((weight) => fonts.load(`${weight} 16px "Zen Kaku Gothic New"`, text).catch(() => [])),
+	);
+	const loadedInTime = await Promise.race([
+		loaded.then(() => true),
+		new Promise<boolean>((resolve) => setTimeout(() => resolve(false), timeoutMs)),
+	]);
+	if (loadedInTime) return { loadedInTime, loaded };
+	// 待ちきれなかったフォントが届いたら、測り直させるために書体の指定を変える
+	return {
+		loadedInTime,
+		loaded: loaded.then(() => {
+			fontGeneration++;
+		}),
+	};
+}

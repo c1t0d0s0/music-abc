@@ -23,6 +23,13 @@
 `src/views/EditorView.vue` の `abcjs.Editor` の初期化と、音符クリックで発音・テキスト選択する処理は、
 abcjs-editor の `app/components/atoms/AbcEditor.vue` を参考にしています。
 
+## 改変して利用している npm パッケージ
+
+### abcjs
+
+楽譜の下に注記（N: 行）を描かないよう、`src/write/creation/elements/bottom-text.js` を改変しています。改変内容は `patches/abcjs+6.7.1.patch` にあり、
+`npm install` のときに [patch-package](https://github.com/ds300/patch-package)（MIT License）が自動で適用します。
+
 ## npm パッケージ
 
 | パッケージ | ライセンス | 著作権者 | 用途 |
