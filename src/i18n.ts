@@ -157,6 +157,7 @@ w: ド レ ミ ファ ソ ラ シ ド ド シ ラ ソ ファ ミ レ ド
 		ossHeading: "利用しているオープンソースソフトウェア",
 		licenseText: "ライセンス全文",
 		soundfontHeading: "再生に使う音源",
+		analyticsHeading: "アクセス解析",
 		disclaimerHeading: "免責事項",
 	},
 };
@@ -299,6 +300,7 @@ w: do re mi fa sol la ti do do ti la sol fa mi re do
 		ossHeading: "Open-source software used",
 		licenseText: "Full license text",
 		soundfontHeading: "Sound font used for playback",
+		analyticsHeading: "Analytics",
 		disclaimerHeading: "Disclaimer",
 	},
 };

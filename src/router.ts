@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import { t } from "./i18n";
+import { trackPageView } from "./lib/analytics";
 import LibraryView from "./views/LibraryView.vue";
 
 export const router = createRouter({
@@ -16,7 +17,11 @@ export const router = createRouter({
 });
 
 const SITE = t.siteName;
-router.afterEach((to) => {
+router.afterEach((to, from) => {
 	const title = to.meta.title as string | undefined;
 	if (title !== undefined) document.title = title ? `${title} | ${SITE}` : SITE;
+	// クエリだけが変わった移動（エディタが ?song= を消すときなど）は数えない
+	if (from.matched.length > 0 && from.path === to.path) return;
+	// 曲ページのタイトルは画面の描画時に設定されるので、描画が終わってからページビューを送る
+	setTimeout(() => trackPageView(to.path), 0);
 });

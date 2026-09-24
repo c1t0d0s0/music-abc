@@ -15,10 +15,11 @@
 		</p>
 
 		<nav class="toc" :aria-label="t.about.toc">
-			<a href="#songs-rights">{{ t.about.tocSongs }}</a>
-			<a href="#abc-license">{{ t.about.tocAbc }}</a>
-			<a href="#oss">{{ t.about.tocOss }}</a>
-			<a href="#soundfont">{{ t.about.tocSoundfont }}</a>
+			<!-- ページの切り替えにハッシュを使っているので、目次はハッシュを変えずにスクロールする -->
+			<a href="#songs-rights" @click.prevent="scrollToSection('songs-rights')">{{ t.about.tocSongs }}</a>
+			<a href="#abc-license" @click.prevent="scrollToSection('abc-license')">{{ t.about.tocAbc }}</a>
+			<a href="#oss" @click.prevent="scrollToSection('oss')">{{ t.about.tocOss }}</a>
+			<a href="#soundfont" @click.prevent="scrollToSection('soundfont')">{{ t.about.tocSoundfont }}</a>
 		</nav>
 
 		<section id="songs-rights">
@@ -155,6 +156,24 @@
 			</template>
 		</section>
 
+		<section v-if="ANALYTICS_ID">
+			<h2>{{ t.about.analyticsHeading }}</h2>
+			<p v-if="lang === 'ja'">
+				このサイトでは、利用状況を把握するために Google アナリティクスを使っています。
+				Google アナリティクスは Cookie を使って、閲覧したページなどのデータを収集します。
+				収集したデータに、個人を特定する情報は含まれません。エディタに入力した楽譜は送信されません。
+				データの扱いについては
+				<a href="https://policies.google.com/technologies/partner-sites?hl=ja" rel="noopener">Google のポリシー</a>
+				をご覧ください。
+			</p>
+			<p v-else>
+				This site uses Google Analytics to understand how it is used. Google Analytics uses cookies to collect data
+				such as the pages you view. The collected data does not include information that identifies you, and the music
+				you enter in the editor is not sent. For how Google uses this data, see
+				<a href="https://policies.google.com/technologies/partner-sites" rel="noopener">Google's policy</a>.
+			</p>
+		</section>
+
 		<section>
 			<h2>{{ t.about.disclaimerHeading }}</h2>
 			<p v-if="lang === 'ja'">
@@ -171,6 +190,11 @@
 
 <script setup lang="ts">
 import { lang, t, tr } from "../i18n";
+import { ANALYTICS_ID } from "../lib/analytics";
+
+function scrollToSection(id: string) {
+	document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 import { OSS_LICENSES } from "../licenses";
 import { PD_DEATH_YEAR_LIMIT, SONGS } from "../songs/meta";
 </script>

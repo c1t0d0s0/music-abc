@@ -33,6 +33,19 @@ npm run preview   # preview the build
 Deploy `dist/` as-is to GitHub Pages, Netlify, or any static host.
 The build uses relative paths and hash-based routing (for example `#/song/furusato`), so it also works from a subdirectory without extra configuration.
 
+## Analytics (optional)
+
+Put a `config.js` in the project root with a Google Analytics 4 measurement ID (starting with `G-`) or a Google Tag Manager container ID (starting with `GTM-`). `npm run build` then embeds the tag.
+
+```js
+const GTM_ID = 'G-XXXXXXXXXX';
+```
+
+- `config.js` is listed in `.gitignore` and is not committed. If the file is missing or the ID is empty, no tag is added.
+- The development server (`npm run dev`) never sends analytics.
+- A page view is sent on every navigation with a URL such as `/song/furusato`, because routing is hash-based. Turn off "Page changes based on browser history events" in GA4 enhanced measurement, or page views will be counted twice.
+- When an ID is set, the Licenses page explains that the site uses analytics.
+
 ## Adding a song
 
 1. Create `src/songs/<category>/<id>.abc`, where the category is `school`, `anthems`, or `classical-folk`.
