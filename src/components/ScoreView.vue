@@ -1,6 +1,9 @@
 <template>
 	<div class="score-view">
-		<div ref="audioEl" class="audio no-print" :aria-label="t.score.controls"></div>
+		<div v-show="audioSupported" class="player no-print">
+			<div ref="audioEl" class="audio" :aria-label="t.score.controls"></div>
+			<VolumeControl />
+		</div>
 		<p v-if="audioMessage" class="audio-message no-print" role="status">{{ audioMessage }}</p>
 		<div ref="paperEl" class="score-paper"></div>
 	</div>
@@ -12,6 +15,7 @@ import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { t } from "../i18n";
 import { observeLayout, scoreLayout } from "../lib/abc-utils";
 import { CursorControl } from "../lib/cursor-control";
+import VolumeControl from "./VolumeControl.vue";
 
 const props = withDefaults(defineProps<{ abc: string; transpose?: number }>(), { transpose: 0 });
 
@@ -103,7 +107,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.audio {
+.player {
 	position: sticky;
 	top: 0;
 	z-index: 2;
@@ -122,16 +126,5 @@ onBeforeUnmount(() => {
 	padding: 12px 8px;
 	box-shadow: 0 1px 2px rgba(31, 42, 38, 0.06);
 	color: #111;
-}
-
-.audio :deep(.abcjs-inline-audio) {
-	background: var(--accent);
-	border-radius: 999px;
-	height: 40px;
-	padding: 4px 12px;
-}
-
-.audio :deep(.abcjs-inline-audio .abcjs-btn) {
-	border-radius: 50%;
 }
 </style>

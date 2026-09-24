@@ -45,7 +45,10 @@
 			</section>
 
 			<section class="output-pane" :aria-label="t.editor.scoreLabel">
-				<div ref="audioEl" class="audio no-print"></div>
+				<div class="player no-print">
+					<div ref="audioEl" class="audio"></div>
+					<VolumeControl />
+				</div>
 				<div ref="paperEl" class="score-paper"></div>
 			</section>
 		</div>
@@ -58,6 +61,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AbcCodeInput from "../components/AbcCodeInput.vue";
 import DownloadButtons from "../components/DownloadButtons.vue";
+import VolumeControl from "../components/VolumeControl.vue";
 import {
 	EDITOR_STORAGE_KEY,
 	abcTitle,
@@ -301,15 +305,8 @@ onBeforeUnmount(() => {
 	font-family: var(--font-mono);
 }
 
-.audio {
+.player {
 	margin-bottom: 12px;
-}
-
-.audio :deep(.abcjs-inline-audio) {
-	background: var(--accent);
-	border-radius: 999px;
-	height: 40px;
-	padding: 4px 12px;
 }
 
 .score-paper {

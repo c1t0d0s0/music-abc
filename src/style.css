@@ -102,6 +102,33 @@ h3 {
 	font-family: var(--font-body);
 }
 
+/* 再生バー: abcjs の再生コントロールと音量調整を 1 本の帯に並べる */
+.player {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	min-height: 40px;
+	padding: 0 8px 0 0;
+	border-radius: 999px;
+	background: var(--accent);
+}
+
+.player .audio {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.player .abcjs-inline-audio {
+	height: 40px;
+	padding: 4px 4px 4px 12px;
+	border-radius: 999px;
+	background: transparent;
+}
+
+.player .abcjs-inline-audio .abcjs-btn {
+	border-radius: 50%;
+}
+
 /* 再生中の音符とカーソル */
 .abcjs-cursor {
 	stroke: var(--highlight);

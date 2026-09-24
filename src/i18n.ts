@@ -71,6 +71,9 @@ const ja = {
 		controls: "再生コントロール",
 		noAudio: "このブラウザは Web Audio に対応していないため再生できません。",
 		audioError: (msg: string) => `音声の準備に失敗しました: ${msg}`,
+		volume: "音量",
+		mute: "ミュート",
+		unmute: "ミュートを解除",
 	},
 	download: {
 		group: "ダウンロード",
@@ -208,6 +211,9 @@ const en: Messages = {
 		controls: "Playback controls",
 		noAudio: "This browser does not support Web Audio, so playback is not available.",
 		audioError: (msg: string) => `Could not prepare the audio: ${msg}`,
+		volume: "Volume",
+		mute: "Mute",
+		unmute: "Unmute",
 	},
 	download: {
 		group: "Download",
