@@ -1,0 +1,129 @@
+:root {
+	--ink: #1f2a26;
+	--ink-soft: #55615c;
+	--paper: #f7f2ea;
+	--score: #fffdf8;
+	--line: #d9d0c1;
+	--accent: #2d4a3e;
+	--accent-ink: #f7f2ea;
+	--highlight: #b5452f;
+	--focus: #c98a2b;
+	--chip: #ebe3d5;
+	--font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+	--font-head: "Zen Old Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+	--font-mono: "Fira Mono", ui-monospace, Menlo, monospace;
+	color-scheme: light;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--font-body);
+	line-height: 1.7;
+	-webkit-text-size-adjust: 100%;
+}
+
+a {
+	color: var(--accent);
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-head);
+	font-weight: 600;
+	line-height: 1.35;
+	letter-spacing: 0.02em;
+}
+
+:focus-visible {
+	outline: 3px solid var(--focus);
+	outline-offset: 2px;
+}
+
+.container {
+	max-width: 1040px;
+	margin: 0 auto;
+	padding: 0 16px;
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	padding: 0.45em 0.95em;
+	border: 1px solid var(--accent);
+	border-radius: 999px;
+	background: transparent;
+	color: var(--accent);
+	font: inherit;
+	font-size: 0.92rem;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background 0.15s, color 0.15s;
+}
+
+.btn:hover,
+.btn.primary {
+	background: var(--accent);
+	color: var(--accent-ink);
+}
+
+.btn.primary:hover {
+	background: #213a30;
+}
+
+.btn:disabled {
+	opacity: 0.5;
+	cursor: progress;
+}
+
+.chip {
+	display: inline-block;
+	padding: 0.05em 0.6em;
+	border-radius: 999px;
+	background: var(--chip);
+	color: var(--ink-soft);
+	font-size: 0.78rem;
+}
+
+/* 再生中の音符とカーソル */
+.abcjs-cursor {
+	stroke: var(--highlight);
+	stroke-width: 2;
+}
+
+.score-paper .highlight {
+	fill: var(--highlight);
+}
+
+.score-paper .abcjs-note,
+.score-paper .abcjs-rest {
+	cursor: pointer;
+}
+
+@media print {
+	header.site-header,
+	footer.site-footer,
+	.no-print,
+	.abcjs-inline-audio {
+		display: none !important;
+	}
+	body,
+	.score-paper {
+		background: #fff !important;
+		box-shadow: none !important;
+	}
+	.score-paper .highlight {
+		fill: currentColor;
+	}
+	.abcjs-cursor {
+		display: none;
+	}
+}

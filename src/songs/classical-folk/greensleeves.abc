@@ -1,0 +1,15 @@
+X:1
+T:グリーンスリーブス
+T:Greensleeves
+C:イングランド民謡
+S:16世紀
+N:旋律のみ
+Z:music-abc（CC0）
+M:6/8
+L:1/8
+Q:3/8=56
+K:Am
+|: A | c2 d e>fe | d2 B G>AB | c2 A A>^GA | B2 ^G E2 A |
+c2 d e>fe | d2 B G>AB | c>BA ^G>^F^G | A3 A2 :|
+|: g3 g>^fe | d2 B G>AB | c2 A A>^GA | B2 ^G E3 |
+g3 g>^fe | d2 B G>AB | c>BA ^G>^F^G | A6 :|

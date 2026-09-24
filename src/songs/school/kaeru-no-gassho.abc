@@ -1,0 +1,13 @@
+X:1
+T:かえるの合唱
+T:Froschgesang
+C:ドイツ民謡
+S:原曲は19世紀ドイツの童謡「Froschgesang」
+N:旋律のみ（日本語詞は保護期間中のため収録していません）
+Z:music-abc（CC0）
+M:4/4
+L:1/4
+Q:1/4=112
+K:C
+"^1"C D E F | E D C2 | "^2"E F G A | G F E2 |
+"^3"C z C z | C z C z | "^4"C/C/D/D/ E/E/F/F/ | E D C2 |]
