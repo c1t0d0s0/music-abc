@@ -3,15 +3,15 @@ T:G線上のアリア
 T:Air（管弦楽組曲第3番 ニ長調 BWV 1068 より）
 C:作曲 ヨハン・ゼバスティアン・バッハ
 S:管弦楽組曲第3番 第2曲（1730年頃）、バッハ協会版による
-N:第1ヴァイオリンの旋律のみ
+N:第1ヴァイオリンの旋律のみ。原曲の音価を2倍にして記譜し、前打音は実際の音符で書いています
 Z:music-abc（CC0）
 M:4/4
-L:1/16
-Q:1/4=48
+L:1/8
+Q:1/4=100
 K:D
-|: f16- | f2bg {f}edcd c4 {B}A4 | a8- af=cB e^dag | g8- geBA dcgf |
-f6^ga d2d/e/f- feed |1 cBB/c/d- d2cB A8 :|2 cBB/c/d- d2cB A8 ||
-|: c4- cd/c/B/c/A a6=c2 | B2b2- bagf g4- g/f/e/d/cB | ^ABc2- cde2- efg2- g2f2 |
-edcB cd/e/d2 B8 | d4- dfed b4- b2a^g | {f}eaA2 B3c/d/ c3B A4 |
-d6fe e6gf | f6ag g8 | A4- Aceg gef2- f2- fg/a/ |
-d4- dfa=c' b6d2 | ce g4 B2A2 ef/g/-g f2e | d/c/B2c d2cd Hd8 :|
+|: f8- | f8- | f2bg edcd | c4 BA3 | a8- | af=cB e^dag | g8- | geBA dcgf |
+f6^ga | d2d/e/f- feed |1 cBB/c/d- d2cB | A8 :|2 cBB/c/d- d2cB | A8 ||
+|: c4- cd/c/B/c/A | a6=c2 | B2b2- bagf | g4- g/f/e/d/cB | ^ABc2- cde2- | efg4 f2 |
+edcB cd/e/d2 | B8 | d4- dfed | b4- b2a^g | f/e/aA2 B3c/d/ | c3B A4 |
+d6fe | e6gf | f6ag | g8 | A4- Aceg | ge f4- fg/a/ |
+d4- dfa=c' | b6d2 | ceg4 B2 | A2ef/g/-g f2e | d/c/B2c d2cd | d8 :|
