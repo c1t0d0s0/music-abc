@@ -3,14 +3,21 @@ T:君が代
 T:Kimigayo（日本）
 C:作曲 林廣守 / 編曲 フランツ・エッケルト
 S:1880年作曲、歌詞は古今和歌集より
-Z:music-abc（CC0）
+N:上段は旋律、下段は和音の伴奏
+Z:music-abc
 M:4/4
 L:1/4
-Q:1/4=60
+Q:1/4=69
+%%score {V1 | V2}
+V:V1 name="旋律" snm="旋"
+V:V2 name="伴奏" snm="伴"
 K:C
-D C D E | G E D2 | E G A G/A/ | d B A G |
+[V:V1] D C D E | G E D2 | E G A G/A/ | d B A G |
 w: き み が _ よ _ は ち よ に _ _ や ち よ に
-E G A2 | d c d z | E G A G | E3/2 G/ D z |
+[V:V2] [D,D] [C,C] [D,D] [E,E] | [G,G] [E,E] [D,D]2 | [C,G,CE] [E,CG] [F,CA] [E,G]/[F,A]/ | [^F,A,Dd] [G,DB] [D,^F,CA]/ _E,/ [=E,G,B,G] |
+[V:V1] E G A2 | d c d z | E G A G | E3/2 G/ D z |
 w: さ ざ れ い し の い わ お と な り て
-A c d2 | c d A G | A G/E/ D2 |]
+[V:V2] [C,G,CE] [E,G,CG] [C,F,CA] F, | [D,A,Fd] [A,,A,Ec] [D,A,Fd]2 | [A,CE] [G,CEG] [F,CFA] [E,CG] | [C,G,CE] [E,C]/ G/ [G,B,D]2 |
+[V:V1] A c d2 | c d A G | A G/E/ D2 |]
 w: こ け の む _ す _ ま _ _ で
+[V:V2] [F,CFA] [F,A,Fc] [F,A,Dd]2 | [A,Ec] [D,Fd] [A,A] [G,G] | [A,A] [G,G]/ [E,E]/ [D,D]2 |]

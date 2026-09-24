@@ -32,6 +32,36 @@ function clickListener(abcElem: AbcElem) {
 		.catch(() => {});
 }
 
+const SYNTH_OPTIONS = {
+	displayLoop: true,
+	displayRestart: true,
+	displayPlay: true,
+	displayProgress: true,
+	displayWarp: true,
+};
+
+/** 再生を止め、再生位置のタイマーと音声データを捨てる（destroy は abcjs の型定義にないが実装されている） */
+function destroySynth() {
+	try {
+		(synthControl as (SynthObjectController & { destroy?: () => void }) | null)?.destroy?.();
+	} catch {
+		/* 未再生なら何もしない */
+	}
+	synthControl = null;
+}
+
+/**
+ * 再生コントロールを作り直す。
+ * SynthController.setTune は一度再生した後のタイマーと音声データを捨てないため、
+ * 曲や移調を変えたのに前の曲のまま鳴ってしまう。曲を差し替えるたびに作り直す。
+ */
+function createSynth() {
+	destroySynth();
+	if (!audioEl.value) return;
+	synthControl = new abcjs.synth.SynthController();
+	synthControl.load(audioEl.value, cursor, SYNTH_OPTIONS);
+}
+
 async function render() {
 	if (!paperEl.value) return;
 	visualObj =
@@ -44,7 +74,9 @@ async function render() {
 			visualTranspose: props.transpose,
 			clickListener,
 		})[0] ?? null;
-	if (!synthControl || !visualObj) return;
+	if (!audioSupported || !visualObj) return;
+	createSynth();
+	if (!synthControl) return;
 	try {
 		// visualTranspose した譜面から音を作るときは、同じ値を midiTranspose に渡すと表示どおりの高さで鳴る
 		await synthControl.setTune(visualObj, false, { midiTranspose: props.transpose });
@@ -54,19 +86,10 @@ async function render() {
 	}
 }
 
+const audioSupported = abcjs.synth.supportsAudio();
+
 onMounted(() => {
-	if (abcjs.synth.supportsAudio() && audioEl.value) {
-		synthControl = new abcjs.synth.SynthController();
-		synthControl.load(audioEl.value, cursor, {
-			displayLoop: true,
-			displayRestart: true,
-			displayPlay: true,
-			displayProgress: true,
-			displayWarp: true,
-		});
-	} else {
-		audioMessage.value = t.score.noAudio;
-	}
+	if (!audioSupported) audioMessage.value = t.score.noAudio;
 	render();
 	if (paperEl.value) stopObserving = observeLayout(paperEl.value, render);
 });
@@ -75,11 +98,7 @@ watch(() => [props.abc, props.transpose], render);
 
 onBeforeUnmount(() => {
 	stopObserving?.();
-	try {
-		synthControl?.pause();
-	} catch {
-		/* 未再生なら何もしない */
-	}
+	destroySynth();
 });
 </script>
 

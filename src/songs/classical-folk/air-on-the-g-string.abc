@@ -3,15 +3,54 @@ T:G線上のアリア
 T:Air（管弦楽組曲第3番 ニ長調 BWV 1068 より）
 C:作曲 ヨハン・ゼバスティアン・バッハ
 S:管弦楽組曲第3番 第2曲（1730年頃）、バッハ協会版による
-N:第1ヴァイオリンの旋律のみ。原曲の音価を2倍にして記譜し、前打音は実際の音符で書いています
+N:バッハの原曲の弦楽4部（第1・第2ヴァイオリン、ヴィオラ、通奏低音）。原曲の音価を2倍にして記譜し、前打音は実際の音符で書いています
 Z:music-abc（CC0）
 M:4/4
 L:1/8
 Q:1/4=100
+%%score [V1 V2 V3 V4]
+V:V1 name="Violino I" snm="Vn. I"
+V:V2 name="Violino II" snm="Vn. II"
+V:V3 name="Viola" snm="Va." clef=alto
+V:V4 name="Continuo" snm="Cont." clef=bass
 K:D
-|: f8- | f8- | f2bg edcd | c4 BA3 | a8- | af=cB e^dag | g8- | geBA dcgf |
-f6^ga | d2d/e/f- feed |1 cBB/c/d- d2cB | A8 :|2 cBB/c/d- d2cB | A8 ||
-|: c4- cd/c/B/c/A | a6=c2 | B2b2- bagf | g4- g/f/e/d/cB | ^ABc2- cde2- | efg4 f2 |
-edcB cd/e/d2 | B8 | d4- dfed | b4- b2a^g | f/e/aA2 B3c/d/ | c3B A4 |
-d6fe | e6gf | f6ag | g8 | A4- Aceg | ge f4- fg/a/ |
-d4- dfa=c' | b6d2 | ceg4 B2 | A2ef/g/-g f2e | d/c/B2c d2cd | d8 :|
+[V:V1] |: f8- | f8- | f2bg edcd | c4 BA3 |
+[V:V2] |: d8- | d8- | d4 B4 | A8- |
+[V:V3] |: A8 | B8 | B,4 E4 | E8- |
+[V:V4] |: D,2 D2 C2 C,2 | B,,2 B,2 A,2 A,,2 | G,,2 G,2 ^G,2 ^G,,2 | A,,2 A,2 G,2 G,,2 |
+[V:V1] a8- | af=cB e^dag | g8- | geBA dcgf |
+[V:V2] A2 =cB c2 ac | B2 z2 z4 | B2 ed ef ge | A2 z2 z4 |
+[V:V3] E2 ^D2 D2 E2 | F2 z2 z4 | E2 B,2 B,2 E2 | E2 z2 z4 |
+[V:V4] F,,2 F,2 E,2 E,,2 | ^D,,2 ^D,2 B,,2 B,2 | E,,2 E,2 D,2 D,,2 | C,,2 C,2 A,,2 A,2 |
+[V:V1] f6^ga | d2d/e/f- feed | [1 cBB/c/d- d2cB | A8 :|
+[V:V2] A8- | A2 ^GA B2 G2 | [1 A2 A2 A2 ^G2 | E8 :|
+[V:V3] D6 E2 | F2 D2 B,2 E2- | [1 E2 F2 B,2 E2 | C8 :|
+[V:V4] D,2 D2 C2 C,2 | B,,2 B,2 ^G,2 E,2 | [1 A,2 D,2 E,2 E,,2 | A,,B,, C,D, E,G, F,E, :|
+[V:V1] [2 cBB/c/d- d2cB | A8 || |: c4- cd/c/B/c/A | a6=c2 |
+[V:V2] [2 A2 A2 A2 ^G2 | E8 || |: A8- | AB =c2- cB AG |
+[V:V3] [2 E2 F2 B,2 E2 | C8 || |: E8- | E2 ^DE F4- |
+[V:V4] [2 A,2 D,2 E,2 E,,2 | A,,8 || |: A,,2 A,2 G,2 G,,2 | F,,2 F,2 E,2 E,,2 |
+[V:V1] B2b2- bagf | g4- g/f/e/d/cB | ^ABc2- cde2- | efg4 f2 |
+[V:V2] F6 ^d2 | e8- | e8- | ed cB ^AB c2 |
+[V:V3] FG AF ^D2 B2 | B4 B,4 | CD EF GF GE | F2 ED C2 F2 |
+[V:V4] ^D,,2 ^D,2 F,2 B,,2 | E,2 E2 D2 D,2 | C,2 C2 B,2 B,,2 | ^A,,2 B,,2 C,2 A,,2 |
+[V:V1] edcB cd/e/d2 | B8 | d4- dfed | b4- b2a^g |
+[V:V2] B2 B2 B2 ^A2 | F8 | E4 F4 | B,2 EF ^GA B2- |
+[V:V3] F2 ED G2 FE | D8 | B,2 B2 A^G A2 | ^G3F E4- |
+[V:V4] B,,2 G,2 E,2 F,2 | B,,2 B,2 A,2 A,,2 | ^G,,2 ^G,2 F,2 F,,2 | E,,2 E,2 D,2 D,,2 |
+[V:V1] f/e/aA2 B3c/d/ | c3B A4 | d6fe | e6gf |
+[V:V2] B2 A4 ^G2 | A8- | A2 B=c B^c d2- | d2 cB c^d e2- |
+[V:V3] E2 E2 F2 E2 | E3D CD EC | A,2 D4 B,2- | B,2 E4 C2- |
+[V:V4] C,,2 C,2 D,2 E,2 | A,,2 A,2 G,2 G,,2 | F,,2 F,2 G,2 G,,2 | ^G,,2 ^G,2 A,2 A,,2 |
+[V:V1] f6ag | g8 | A4- Aceg | ge f4- fg/a/ |
+[V:V2] e2 ^dc de f2- | f^d eB E4- | EC EA c2 A2- | A2 cd D4- |
+[V:V3] C2 F4 ^D2 | B,4- B,B GE | A2 G2 F2 E2 | D4 A4- |
+[V:V4] ^A,,2 ^A,2 B,2 B,,2 | E,2 E2 D2 D,2 | C,2 C2 A,2 C2 | D2 D,2 =C,2 =C2 |
+[V:V1] d4- dfa=c' | b6d2 | ceg4 B2 | A2ef/g/-g f2e |
+[V:V2] D2 E2 F4 | G8- | G2 B2 e4- | ed cB A2 B2 |
+[V:V3] A2 G2 A4 | D8 | EB, EG BA GF | E2 A2- A2 G2 |
+[V:V4] B,2 B,,2 A,,2 A,2 | G,2 G,,2 F,,2 F,2 | E,2 E,,2 D,,2 D,2 | C,2 A,,2 D,2 G,2 |
+[V:V1] d/c/B2c d2cd | d8 :|
+[V:V2] A4 GF G2 | F8 :|
+[V:V3] F4 E2 A,2 | A,8 :|
+[V:V4] A,2 G,2 A,2 A,,2 | D,,8 :|

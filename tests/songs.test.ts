@@ -15,15 +15,34 @@ function countSyllables(w: string): number {
 	return voice.filter((el) => el.el_type === "note" && el.lyric).length;
 }
 
-/** 本文を「音楽の行 + 直後の w: 行群」に分ける */
-function musicLineGroups(abc: string): { music: string; lyrics: string[] }[] {
-	const body = abc.split("\n").slice(abc.split("\n").findIndex((l) => l.startsWith("K:")) + 1);
-	const groups: { music: string; lyrics: string[] }[] = [];
+interface LineGroup {
+	music: string;
+	lyrics: string[];
+	/** 声部の番号（登場順、0 始まり）。abcjs では段（staff）の番号に対応する */
+	voice: number;
+	/** その声部の中で何番目の行か。abcjs では tune.lines の何段目かに対応する */
+	system: number;
+}
+
+/** 本文を「音楽の行 + 直後の w: 行群」に分ける。[V:x] で始まる行は声部ごとに数える */
+function musicLineGroups(abc: string): LineGroup[] {
+	const lines = abc.split("\n");
+	const body = lines.slice(lines.findIndex((l) => l.startsWith("K:")) + 1);
+	const voices: string[] = [];
+	const counts = new Map<string, number>();
+	const groups: LineGroup[] = [];
 	for (const line of body) {
 		if (!line.trim() || line.startsWith("%")) continue;
-		if (line.startsWith("w:")) groups.at(-1)?.lyrics.push(line.slice(2));
-		else if (/^[A-Za-z]:/.test(line)) continue;
-		else groups.push({ music: line, lyrics: [] });
+		if (line.startsWith("w:")) {
+			groups.at(-1)?.lyrics.push(line.slice(2));
+			continue;
+		}
+		if (/^[A-Za-z]:/.test(line)) continue;
+		const id = line.match(/^\[V:\s*([^\]\s]+)\]/)?.[1] ?? "";
+		if (!voices.includes(id)) voices.push(id);
+		const system = counts.get(id) ?? 0;
+		counts.set(id, system + 1);
+		groups.push({ music: line, lyrics: [], voice: voices.indexOf(id), system });
 	}
 	return groups;
 }
@@ -65,42 +84,46 @@ describe("収録曲", () => {
 		it("小節の長さが拍子と一致する（弱起・終止・反復記号の前後を除く）", () => {
 			const meter = tune.getMeterFraction();
 			const full = meter.num / (meter.den ?? 1);
-			const bars: { dur: number; endType: string }[] = [];
-			let cur = 0;
-			for (const line of tune.lines) {
-				for (const el of (line.staff?.[0]?.voices?.[0] ?? []) as AbcEl[]) {
-					if (el.el_type === "note") cur += el.duration ?? 0;
-					if (el.el_type === "bar") {
-						bars.push({ dur: cur, endType: el.type ?? "" });
-						cur = 0;
+			const staffCount = Math.max(...tune.lines.map((l) => l.staff?.length ?? 0));
+			for (let st = 0; st < staffCount; st++) {
+				const bars: { dur: number; endType: string }[] = [];
+				let cur = 0;
+				for (const line of tune.lines) {
+					for (const el of (line.staff?.[st]?.voices?.[0] ?? []) as AbcEl[]) {
+						if (el.el_type === "note") cur += el.duration ?? 0;
+						if (el.el_type === "bar") {
+							bars.push({ dur: cur, endType: el.type ?? "" });
+							cur = 0;
+						}
 					}
 				}
+				if (cur > 0) bars.push({ dur: cur, endType: "end" });
+				const bad = bars.filter((b, i) => {
+					if (Math.abs(b.dur - full) < 1e-6 || b.dur === 0) return false;
+					const prev = bars[i - 1];
+					const isEdge = i === 0 || i === bars.length - 1;
+					const nearRepeat = b.endType !== "bar_thin" || (prev && prev.endType !== "bar_thin");
+					// 弱起の小節は短い
+					return !((isEdge || nearRepeat) && b.dur < full);
+				});
+				expect(bad.map((b) => `${st + 1}段目 ${bars.indexOf(b) + 1}小節目: ${b.dur}`)).toEqual([]);
 			}
-			if (cur > 0) bars.push({ dur: cur, endType: "end" });
-			const bad = bars.filter((b, i) => {
-				if (Math.abs(b.dur - full) < 1e-6 || b.dur === 0) return false;
-				const prev = bars[i - 1];
-				const isEdge = i === 0 || i === bars.length - 1;
-				const nearRepeat = b.endType !== "bar_thin" || (prev && prev.endType !== "bar_thin");
-				// 弱起の小節は短い
-				return !((isEdge || nearRepeat) && b.dur < full);
-			});
-			expect(bad.map((b) => `${bars.indexOf(b) + 1}小節目: ${b.dur}`)).toEqual([]);
 		});
 
 		it("歌詞の音節数が各行の音符数と一致する", () => {
 			const groups = musicLineGroups(song.abc);
 			const staffLines = tune.lines.filter((l) => l.staff);
-			expect(staffLines.length).toBe(groups.length);
-			groups.forEach((g, i) => {
-				if (g.lyrics.length === 0) return;
-				const notes = ((staffLines[i]!.staff![0]!.voices![0] ?? []) as AbcEl[]).filter(
+			const voiceCount = Math.max(...groups.map((g) => g.voice)) + 1;
+			expect(staffLines.length * voiceCount).toBe(groups.length);
+			for (const g of groups) {
+				if (g.lyrics.length === 0) continue;
+				const notes = ((staffLines[g.system]!.staff![g.voice]!.voices![0] ?? []) as AbcEl[]).filter(
 					(el) => el.el_type === "note" && !el.rest,
 				).length;
 				for (const w of g.lyrics) {
-					expect(countSyllables(w), `${i + 1}行目: ${w}`).toBe(notes);
+					expect(countSyllables(w), `${g.system + 1}段目（声部${g.voice + 1}）: ${w}`).toBe(notes);
 				}
-			});
+			}
 			if (song.lyrics === "sung") expect(groups.some((g) => g.lyrics.length > 0)).toBe(true);
 			else expect(groups.every((g) => g.lyrics.length === 0)).toBe(true);
 		});

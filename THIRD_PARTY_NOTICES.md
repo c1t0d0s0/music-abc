@@ -58,7 +58,7 @@ Google Fonts から Zen Kaku Gothic New、Zen Old Mincho、Fira Mono を読み�
 書き起こしにあたっては、Wikipedia の各曲の記事に掲載された楽譜や、John Chambers 氏の ABC 楽譜集
 （https://trillian.mit.edu/~jc/music/abc/）などの公開資料を参考にしました。
 「G線上のアリア」は、[Mutopia Project](https://www.mutopiaproject.org/) で公開されている
-Jeff Covey 氏によるバッハ協会版の浄書（Creative Commons Attribution-ShareAlike 3.0）を参考に、旋律を書き起こしました。
+Jeff Covey 氏によるバッハ協会版の浄書（Creative Commons Attribution-ShareAlike 3.0）を参考に、旋律と弦楽4部の和声を書き起こしました。
 イタリア国歌は、[Cantorion](https://cantorion.org/) で公開されているパブリックドメインの歌唱譜と、
 イタリア山岳兵協会（ANA）が公開している校訂版（ノヴァーロの原譜）を照らし合わせて書き起こしました。
 ロシア国歌は、Wikimedia Commons にある2000年の連邦憲法法律の公式楽譜（パブリックドメイン）を参考にしました。

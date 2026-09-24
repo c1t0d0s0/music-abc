@@ -227,6 +227,10 @@ export const SONGS: SongMeta[] = [
 		],
 		published: 1880,
 		lyrics: "sung",
+		note: {
+			ja: "上段が歌の旋律、下段が和音の伴奏です。伴奏は EveryonePiano のピアノ譜から読み取りました。",
+			en: "The upper staff is the vocal melody and the lower staff is the chordal accompaniment, transcribed from a piano score by EveryonePiano.",
+		},
 	},
 	{
 		id: "star-spangled-banner",
@@ -436,8 +440,8 @@ export const SONGS: SongMeta[] = [
 		published: 1731,
 		lyrics: "none",
 		note: {
-			ja: "「G線上のアリア」は、ヴィルヘルミが1871年にハ長調に移してヴァイオリンのG線だけで弾けるよう編曲したときの呼び名です。ここではバッハの原曲（ニ長調）の第1ヴァイオリンの旋律を収録しています。",
-			en: "“Air on the G String” is the name of August Wilhelmj's 1871 arrangement, which moved the piece to C major so it could be played on the violin's G string alone. This is the first violin melody of Bach's original in D major.",
+			ja: "「G線上のアリア」は、ヴィルヘルミが1871年にハ長調に移してヴァイオリンのG線だけで弾けるよう編曲したときの呼び名です。ここではバッハの原曲（ニ長調）の弦楽4部（第1・第2ヴァイオリン、ヴィオラ、通奏低音）を、音価を2倍にして収録しています。",
+			en: "“Air on the G String” is the name of August Wilhelmj's 1871 arrangement, which moved the piece to C major so it could be played on the violin's G string alone. This is Bach's original four-part string setting in D major (violins I and II, viola, and continuo), written with doubled note values.",
 		},
 	},
 	{
