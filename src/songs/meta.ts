@@ -5,13 +5,26 @@
  * 遡らないため、1967年以前に亡くなった著作者の作品は保護期間が満了している。
  * 作者不詳・団体名義の作品は公表後の年数で判断する。
  * いずれの曲も、ABC 譜は本プロジェクトが旋律だけを書き起こしたもの（CC0）。
+ *
+ * 表示用の文字列は日本語と英語の両方を持つ。どちらの言語でも同じ表記なら文字列のままでよい。
  */
+import type { Localized } from "../i18n";
 
 export type Category = "school" | "anthems" | "classical-folk";
 
+export type Role =
+	| "lyricist"
+	| "composer"
+	| "lyricsMusic"
+	| "lyricsSource"
+	| "arranger"
+	| "reviser"
+	| "lyricistFrench"
+	| "lyricistEnglish";
+
 export interface Creator {
-	role: string;
-	name: string;
+	role: Role;
+	name: Localized | string;
 	born?: number;
 	died?: number;
 	/** 作者不詳・民謡・団体名義など、個人の没年で判断できないもの */
@@ -22,69 +35,61 @@ export interface SongMeta {
 	id: string;
 	category: Category;
 	/** 表示用の短い曲名 */
-	title: string;
-	/** 読み・原題など */
-	subtitle?: string;
-	country?: string;
+	title: Localized | string;
+	/** 読み・原題・訳題など */
+	subtitle?: Localized | string;
+	country?: Localized;
 	creators: Creator[];
 	/** 初出年（旋律または歌詞の古い方ではなく、収録版の公表年） */
 	published: number;
 	/** 譜面上の歌詞: "sung" = 音符に付けて表示、"text" = 譜面の下に本文のみ、"none" = なし */
 	lyrics: "sung" | "text" | "none";
-	note?: string;
+	note?: Localized;
 }
 
-export const CATEGORY_LABELS: Record<Category, { title: string; description: string }> = {
-	school: {
-		title: "学校で歌う歌",
-		description: "小学校・中学校の音楽の教科書でおなじみの唱歌・童謡・日本古謡",
-	},
-	anthems: {
-		title: "各国の国歌",
-		description: "作詞・作曲者の没後、保護期間が満了した国歌",
-	},
-	"classical-folk": {
-		title: "クラシック・世界の民謡",
-		description: "鑑賞曲や器楽で親しまれる名旋律",
-	},
-};
-
 export const PD_DEATH_YEAR_LIMIT = 1967;
+
+const TAKANO = { role: "lyricist", name: { ja: "高野辰之", en: "Takano Tatsuyuki" }, born: 1876, died: 1947 } as const;
+const OKANO = { role: "composer", name: { ja: "岡野貞一", en: "Okano Teiichi" }, born: 1878, died: 1941 } as const;
+const TAKI = { role: "composer", name: { ja: "滝廉太郎", en: "Taki Rentarō" }, born: 1879, died: 1903 } as const;
+const YAMADA = { name: { ja: "山田耕筰", en: "Yamada Kōsaku" }, born: 1886, died: 1965 } as const;
 
 export const SONGS: SongMeta[] = [
 	// ---- 学校で歌う歌 ----
 	{
 		id: "furusato",
 		category: "school",
-		title: "ふるさと",
-		subtitle: "故郷",
-		creators: [
-			{ role: "作詞", name: "高野辰之", born: 1876, died: 1947 },
-			{ role: "作曲", name: "岡野貞一", born: 1878, died: 1941 },
-		],
+		title: { ja: "ふるさと", en: "Furusato" },
+		subtitle: { ja: "故郷", en: "Hometown" },
+		creators: [TAKANO, OKANO],
 		published: 1914,
 		lyrics: "sung",
-		note: "尋常小学唱歌。1〜3番を収録。",
+		note: {
+			ja: "尋常小学唱歌。1〜3番を収録。",
+			en: "A Ministry of Education school song. Verses 1–3 are included.",
+		},
 	},
 	{
 		id: "haru-no-ogawa",
 		category: "school",
-		title: "春の小川",
-		creators: [
-			{ role: "作詞", name: "高野辰之", born: 1876, died: 1947 },
-			{ role: "作曲", name: "岡野貞一", born: 1878, died: 1941 },
-		],
+		title: { ja: "春の小川", en: "Haru no Ogawa" },
+		subtitle: { ja: "", en: "The Brook in Spring" },
+		creators: [TAKANO, OKANO],
 		published: 1912,
 		lyrics: "sung",
-		note: "1912年の原詞を収録。1942年以降の改詞（林柳波、1974年没）は保護期間中のため使っていません。",
+		note: {
+			ja: "1912年の原詞を収録。1942年以降の改詞（林柳波、1974年没）は保護期間中のため使っていません。",
+			en: "The original 1912 lyrics. The 1942 revision (by Hayashi Ryūha, d. 1974) is still under copyright and is not used.",
+		},
 	},
 	{
 		id: "akatombo",
 		category: "school",
-		title: "赤とんぼ",
+		title: { ja: "赤とんぼ", en: "Akatombo" },
+		subtitle: { ja: "", en: "Red Dragonfly" },
 		creators: [
-			{ role: "作詞", name: "三木露風", born: 1889, died: 1964 },
-			{ role: "作曲", name: "山田耕筰", born: 1886, died: 1965 },
+			{ role: "lyricist", name: { ja: "三木露風", en: "Miki Rofū" }, born: 1889, died: 1964 },
+			{ role: "composer", ...YAMADA },
 		],
 		published: 1927,
 		lyrics: "sung",
@@ -92,10 +97,11 @@ export const SONGS: SongMeta[] = [
 	{
 		id: "natsu-wa-kinu",
 		category: "school",
-		title: "夏は来ぬ",
+		title: { ja: "夏は来ぬ", en: "Natsu wa Kinu" },
+		subtitle: { ja: "", en: "Summer Has Come" },
 		creators: [
-			{ role: "作詞", name: "佐佐木信綱", born: 1872, died: 1963 },
-			{ role: "作曲", name: "小山作之助", born: 1864, died: 1927 },
+			{ role: "lyricist", name: { ja: "佐佐木信綱", en: "Sasaki Nobutsuna" }, born: 1872, died: 1963 },
+			{ role: "composer", name: { ja: "小山作之助", en: "Koyama Sakunosuke" }, born: 1864, died: 1927 },
 		],
 		published: 1896,
 		lyrics: "sung",
@@ -103,10 +109,11 @@ export const SONGS: SongMeta[] = [
 	{
 		id: "hamabe-no-uta",
 		category: "school",
-		title: "浜辺の歌",
+		title: { ja: "浜辺の歌", en: "Hamabe no Uta" },
+		subtitle: { ja: "", en: "Song of the Seashore" },
 		creators: [
-			{ role: "作詞", name: "林古渓", born: 1875, died: 1947 },
-			{ role: "作曲", name: "成田為三", born: 1893, died: 1945 },
+			{ role: "lyricist", name: { ja: "林古渓", en: "Hayashi Kokei" }, born: 1875, died: 1947 },
+			{ role: "composer", name: { ja: "成田為三", en: "Narita Tamezō" }, born: 1893, died: 1945 },
 		],
 		published: 1918,
 		lyrics: "none",
@@ -114,62 +121,78 @@ export const SONGS: SongMeta[] = [
 	{
 		id: "kaeru-no-gassho",
 		category: "school",
-		title: "かえるの合唱",
-		subtitle: "Froschgesang",
-		creators: [{ role: "作曲", name: "ドイツ民謡", anonymous: true }],
+		title: { ja: "かえるの合唱", en: "Kaeru no Gasshō" },
+		subtitle: { ja: "Froschgesang", en: "Frog Chorus (Froschgesang)" },
+		creators: [{ role: "composer", name: { ja: "ドイツ民謡", en: "German folk song" }, anonymous: true }],
 		published: 1942,
 		lyrics: "none",
-		note: "旋律のみ。日本語詞（岡本敏明、1977年没）は保護期間中のため収録していません。1〜4の番号の位置から追いかけて輪唱できます。",
+		note: {
+			ja: "旋律のみ。日本語詞（岡本敏明、1977年没）は保護期間中のため収録していません。1〜4の番号の位置から追いかけて輪唱できます。",
+			en: "Melody only. The Japanese lyrics (by Okamoto Toshiaki, d. 1977) are still under copyright. Start from the numbers 1–4 to sing it as a round.",
+		},
 	},
 	{
 		id: "chatsumi",
 		category: "school",
-		title: "茶摘み",
-		creators: [{ role: "作詞・作曲", name: "文部省唱歌（作者不詳）", anonymous: true }],
+		title: { ja: "茶摘み", en: "Chatsumi" },
+		subtitle: { ja: "", en: "Tea Picking" },
+		creators: [
+			{
+				role: "lyricsMusic",
+				name: { ja: "文部省唱歌（作者不詳）", en: "Ministry of Education song (author unknown)" },
+				anonymous: true,
+			},
+		],
 		published: 1912,
 		lyrics: "sung",
 	},
 	{
 		id: "hana",
 		category: "school",
-		title: "花",
-		creators: [
-			{ role: "作詞", name: "武島羽衣", born: 1872, died: 1967 },
-			{ role: "作曲", name: "滝廉太郎", born: 1879, died: 1903 },
-		],
+		title: { ja: "花", en: "Hana" },
+		subtitle: { ja: "", en: "Flowers" },
+		creators: [{ role: "lyricist", name: { ja: "武島羽衣", en: "Takeshima Hagoromo" }, born: 1872, died: 1967 }, TAKI],
 		published: 1900,
 		lyrics: "none",
-		note: "組歌「四季」の第1曲。二部合唱の主旋律のみ。",
+		note: {
+			ja: "組歌「四季」の第1曲。二部合唱の主旋律のみ。",
+			en: "The first song of the suite “Shiki” (The Four Seasons). Only the main melody of the two-part chorus.",
+		},
 	},
 	{
 		id: "kojo-no-tsuki",
 		category: "school",
-		title: "荒城の月",
+		title: { ja: "荒城の月", en: "Kōjō no Tsuki" },
+		subtitle: { ja: "", en: "The Moon over the Ruined Castle" },
 		creators: [
-			{ role: "作詞", name: "土井晩翠", born: 1871, died: 1952 },
-			{ role: "作曲", name: "滝廉太郎", born: 1879, died: 1903 },
-			{ role: "補作編曲", name: "山田耕筰", born: 1886, died: 1965 },
+			{ role: "lyricist", name: { ja: "土井晩翠", en: "Doi Bansui" }, born: 1871, died: 1952 },
+			TAKI,
+			{ role: "reviser", ...YAMADA },
 		],
 		published: 1901,
 		lyrics: "sung",
-		note: "一般に歌われる山田耕筰の補作版（ニ短調）。",
+		note: {
+			ja: "一般に歌われる山田耕筰の補作版（ニ短調）。",
+			en: "The commonly sung version revised by Yamada Kōsaku, in D minor.",
+		},
 	},
 	{
 		id: "sakura-sakura",
 		category: "school",
-		title: "さくら さくら",
-		creators: [{ role: "作詞・作曲", name: "日本古謡", anonymous: true }],
+		title: { ja: "さくら さくら", en: "Sakura Sakura" },
+		subtitle: { ja: "", en: "Cherry Blossoms" },
+		creators: [{ role: "lyricsMusic", name: { ja: "日本古謡", en: "Japanese traditional" }, anonymous: true }],
 		published: 1888,
 		lyrics: "sung",
 	},
 	{
 		id: "hotaru-no-hikari",
 		category: "school",
-		title: "蛍の光",
+		title: { ja: "蛍の光", en: "Hotaru no Hikari" },
 		subtitle: "Auld Lang Syne",
 		creators: [
-			{ role: "作詞", name: "稲垣千穎", born: 1845, died: 1913 },
-			{ role: "作曲", name: "スコットランド民謡", anonymous: true },
+			{ role: "lyricist", name: { ja: "稲垣千穎", en: "Inagaki Chikai" }, born: 1845, died: 1913 },
+			{ role: "composer", name: { ja: "スコットランド民謡", en: "Scottish folk song" }, anonymous: true },
 		],
 		published: 1881,
 		lyrics: "sung",
@@ -177,11 +200,11 @@ export const SONGS: SongMeta[] = [
 	{
 		id: "hanyu-no-yado",
 		category: "school",
-		title: "埴生の宿",
+		title: { ja: "埴生の宿", en: "Hanyū no Yado" },
 		subtitle: "Home! Sweet Home!",
 		creators: [
-			{ role: "作詞", name: "里見義", born: 1824, died: 1886 },
-			{ role: "作曲", name: "ヘンリー・ビショップ", born: 1786, died: 1855 },
+			{ role: "lyricist", name: { ja: "里見義", en: "Satomi Tadashi" }, born: 1824, died: 1886 },
+			{ role: "composer", name: { ja: "ヘンリー・ビショップ", en: "Henry Bishop" }, born: 1786, died: 1855 },
 		],
 		published: 1889,
 		lyrics: "sung",
@@ -191,12 +214,16 @@ export const SONGS: SongMeta[] = [
 	{
 		id: "kimigayo",
 		category: "anthems",
-		title: "君が代",
-		country: "日本",
+		title: { ja: "君が代", en: "Kimigayo" },
+		country: { ja: "日本", en: "Japan" },
 		creators: [
-			{ role: "歌詞", name: "古今和歌集（詠み人知らず）", anonymous: true },
-			{ role: "作曲", name: "林廣守", born: 1831, died: 1896 },
-			{ role: "編曲", name: "フランツ・エッケルト", born: 1852, died: 1916 },
+			{
+				role: "lyricsSource",
+				name: { ja: "古今和歌集（詠み人知らず）", en: "Kokin Wakashū (anonymous)" },
+				anonymous: true,
+			},
+			{ role: "composer", name: { ja: "林廣守", en: "Hayashi Hiromori" }, born: 1831, died: 1896 },
+			{ role: "arranger", name: { ja: "フランツ・エッケルト", en: "Franz Eckert" }, born: 1852, died: 1916 },
 		],
 		published: 1880,
 		lyrics: "sung",
@@ -205,11 +232,11 @@ export const SONGS: SongMeta[] = [
 		id: "star-spangled-banner",
 		category: "anthems",
 		title: "The Star-Spangled Banner",
-		subtitle: "星条旗",
-		country: "アメリカ合衆国",
+		subtitle: { ja: "星条旗", en: "" },
+		country: { ja: "アメリカ合衆国", en: "United States" },
 		creators: [
-			{ role: "作詞", name: "Francis Scott Key", born: 1779, died: 1843 },
-			{ role: "作曲", name: "John Stafford Smith", born: 1750, died: 1836 },
+			{ role: "lyricist", name: "Francis Scott Key", born: 1779, died: 1843 },
+			{ role: "composer", name: "John Stafford Smith", born: 1750, died: 1836 },
 		],
 		published: 1814,
 		lyrics: "sung",
@@ -218,9 +245,9 @@ export const SONGS: SongMeta[] = [
 		id: "god-save-the-king",
 		category: "anthems",
 		title: "God Save the King",
-		subtitle: "国王陛下万歳",
-		country: "イギリス",
-		creators: [{ role: "作詞・作曲", name: "作者不詳", anonymous: true }],
+		subtitle: { ja: "国王陛下万歳", en: "" },
+		country: { ja: "イギリス", en: "United Kingdom" },
+		creators: [{ role: "lyricsMusic", name: { ja: "作者不詳", en: "Anonymous" }, anonymous: true }],
 		published: 1745,
 		lyrics: "sung",
 	},
@@ -228,9 +255,9 @@ export const SONGS: SongMeta[] = [
 		id: "la-marseillaise",
 		category: "anthems",
 		title: "La Marseillaise",
-		subtitle: "ラ・マルセイエーズ",
-		country: "フランス",
-		creators: [{ role: "作詞・作曲", name: "Claude Joseph Rouget de Lisle", born: 1760, died: 1836 }],
+		subtitle: { ja: "ラ・マルセイエーズ", en: "" },
+		country: { ja: "フランス", en: "France" },
+		creators: [{ role: "lyricsMusic", name: "Claude Joseph Rouget de Lisle", born: 1760, died: 1836 }],
 		published: 1792,
 		lyrics: "text",
 	},
@@ -238,40 +265,46 @@ export const SONGS: SongMeta[] = [
 		id: "o-canada",
 		category: "anthems",
 		title: "O Canada",
-		subtitle: "オー・カナダ",
-		country: "カナダ",
+		subtitle: { ja: "オー・カナダ", en: "" },
+		country: { ja: "カナダ", en: "Canada" },
 		creators: [
-			{ role: "作詞（仏語）", name: "Adolphe-Basile Routhier", born: 1839, died: 1920 },
-			{ role: "作曲", name: "Calixa Lavallée", born: 1842, died: 1891 },
+			{ role: "lyricistFrench", name: "Adolphe-Basile Routhier", born: 1839, died: 1920 },
+			{ role: "composer", name: "Calixa Lavallée", born: 1842, died: 1891 },
 		],
 		published: 1880,
 		lyrics: "text",
-		note: "英語の公式歌詞は後年（1980年・2018年）の改訂を含むため収録していません。",
+		note: {
+			ja: "英語の公式歌詞は後年（1980年・2018年）の改訂を含むため収録していません。",
+			en: "The official English lyrics include later revisions (1980 and 2018), so they are not included.",
+		},
 	},
 	{
 		id: "deutschlandlied",
 		category: "anthems",
 		title: "Das Lied der Deutschen",
-		subtitle: "ドイツの歌",
-		country: "ドイツ",
+		subtitle: { ja: "ドイツの歌", en: "Song of the Germans" },
+		country: { ja: "ドイツ", en: "Germany" },
 		creators: [
-			{ role: "作詞", name: "August Heinrich Hoffmann von Fallersleben", born: 1798, died: 1874 },
-			{ role: "作曲", name: "Joseph Haydn", born: 1732, died: 1809 },
+			{ role: "lyricist", name: "August Heinrich Hoffmann von Fallersleben", born: 1798, died: 1874 },
+			{ role: "composer", name: "Joseph Haydn", born: 1732, died: 1809 },
 		],
 		published: 1841,
 		lyrics: "sung",
-		note: "国歌として歌われる第3節を収録。",
+		note: {
+			ja: "国歌として歌われる第3節を収録。",
+			en: "The third stanza, which is sung as the national anthem.",
+		},
 	},
 
 	// ---- クラシック・世界の民謡 ----
 	{
 		id: "ode-to-joy",
 		category: "classical-folk",
-		title: "歓喜の歌",
-		subtitle: "交響曲第9番 第4楽章より",
+		title: { ja: "歓喜の歌", en: "Ode to Joy" },
+		subtitle: { ja: "交響曲第9番 第4楽章より", en: "From Symphony No. 9, 4th movement" },
 		creators: [
-			{ role: "作詞", name: "Friedrich Schiller", born: 1759, died: 1805 },
-			{ role: "作曲", name: "Ludwig van Beethoven", born: 1770, died: 1827 },
+			{ role: "lyricist", name: "Friedrich Schiller", born: 1759, died: 1805 },
+			{ role: "composer", name: "Ludwig van Beethoven", born: 1770, died: 1827 },
 		],
 		published: 1824,
 		lyrics: "sung",
@@ -279,24 +312,31 @@ export const SONGS: SongMeta[] = [
 	{
 		id: "twinkle-twinkle",
 		category: "classical-folk",
-		title: "きらきら星",
-		subtitle: "Twinkle, Twinkle, Little Star",
+		title: { ja: "きらきら星", en: "Twinkle, Twinkle, Little Star" },
+		subtitle: { ja: "Twinkle, Twinkle, Little Star", en: "" },
 		creators: [
-			{ role: "作詞（英語）", name: "Jane Taylor", born: 1783, died: 1824 },
-			{ role: "作曲", name: "フランス民謡", anonymous: true },
+			{ role: "lyricistEnglish", name: "Jane Taylor", born: 1783, died: 1824 },
+			{ role: "composer", name: { ja: "フランス民謡", en: "French folk song" }, anonymous: true },
 		],
 		published: 1806,
 		lyrics: "sung",
-		note: "日本語詞（武鹿悦子）は保護期間中のため、英語の原詞を収録しています。",
+		note: {
+			ja: "日本語詞（武鹿悦子）は保護期間中のため、英語の原詞を収録しています。",
+			en: "The Japanese lyrics (by Buka Etsuko) are still under copyright, so the original English lyrics are used.",
+		},
 	},
 	{
 		id: "amazing-grace",
 		category: "classical-folk",
 		title: "Amazing Grace",
-		subtitle: "アメイジング・グレイス",
+		subtitle: { ja: "アメイジング・グレイス", en: "" },
 		creators: [
-			{ role: "作詞", name: "John Newton", born: 1725, died: 1807 },
-			{ role: "作曲", name: "アメリカ民謡（New Britain）", anonymous: true },
+			{ role: "lyricist", name: "John Newton", born: 1725, died: 1807 },
+			{
+				role: "composer",
+				name: { ja: "アメリカ民謡（New Britain）", en: "American folk tune (“New Britain”)" },
+				anonymous: true,
+			},
 		],
 		published: 1835,
 		lyrics: "sung",
@@ -305,57 +345,75 @@ export const SONGS: SongMeta[] = [
 		id: "frere-jacques",
 		category: "classical-folk",
 		title: "Frère Jacques",
-		subtitle: "フレール・ジャック（輪唱）",
-		creators: [{ role: "作詞・作曲", name: "フランス民謡", anonymous: true }],
+		subtitle: { ja: "フレール・ジャック（輪唱）", en: "A round" },
+		creators: [{ role: "lyricsMusic", name: { ja: "フランス民謡", en: "French folk song" }, anonymous: true }],
 		published: 1780,
 		lyrics: "sung",
-		note: "1〜4の番号の位置から追いかけて輪唱できます。",
+		note: {
+			ja: "1〜4の番号の位置から追いかけて輪唱できます。",
+			en: "Start from the numbers 1–4 to sing it as a round.",
+		},
 	},
 	{
 		id: "londonderry-air",
 		category: "classical-folk",
-		title: "ロンドンデリーの歌",
-		subtitle: "Londonderry Air",
-		creators: [{ role: "作曲", name: "アイルランド民謡", anonymous: true }],
+		title: { ja: "ロンドンデリーの歌", en: "Londonderry Air" },
+		subtitle: { ja: "Londonderry Air", en: "" },
+		creators: [{ role: "composer", name: { ja: "アイルランド民謡", en: "Irish folk song" }, anonymous: true }],
 		published: 1855,
 		lyrics: "none",
 	},
 	{
 		id: "goin-home",
 		category: "classical-folk",
-		title: "家路",
-		subtitle: "交響曲第9番「新世界より」第2楽章",
-		creators: [{ role: "作曲", name: "Antonín Dvořák", born: 1841, died: 1904 }],
+		title: { ja: "家路", en: "Going Home (Largo)" },
+		subtitle: {
+			ja: "交響曲第9番「新世界より」第2楽章",
+			en: "From Symphony No. 9 “From the New World”, 2nd movement",
+		},
+		creators: [{ role: "composer", name: "Antonín Dvořák", born: 1841, died: 1904 }],
 		published: 1893,
 		lyrics: "none",
-		note: "日本語詞「遠き山に日は落ちて」（堀内敬三、1983年没）は保護期間中のため収録していません。",
+		note: {
+			ja: "日本語詞「遠き山に日は落ちて」（堀内敬三、1983年没）は保護期間中のため収録していません。",
+			en: "The Japanese lyrics “Tōki yama ni hi wa ochite” (by Horiuchi Keizō, d. 1983) are still under copyright and are not included.",
+		},
 	},
 	{
 		id: "minuet-in-g",
 		category: "classical-folk",
-		title: "メヌエット ト長調",
+		title: { ja: "メヌエット ト長調", en: "Minuet in G major" },
 		subtitle: "BWV Anh. 114",
-		creators: [{ role: "作曲", name: "Christian Petzold", born: 1677, died: 1733 }],
+		creators: [{ role: "composer", name: "Christian Petzold", born: 1677, died: 1733 }],
 		published: 1725,
 		lyrics: "none",
-		note: "長くバッハ作とされてきた曲。右手の旋律のみ。",
+		note: {
+			ja: "長くバッハ作とされてきた曲。右手の旋律のみ。",
+			en: "Long attributed to J. S. Bach. Right-hand melody only.",
+		},
 	},
 	{
 		id: "air-on-the-g-string",
 		category: "classical-folk",
-		title: "G線上のアリア",
-		subtitle: "管弦楽組曲第3番 BWV 1068 より「エア」",
-		creators: [{ role: "作曲", name: "Johann Sebastian Bach", born: 1685, died: 1750 }],
+		title: { ja: "G線上のアリア", en: "Air on the G String" },
+		subtitle: {
+			ja: "管弦楽組曲第3番 BWV 1068 より「エア」",
+			en: "Air from Orchestral Suite No. 3, BWV 1068",
+		},
+		creators: [{ role: "composer", name: "Johann Sebastian Bach", born: 1685, died: 1750 }],
 		published: 1731,
 		lyrics: "none",
-		note: "「G線上のアリア」は、ヴィルヘルミが1871年にハ長調に移してヴァイオリンのG線だけで弾けるよう編曲したときの呼び名です。ここではバッハの原曲（ニ長調）の第1ヴァイオリンの旋律を収録しています。",
+		note: {
+			ja: "「G線上のアリア」は、ヴィルヘルミが1871年にハ長調に移してヴァイオリンのG線だけで弾けるよう編曲したときの呼び名です。ここではバッハの原曲（ニ長調）の第1ヴァイオリンの旋律を収録しています。",
+			en: "“Air on the G String” is the name of August Wilhelmj's 1871 arrangement, which moved the piece to C major so it could be played on the violin's G string alone. This is the first violin melody of Bach's original in D major.",
+		},
 	},
 	{
 		id: "greensleeves",
 		category: "classical-folk",
-		title: "グリーンスリーブス",
-		subtitle: "Greensleeves",
-		creators: [{ role: "作曲", name: "イングランド民謡", anonymous: true }],
+		title: { ja: "グリーンスリーブス", en: "Greensleeves" },
+		subtitle: { ja: "Greensleeves", en: "" },
+		creators: [{ role: "composer", name: { ja: "イングランド民謡", en: "English folk song" }, anonymous: true }],
 		published: 1580,
 		lyrics: "none",
 	},

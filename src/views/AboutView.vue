@@ -1,52 +1,77 @@
 <template>
 	<div class="container about">
-		<h1>このサイトについて</h1>
-		<p>
+		<h1>{{ t.about.heading }}</h1>
+		<p v-if="lang === 'ja'">
 			ABC 記法で書かれた楽譜を表示・再生・編集し、MIDI や WAV でダウンロードできる Web アプリです。
 			著作権の保護期間が満了した唱歌・各国の国歌・クラシックの名旋律を収録しています。
 			すべての処理はブラウザの中で行われ、入力した楽譜がサーバーに送られることはありません
 			（エディタの内容はこのブラウザの localStorage にだけ保存されます）。
 		</p>
+		<p v-else>
+			This web app lets you view, play, and edit sheet music written in ABC notation, and download it as MIDI or WAV.
+			It includes Japanese school songs, national anthems, and classical melodies whose copyright has expired.
+			Everything runs in your browser, and the music you enter is never sent to a server
+			(the editor's content is saved only in this browser's localStorage).
+		</p>
 
-		<nav class="toc" aria-label="目次">
-			<a href="#songs-rights">収録曲の権利</a>
-			<a href="#abc-license">楽譜データのライセンス</a>
-			<a href="#oss">オープンソースソフトウェア</a>
-			<a href="#soundfont">再生に使う音源</a>
+		<nav class="toc" :aria-label="t.about.toc">
+			<a href="#songs-rights">{{ t.about.tocSongs }}</a>
+			<a href="#abc-license">{{ t.about.tocAbc }}</a>
+			<a href="#oss">{{ t.about.tocOss }}</a>
+			<a href="#soundfont">{{ t.about.tocSoundfont }}</a>
 		</nav>
 
 		<section id="songs-rights">
-			<h2>収録曲の権利について</h2>
-			<p>
-				収録しているのは、日本の著作権法で保護期間が満了した作品だけです。保護期間は原則として著作者の死後70年ですが、
-				2018年12月30日の延長は遡って適用されないため、<strong>{{ PD_DEATH_YEAR_LIMIT }}年以前に亡くなった著作者</strong>の作品は保護期間が満了しています。
-				作者不詳の民謡や文部省唱歌などの団体名義の作品は、公表からの年数で判断しています。
-			</p>
-			<p>
-				教科書や楽譜集の編曲・伴奏・日本語訳詞には、保護期間中のものがあります。このサイトではそれらを使わず、原曲の旋律と、
-				保護期間が満了した歌詞だけを載せています。歌詞が保護期間中の曲は旋律のみを収録しました。
-				国外で利用する場合は、その国の法律もご確認ください。
-			</p>
+			<h2>{{ t.about.songsHeading }}</h2>
+			<template v-if="lang === 'ja'">
+				<p>
+					収録しているのは、日本の著作権法で保護期間が満了した作品だけです。保護期間は原則として著作者の死後70年ですが、
+					2018年12月30日の延長は遡って適用されないため、<strong>{{ PD_DEATH_YEAR_LIMIT }}年以前に亡くなった著作者</strong>の作品は保護期間が満了しています。
+					作者不詳の民謡や文部省唱歌などの団体名義の作品は、公表からの年数で判断しています。
+				</p>
+				<p>
+					教科書や楽譜集の編曲・伴奏・日本語訳詞には、保護期間中のものがあります。このサイトではそれらを使わず、原曲の旋律と、
+					保護期間が満了した歌詞だけを載せています。歌詞が保護期間中の曲は旋律のみを収録しました。
+					国外で利用する場合は、その国の法律もご確認ください。
+				</p>
+			</template>
+			<template v-else>
+				<p>
+					This library contains only works whose copyright protection has expired under Japanese copyright law.
+					Protection generally lasts 70 years after the author's death, but the extension to 70 years on December 30, 2018
+					was not retroactive, so works by <strong>authors who died in {{ PD_DEATH_YEAR_LIMIT }} or earlier</strong> are in the
+					public domain. Anonymous folk songs and works published under an organization's name, such as the Ministry of
+					Education school songs, are judged by the number of years since publication.
+				</p>
+				<p>
+					Some arrangements, accompaniments, and Japanese translations found in textbooks and songbooks are still under
+					copyright. This site does not use them; it contains only the original melodies and lyrics whose protection has
+					expired. Songs whose lyrics are still protected are included as melody only. If you use these works outside
+					Japan, please also check the law of your country.
+				</p>
+			</template>
 			<div class="table-wrap">
 				<table>
 					<thead>
 						<tr>
-							<th scope="col">曲名</th>
-							<th scope="col">作詞・作曲など</th>
-							<th scope="col">発表</th>
-							<th scope="col">歌詞</th>
+							<th scope="col">{{ t.about.thSong }}</th>
+							<th scope="col">{{ t.about.thCreators }}</th>
+							<th scope="col">{{ t.about.thPublished }}</th>
+							<th scope="col">{{ t.about.thLyrics }}</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="s in SONGS" :key="s.id">
-							<th scope="row"><RouterLink :to="`/song/${s.id}`">{{ s.title }}</RouterLink></th>
+							<th scope="row">
+								<RouterLink :to="`/song/${s.id}`">{{ tr(s.title) }}</RouterLink>
+							</th>
 							<td>
-								<span v-for="c in s.creators" :key="c.role + c.name" class="creator">
-									{{ c.role }}：{{ c.name }}<template v-if="c.died">（{{ c.died }}年没）</template>
+								<span v-for="c in s.creators" :key="c.role + tr(c.name)" class="creator">
+									{{ t.roles[c.role] }}: {{ tr(c.name) }}<template v-if="c.died">{{ t.about.died(c.died) }}</template>
 								</span>
 							</td>
-							<td>{{ s.published }}年</td>
-							<td>{{ LYRICS_LABEL[s.lyrics] }}</td>
+							<td>{{ t.library.year(s.published) }}</td>
+							<td>{{ t.about.lyricsTable[s.lyrics] }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -54,22 +79,32 @@
 		</section>
 
 		<section id="abc-license">
-			<h2>楽譜データ（ABC）のライセンス</h2>
-			<p>
+			<h2>{{ t.about.abcHeading }}</h2>
+			<p v-if="lang === 'ja'">
 				収録曲の ABC 譜は、このプロジェクトが公開されている楽譜を参考に旋律を書き起こしたものです。
 				書き起こした ABC ファイルは
 				<a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja" rel="noopener">CC0 1.0</a>
 				で提供します。自由に利用・改変・再配布できます。
 				書き起こしの誤りに気づいた場合は、エディタで修正してお使いください。
 			</p>
+			<p v-else>
+				The ABC scores were transcribed by this project from published scores. The transcribed ABC files are released under
+				<a href="https://creativecommons.org/publicdomain/zero/1.0/" rel="noopener">CC0 1.0</a>, so you can use, change, and
+				share them freely. If you find a mistake in a transcription, you can fix it in the editor.
+			</p>
 		</section>
 
 		<section id="oss">
-			<h2>利用しているオープンソースソフトウェア</h2>
-			<p>
+			<h2>{{ t.about.ossHeading }}</h2>
+			<p v-if="lang === 'ja'">
 				このサイトは以下のソフトウェアを利用しています。各ソフトウェアの著作権は、それぞれの著作者に帰属します。
 				ビルドに含まれるすべての依存パッケージのライセンス全文は
 				<a href="./THIRD_PARTY_LICENSES.txt">THIRD_PARTY_LICENSES.txt</a> にまとめています。
+			</p>
+			<p v-else>
+				This site uses the following software. The copyright of each belongs to its authors. The full license texts of
+				every package included in the build are collected in
+				<a href="./THIRD_PARTY_LICENSES.txt">THIRD_PARTY_LICENSES.txt</a>.
 			</p>
 			<ul class="oss">
 				<li v-for="o in OSS_LICENSES" :key="o.name">
@@ -77,9 +112,9 @@
 						<a :href="o.url" rel="noopener">{{ o.name }}</a>
 						<span class="chip">{{ o.license }}</span>
 					</div>
-					<p class="usage">{{ o.usage }}</p>
+					<p class="usage">{{ tr(o.usage) }}</p>
 					<details>
-						<summary>ライセンス全文</summary>
+						<summary>{{ t.about.licenseText }}</summary>
 						<pre>{{ o.text.trim() }}</pre>
 					</details>
 				</li>
@@ -87,36 +122,55 @@
 		</section>
 
 		<section id="soundfont">
-			<h2>再生に使う音源</h2>
-			<p>
-				再生と WAV の作成には、abcjs が既定で使うサウンドフォント
-				<a href="https://github.com/paulrosen/midi-js-soundfonts" rel="noopener">midi-js-soundfonts</a>
-				（Benjamin Gleitzman による
-				<a href="https://github.com/gleitz/midi-js-soundfonts" rel="noopener">gleitz/midi-js-soundfonts</a> を Paul Rosen がフォークしたもの）
-				の FluidR3_GM を使っています。再生するときに paulrosen.github.io から読み込みます。
-			</p>
-			<p>
-				FluidR3_GM サウンドフォントは Frank Wen らによって作成され、midi-js-soundfonts では
-				<a href="https://creativecommons.org/licenses/by/3.0/us/" rel="noopener">Creative Commons Attribution 3.0</a>
-				のもとで提供されています。
-			</p>
+			<h2>{{ t.about.soundfontHeading }}</h2>
+			<template v-if="lang === 'ja'">
+				<p>
+					再生と WAV の作成には、abcjs が既定で使うサウンドフォント
+					<a href="https://github.com/paulrosen/midi-js-soundfonts" rel="noopener">midi-js-soundfonts</a>
+					（Benjamin Gleitzman による
+					<a href="https://github.com/gleitz/midi-js-soundfonts" rel="noopener">gleitz/midi-js-soundfonts</a> を Paul Rosen がフォークしたもの）
+					の FluidR3_GM を使っています。再生するときに paulrosen.github.io から読み込みます。
+				</p>
+				<p>
+					FluidR3_GM サウンドフォントは Frank Wen らによって作成され、midi-js-soundfonts では
+					<a href="https://creativecommons.org/licenses/by/3.0/us/" rel="noopener">Creative Commons Attribution 3.0</a>
+					のもとで提供されています。
+				</p>
+			</template>
+			<template v-else>
+				<p>
+					Playback and WAV export use FluidR3_GM from
+					<a href="https://github.com/paulrosen/midi-js-soundfonts" rel="noopener">midi-js-soundfonts</a>, the sound font
+					abcjs uses by default (Paul Rosen's fork of Benjamin Gleitzman's
+					<a href="https://github.com/gleitz/midi-js-soundfonts" rel="noopener">gleitz/midi-js-soundfonts</a>). It is
+					loaded from paulrosen.github.io when you play a song.
+				</p>
+				<p>
+					The FluidR3_GM sound font was created by Frank Wen and others, and midi-js-soundfonts provides it under the
+					<a href="https://creativecommons.org/licenses/by/3.0/us/" rel="noopener">Creative Commons Attribution 3.0</a>
+					license.
+				</p>
+			</template>
 		</section>
 
 		<section>
-			<h2>免責事項</h2>
-			<p>
+			<h2>{{ t.about.disclaimerHeading }}</h2>
+			<p v-if="lang === 'ja'">
 				権利情報と楽譜は正確になるよう努めていますが、その正確さを保証するものではありません。
 				このサイトの利用によって生じた損害について、作成者は責任を負いません。
+			</p>
+			<p v-else>
+				We try to keep the rights information and scores accurate, but we cannot guarantee their accuracy. The author is
+				not responsible for any damage resulting from the use of this site.
 			</p>
 		</section>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { lang, t, tr } from "../i18n";
 import { OSS_LICENSES } from "../licenses";
 import { PD_DEATH_YEAR_LIMIT, SONGS } from "../songs/meta";
-
-const LYRICS_LABEL = { sung: "音符に付けて収録", text: "本文のみ収録", none: "なし（旋律のみ）" } as const;
 </script>
 
 <style scoped>

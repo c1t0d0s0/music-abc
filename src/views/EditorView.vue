@@ -1,64 +1,50 @@
 <template>
 	<div class="container editor-page">
-		<h1>ABC エディタ</h1>
-		<p class="lead no-print">左の欄に ABC 記法を書くと、右の楽譜がすぐに更新されます。内容はこのブラウザに自動で保存されます。</p>
+		<h1>{{ t.editor.heading }}</h1>
+		<p class="lead no-print">{{ t.editor.lead }}</p>
 
 		<div class="toolbar no-print">
-			<button type="button" class="btn" @click="newTune">新規</button>
+			<button type="button" class="btn" @click="newTune">{{ t.editor.new }}</button>
 			<label class="btn file">
-				ファイルを開く
+				{{ t.editor.openFile }}
 				<input type="file" accept=".abc,text/plain,text/vnd.abc" @change="openFile" />
 			</label>
 			<label class="load-song">
-				<span class="visually-hidden">収録曲から読み込む</span>
+				<span class="visually-hidden">{{ t.editor.loadSongLabel }}</span>
 				<select :value="''" @change="onSelectSong">
-					<option value="" disabled>収録曲から読み込む…</option>
-					<option v-for="s in songs" :key="s.id" :value="s.id">{{ s.title }}</option>
+					<option value="" disabled>{{ t.editor.loadSong }}</option>
+					<option v-for="s in songs" :key="s.id" :value="s.id">{{ tr(s.title) }}</option>
 				</select>
 			</label>
 			<DownloadButtons :abc="abc" :filename="filename" />
 		</div>
 
 		<div class="layout">
-			<section class="input-pane no-print" aria-label="ABC 入力">
+			<section class="input-pane no-print" :aria-label="t.editor.inputLabel">
 				<AbcCodeInput ref="inputRef" :initial-value="initial" @input="onInput" @ready="onReady" />
 				<div ref="warningsEl" class="warnings" aria-live="polite"></div>
 				<details class="cheat">
-					<summary>ABC 記法のかんたんな書き方</summary>
+					<summary>{{ t.editor.cheat.summary }}</summary>
 					<dl>
-						<dt>ヘッダー</dt>
-						<dd>
-							<code>T:</code> 曲名、<code>C:</code> 作曲者、<code>M:</code> 拍子、<code>L:</code> 基準の音の長さ、
-							<code>Q:</code> テンポ、<code>K:</code> 調（ヘッダーの最後に書く）
-						</dd>
-						<dt>音の高さ</dt>
-						<dd>
-							<code>C D E F G A B</code> がドレミファソラシ。<code>c</code> は1オクターブ上、<code>C,</code> は1オクターブ下
-						</dd>
-						<dt>臨時記号</dt>
-						<dd><code>^F</code> シャープ、<code>_B</code> フラット、<code>=F</code> ナチュラル</dd>
-						<dt>音の長さ</dt>
-						<dd>
-							<code>C2</code> は L: の2倍、<code>C/</code> は半分、<code>C3/2</code> は付点。<code>z</code> は休符
-						</dd>
-						<dt>小節線</dt>
-						<dd><code>|</code> 小節線、<code>|]</code> 終止線、<code>|: :|</code> 反復</dd>
-						<dt>和音・コード</dt>
-						<dd><code>[CEG]</code> で和音、<code>"C"</code> のように音符の前に書くとコードネーム</dd>
-						<dt>歌詞</dt>
-						<dd>
-							音符の行の次に <code>w:</code> 行を書く。音節は空白かハイフンで区切り、<code>_</code> で前の音節を伸ばす
-						</dd>
+						<template v-for="[term, desc] in t.editor.cheat.rows" :key="term">
+							<dt>{{ term }}</dt>
+							<dd>
+								<template v-for="(part, i) in desc.split('`')" :key="i">
+									<code v-if="i % 2 === 1">{{ part }}</code>
+									<template v-else>{{ part }}</template>
+								</template>
+							</dd>
+						</template>
 					</dl>
 					<p>
-						詳しくは
-						<a href="https://abcnotation.com/wiki/abc:standard:v2.1" rel="noopener">ABC 記法の規格（英語）</a>
-						を参照してください。
+						{{ t.editor.cheat.moreBefore }}
+						<a href="https://abcnotation.com/wiki/abc:standard:v2.1" rel="noopener">{{ t.editor.cheat.moreLink }}</a
+						>{{ t.editor.cheat.moreAfter }}
 					</p>
 				</details>
 			</section>
 
-			<section class="output-pane" aria-label="楽譜">
+			<section class="output-pane" :aria-label="t.editor.scoreLabel">
 				<div ref="audioEl" class="audio no-print"></div>
 				<div ref="paperEl" class="score-paper"></div>
 			</section>
@@ -74,19 +60,12 @@ import AbcCodeInput from "../components/AbcCodeInput.vue";
 import DownloadButtons from "../components/DownloadButtons.vue";
 import { EDITOR_STORAGE_KEY, abcTitle, safeFilename, storageGet, storageSet } from "../lib/abc-utils";
 import { CursorControl } from "../lib/cursor-control";
-import { findSong, songs } from "../lib/songs";
+import { findSong, localizedAbc, songs } from "../lib/songs";
+import { messagesFor, t, tr } from "../i18n";
 
-const DEFAULT_ABC = `X:1
-T:新しい曲
-C:作曲者
-M:4/4
-L:1/4
-Q:1/4=100
-K:C
-% ↓ ここに音符を書きます（C D E F G A B c = ドレミファソラシド）
-C D E F | G A B c | c B A G | F E D C |]
-w: ド レ ミ ファ ソ ラ シ ド ド シ ラ ソ ファ ミ レ ド
-`;
+const DEFAULT_ABC = t.editor.defaultAbc;
+/** どちらの言語のひな形も「未編集」とみなす */
+const TEMPLATES = [messagesFor("ja").editor.defaultAbc, messagesFor("en").editor.defaultAbc];
 
 const route = useRoute();
 const router = useRouter();
@@ -110,14 +89,15 @@ function pickInitial(): string {
 	const saved = storageGet(EDITOR_STORAGE_KEY);
 	const song = typeof route.query.song === "string" ? findSong(route.query.song) : undefined;
 	if (song) {
+		const songAbc = localizedAbc(song);
 		const keepSaved =
 			saved &&
-			saved !== song.abc &&
-			saved !== DEFAULT_ABC &&
-			!window.confirm(`エディタに保存されている内容を「${song.title}」で置き換えますか？\n（キャンセルすると保存されている内容を開きます）`);
+			saved !== songAbc &&
+			!TEMPLATES.includes(saved) &&
+			!window.confirm(t.editor.confirmReplaceSaved(tr(song.title)));
 		if (!keepSaved) {
-			storageSet(EDITOR_STORAGE_KEY, song.abc);
-			return song.abc;
+			storageSet(EDITOR_STORAGE_KEY, songAbc);
+			return songAbc;
 		}
 	}
 	return saved ?? DEFAULT_ABC;
@@ -163,7 +143,7 @@ function onInput(value: string) {
 }
 
 function replaceContent(value: string) {
-	if (dirty && abc.value !== value && !window.confirm("編集中の内容を置き換えますか？")) return false;
+	if (dirty && abc.value !== value && !window.confirm(t.editor.confirmReplace)) return false;
 	inputRef.value?.setValue(value);
 	abc.value = value;
 	dirty = false;
@@ -187,7 +167,7 @@ function onSelectSong(ev: Event) {
 	const select = ev.target as HTMLSelectElement;
 	const song = findSong(select.value);
 	select.value = "";
-	if (song) replaceContent(song.abc);
+	if (song) replaceContent(localizedAbc(song));
 }
 
 onMounted(() => {

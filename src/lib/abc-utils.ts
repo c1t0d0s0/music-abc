@@ -1,4 +1,5 @@
 import abcjs from "abcjs";
+import { t } from "../i18n";
 
 /** ABC 文字列から最初の T: 行のタイトルを取り出す */
 export function abcTitle(abc: string): string {
@@ -34,7 +35,7 @@ export function abcToMidiBytes(abc: string, transpose = 0): Uint8Array {
 		| Uint8Array[]
 		| Uint8Array;
 	const bytes = Array.isArray(out) ? out[0] : out;
-	if (!bytes || bytes.length === 0) throw new Error("MIDI を生成できませんでした");
+	if (!bytes || bytes.length === 0) throw new Error(t.download.midiError);
 	return bytes;
 }
 
@@ -48,7 +49,7 @@ export function downloadMidi(abc: string, filename = safeFilename(abcTitle(abc))
 export async function downloadWav(abc: string, filename = safeFilename(abcTitle(abc)), transpose = 0) {
 	// 画面には描かず、解析結果だけを使う
 	const visualObj = abcjs.renderAbc("*", abc, { visualTranspose: transpose })[0];
-	if (!visualObj) throw new Error("ABC を解析できませんでした");
+	if (!visualObj) throw new Error(t.download.parseError);
 	const synth = new abcjs.synth.CreateSynth();
 	await synth.init({ visualObj, options: { midiTranspose: transpose } });
 	await synth.prime();

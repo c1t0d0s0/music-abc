@@ -8,12 +8,12 @@
 					<ellipse cx="9.5" cy="23" rx="3.5" ry="2.6" fill="#f7f2ea" />
 					<ellipse cx="20.5" cy="20" rx="3.5" ry="2.6" fill="#f7f2ea" />
 				</svg>
-				<span>ABC 譜面ライブラリ</span>
+				<span>{{ t.siteName }}</span>
 			</RouterLink>
-			<nav aria-label="メインメニュー">
-				<RouterLink to="/">曲をさがす</RouterLink>
-				<RouterLink to="/editor">エディタ</RouterLink>
-				<RouterLink to="/about">ライセンス</RouterLink>
+			<nav :aria-label="t.nav.label">
+				<RouterLink to="/">{{ t.nav.library }}</RouterLink>
+				<RouterLink to="/editor">{{ t.nav.editor }}</RouterLink>
+				<RouterLink to="/about">{{ t.nav.about }}</RouterLink>
 			</nav>
 		</div>
 	</header>
@@ -23,15 +23,18 @@
 	<footer class="site-footer">
 		<div class="container">
 			<p>
-				譜面の表示・再生には <a href="https://github.com/paulrosen/abcjs" rel="noopener">abcjs</a>（MIT License）を、
-				エディタには <a href="https://github.com/abcjs-music/abcjs-editor" rel="noopener">abcjs-editor</a>（MIT License）の一部を利用しています。
-				収録曲はすべて著作権の保護期間が満了した作品です。
-				<RouterLink to="/about">ライセンスと権利情報</RouterLink>
+				{{ t.footer.before }}<a href="https://github.com/paulrosen/abcjs" rel="noopener">abcjs</a>{{ t.footer.abcjs
+				}}<a href="https://github.com/abcjs-music/abcjs-editor" rel="noopener">abcjs-editor</a>{{ t.footer.abcjsEditor }}
+				<RouterLink to="/about">{{ t.footer.link }}</RouterLink>
 			</p>
 			<p class="copyright">© 2026 c1t0d0s0</p>
 		</div>
 	</footer>
 </template>
+
+<script setup lang="ts">
+import { t } from "./i18n";
+</script>
 
 <style scoped>
 .site-header {

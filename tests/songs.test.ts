@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import abcjs from "abcjs";
-import { songs, unregisteredAbcIds } from "../src/lib/songs";
+import { localizedAbc, songs, unregisteredAbcIds } from "../src/lib/songs";
+import { detectLang, tr } from "../src/i18n";
 import { PD_DEATH_YEAR_LIMIT, SONGS } from "../src/songs/meta";
 import { abcToMidiBytes } from "../src/lib/abc-utils";
 
@@ -104,10 +105,37 @@ describe("収録曲", () => {
 			else expect(groups.every((g) => g.lyrics.length === 0)).toBe(true);
 		});
 
+		it("英語表示用の ABC も警告なくパースでき、見出しが英語になる", () => {
+			const en = abcjs.parseOnly(localizedAbc(song, "en"))[0]!;
+			expect(en.warnings ?? []).toEqual([]);
+			expect(en.metaText.title).toBe(tr(song.title, "en"));
+			expect(en.metaText.composer ?? "").not.toMatch(/[\u3040-\u30ff\u4e00-\u9fff]/);
+			// 音符の部分は変わらない
+			const body = (abc: string) => abc.slice(abc.indexOf("\nK:"));
+			expect(body(localizedAbc(song, "en"))).toBe(body(song.abc));
+			expect(localizedAbc(song, "ja")).toBe(song.abc);
+		});
+
+		it("英語の表記に日本語が混ざっていない", () => {
+			const jp = /[\u3040-\u30ff\u4e00-\u9fff]/;
+			const texts = [song.title, song.subtitle, song.country, song.note, ...song.creators.map((c) => c.name)];
+			for (const text of texts) if (text) expect(tr(text, "en")).not.toMatch(jp);
+		});
+
 		it("MIDI を生成できる", () => {
 			const bytes = abcToMidiBytes(song.abc);
 			expect(String.fromCharCode(...bytes.slice(0, 4))).toBe("MThd");
 			expect(bytes.length).toBeGreaterThan(100);
 		});
+	});
+});
+
+describe("表示言語の判定", () => {
+	it("第一言語が日本語なら日本語、それ以外は英語", () => {
+		expect(detectLang(["ja"])).toBe("ja");
+		expect(detectLang(["ja-JP", "en-US"])).toBe("ja");
+		expect(detectLang(["en-US", "ja"])).toBe("en");
+		expect(detectLang(["fr-FR"])).toBe("en");
+		expect(detectLang([])).toBe("en");
 	});
 });

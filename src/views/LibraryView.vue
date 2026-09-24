@@ -1,60 +1,69 @@
 <template>
 	<div class="container">
 		<section class="intro">
-			<h1>名曲を楽譜で見て聴いて編集する。</h1>
+			<h1>{{ t.library.heading }}</h1>
 			<p>
-				唱歌・各国の国歌・クラシックの名旋律を
-				<a href="https://abcnotation.com/" rel="noopener">ABC 記法</a>で収録しています。
-				曲を選ぶと楽譜の表示と再生ができ、MIDI や WAV でダウンロードしたり、エディタで書き換えたりできます。
+				{{ t.library.introBefore }}<a href="https://abcnotation.com/" rel="noopener">{{ t.library.abcNotation }}</a
+				>{{ t.library.introAfter }}
 			</p>
 			<div class="search">
-				<label for="q" class="visually-hidden">曲名・作者で検索</label>
-				<input id="q" v-model="query" type="search" placeholder="曲名・作者で検索（例：滝廉太郎、国歌、Beethoven）" />
+				<label for="q" class="visually-hidden">{{ t.library.searchLabel }}</label>
+				<input id="q" v-model="query" type="search" :placeholder="t.library.searchPlaceholder" />
 			</div>
 		</section>
 
 		<section v-for="group in groups" :key="group.category" class="group" :aria-labelledby="`h-${group.category}`">
-			<h2 :id="`h-${group.category}`">{{ CATEGORY_LABELS[group.category].title }}</h2>
-			<p class="group-desc">{{ CATEGORY_LABELS[group.category].description }}</p>
+			<h2 :id="`h-${group.category}`">{{ t.categories[group.category].title }}</h2>
+			<p class="group-desc">{{ t.categories[group.category].description }}</p>
 			<ul class="cards">
 				<li v-for="song in group.songs" :key="song.id">
 					<RouterLink :to="`/song/${song.id}`" class="card">
-						<span class="title">{{ song.title }}</span>
-						<span v-if="song.country || song.subtitle" class="sub">{{ song.country ?? song.subtitle }}</span>
+						<span class="title">{{ tr(song.title) }}</span>
+						<span v-if="cardSub(song)" class="sub">{{ cardSub(song) }}</span>
 						<span class="creators">{{ creatorsText(song) }}</span>
 						<span class="chips">
-							<span class="chip">{{ song.published }}年</span>
-							<span class="chip">{{ LYRICS_LABEL[song.lyrics] }}</span>
+							<span class="chip">{{ t.library.year(song.published) }}</span>
+							<span class="chip">{{ t.lyrics[song.lyrics] }}</span>
 						</span>
 					</RouterLink>
 				</li>
 			</ul>
 		</section>
 
-		<p v-if="groups.length === 0" class="empty">「{{ query }}」に一致する曲はありません。</p>
+		<p v-if="groups.length === 0" class="empty">{{ t.library.noResults(query) }}</p>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { messagesFor, t, tr, type Localized } from "../i18n";
 import { songs, type Song } from "../lib/songs";
-import { CATEGORY_LABELS, type Category } from "../songs/meta";
-
-const LYRICS_LABEL = { sung: "歌詞つき", text: "歌詞は本文", none: "旋律のみ" } as const;
+import type { Category } from "../songs/meta";
 
 const query = ref("");
 
+function cardSub(song: Song) {
+	return (song.country && tr(song.country)) || (song.subtitle && tr(song.subtitle)) || "";
+}
+
 function creatorsText(song: Song) {
-	return song.creators.map((c) => c.name).join(" / ");
+	return song.creators.map((c) => tr(c.name)).join(" / ");
+}
+
+/** 表示中の言語にかかわらず、日本語・英語どちらの表記でも検索できるようにする */
+function both(text: Localized | string | undefined): string {
+	if (!text) return "";
+	return typeof text === "string" ? text : `${text.ja} ${text.en}`;
 }
 
 function matches(song: Song, q: string) {
 	const hay = [
-		song.title,
-		song.subtitle,
-		song.country,
-		CATEGORY_LABELS[song.category].title,
-		...song.creators.map((c) => c.name),
+		both(song.title),
+		both(song.subtitle),
+		both(song.country),
+		messagesFor("ja").categories[song.category].title,
+		messagesFor("en").categories[song.category].title,
+		...song.creators.map((c) => both(c.name)),
 		song.abc.match(/^T:.*$/gm)?.join(" "),
 	]
 		.join(" ")

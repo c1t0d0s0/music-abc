@@ -4,7 +4,7 @@ English | [日本語](README.ja.md)
 
 A web app for viewing, playing, and editing sheet music written in ABC notation, and for downloading it as MIDI, WAV, or ABC.
 It includes 27 public-domain songs, such as Japanese school songs (shōka), national anthems, and well-known classical melodies.
-The user interface is in Japanese.
+The site is shown in Japanese when the browser's preferred language is Japanese, and in English otherwise.
 
 - Score rendering and playback: [abcjs](https://github.com/paulrosen/abcjs)
 - Editor: parts of [abcjs-editor](https://github.com/abcjs-music/abcjs-editor), adapted
@@ -17,6 +17,7 @@ The user interface is in Japanese.
 - Transpose by up to ±6 semitones; this applies to the score, playback, MIDI, and WAV
 - Download as MIDI, WAV, or ABC, and print
 - ABC editor with syntax highlighting, live rendering, error display, `.abc` file loading, and autosave
+- Japanese and English display, chosen from the browser's preferred language (`src/i18n.ts`)
 - A license page with the full license texts of the open-source software used and the rights information for each song
 
 ## Development
@@ -35,7 +36,7 @@ The build uses relative paths and hash-based routing (for example `#/song/furusa
 ## Adding a song
 
 1. Create `src/songs/<category>/<id>.abc`, where the category is `school`, `anthems`, or `classical-folk`.
-2. Add an entry with the same `id` to `SONGS` in `src/songs/meta.ts`, with the creators, their years of death, the year of publication, and so on.
+2. Add an entry with the same `id` to `SONGS` in `src/songs/meta.ts`, with the creators, their years of death, the year of publication, and so on. Give titles, names, and notes in both Japanese and English (`{ ja, en }`); in English, the score's title and credit lines are generated from this data.
 3. Run `npm test`. The test fails if any named creator died after 1967.
 
 Why 1967: under Japanese copyright law, protection lasts 70 years after the author's death. The 2018 extension from 50 to 70 years was not retroactive, so works by authors who died in 1967 or earlier are already in the public domain.

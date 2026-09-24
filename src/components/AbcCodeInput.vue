@@ -14,9 +14,9 @@
 			ref="elem"
 			language="abc"
 			name="abc"
-			aria-label="ABC 記法の入力欄"
+			:aria-label="t.editor.textareaLabel"
 			spellcheck="false"
-			placeholder="ここに ABC 記法を入力"
+			:placeholder="t.editor.placeholder"
 			:value="initialValue"
 			@input="onInput"
 		></code-input>
@@ -41,6 +41,7 @@ function registerOnce() {
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from "vue";
+import { t } from "../i18n";
 
 defineProps<{ initialValue: string }>();
 

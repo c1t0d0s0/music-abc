@@ -1,6 +1,6 @@
 <template>
 	<div class="score-view">
-		<div ref="audioEl" class="audio no-print" aria-label="再生コントロール"></div>
+		<div ref="audioEl" class="audio no-print" :aria-label="t.score.controls"></div>
 		<p v-if="audioMessage" class="audio-message no-print" role="status">{{ audioMessage }}</p>
 		<div ref="paperEl" class="score-paper"></div>
 	</div>
@@ -9,6 +9,7 @@
 <script setup lang="ts">
 import abcjs, { type AbcElem, type SynthObjectController, type TuneObject } from "abcjs";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { t } from "../i18n";
 import { CursorControl } from "../lib/cursor-control";
 
 const props = withDefaults(defineProps<{ abc: string; transpose?: number }>(), { transpose: 0 });
@@ -47,7 +48,7 @@ async function render() {
 		await synthControl.setTune(visualObj, false, { midiTranspose: props.transpose });
 		audioMessage.value = "";
 	} catch (e) {
-		audioMessage.value = `音声の準備に失敗しました: ${e instanceof Error ? e.message : String(e)}`;
+		audioMessage.value = t.score.audioError(e instanceof Error ? e.message : String(e));
 	}
 }
 
@@ -62,7 +63,7 @@ onMounted(() => {
 			displayWarp: true,
 		});
 	} else {
-		audioMessage.value = "このブラウザは Web Audio に対応していないため再生できません。";
+		audioMessage.value = t.score.noAudio;
 	}
 	render();
 });
