@@ -363,6 +363,19 @@ export const SONGS: SongMeta[] = [
 		},
 	},
 	{
+		id: "revolutionary-etude",
+		category: "classical-folk",
+		title: { ja: "革命のエチュード", en: "Revolutionary Étude" },
+		subtitle: { ja: "練習曲 ハ短調 作品10-12", en: "Étude in C minor, Op. 10 No. 12" },
+		creators: [{ role: "composer", name: { ja: "フレデリック・ショパン", en: "Frédéric Chopin" }, born: 1810, died: 1849 }],
+		published: 1833,
+		lyrics: "none",
+		note: {
+			ja: "ピアノ曲の全曲（84小節）を、右手と左手の 2 段で収録しています。1831年ごろに作曲され、1833年に出版されました。ペータース版（ヘルマン・ショルツ校訂）によります。",
+			en: "The complete piano piece (84 bars), in two staves for the right and left hands. Composed around 1831 and published in 1833. Based on the Peters edition edited by Hermann Scholtz.",
+		},
+	},
+	{
 		id: "twinkle-twinkle",
 		category: "classical-folk",
 		title: { ja: "きらきら星", en: "Twinkle, Twinkle, Little Star" },

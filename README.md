@@ -3,7 +3,7 @@
 English | [日本語](README.ja.md)
 
 A web app for viewing, playing, and editing sheet music written in ABC notation, and for downloading it as MIDI, WAV, or ABC.
-It includes 31 public-domain songs, such as Japanese school songs (shōka), national anthems, and well-known classical melodies.
+It includes 32 public-domain songs, such as Japanese school songs (shōka), national anthems, and well-known classical melodies.
 The site is shown in Japanese when the browser's preferred language is Japanese, and in English otherwise.
 
 - Score rendering and playback: [abcjs](https://github.com/paulrosen/abcjs)

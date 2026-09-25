@@ -29,14 +29,52 @@ export function downloadAbc(abc: string, filename = safeFilename(abcTitle(abc)))
 	setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-/** ABC から標準 MIDI ファイルのバイト列を作る（複数曲ある場合は最初の曲） */
-export function abcToMidiBytes(abc: string, transpose = 0): Uint8Array {
+function midiBytes(abc: string, transpose: number): Uint8Array {
 	const out = abcjs.synth.getMidiFile(abc, { midiOutputType: "binary", midiTranspose: transpose }) as
 		| Uint8Array[]
 		| Uint8Array;
 	const bytes = Array.isArray(out) ? out[0] : out;
 	if (!bytes || bytes.length === 0) throw new Error(t.download.midiError);
 	return bytes;
+}
+
+/** MIDI のテンポ（FF 51 03 tt tt tt）の値が始まる位置 */
+function tempoOffset(bytes: Uint8Array): number {
+	for (let i = 0; i + 5 < bytes.length; i++) {
+		if (bytes[i] === 0xff && bytes[i + 1] === 0x51 && bytes[i + 2] === 0x03) return i + 3;
+	}
+	return -1;
+}
+
+/** ヘッダーの Q: を ♩=60 にした ABC。曲の途中でテンポが変わるものは扱わない（null） */
+function withTempo60(abc: string): string | null {
+	const lines = abc.split("\n");
+	const k = lines.findIndex((l) => /^K:/.test(l));
+	if (k < 0) return null;
+	const body = lines.slice(k + 1);
+	if (body.some((l) => /^Q:/.test(l) || /\[Q:/.test(l))) return null;
+	const header = lines.slice(0, k).filter((l) => !/^Q:/.test(l));
+	return [...header, "Q:1/4=60", ...lines.slice(k)].join("\n");
+}
+
+/**
+ * ABC から標準 MIDI ファイルのバイト列を作る（複数曲ある場合は最初の曲）。
+ *
+ * abcjs（6.x）は MIDI ファイルを書くとき、スタッカートの音を短くする量にテンポを2回掛けてしまうため、
+ * ♩=60 以外ではスタッカートの音が「鳴り始める前に止まる」壊れた MIDI になる（ブラウザでの再生は別の処理で問題ない）。
+ * 音の位置はテンポに関係なく決まるので、スタッカートのある曲は ♩=60 として作り、テンポの値だけを本来のものに差し替える。
+ */
+export function abcToMidiBytes(abc: string, transpose = 0): Uint8Array {
+	const bytes = midiBytes(abc, transpose);
+	if (!/(^|[\s|(\]}])\.[A-Ga-gz[!"^_=]/m.test(abc.slice(abc.search(/^K:/m)))) return bytes;
+	const at60 = withTempo60(abc);
+	if (!at60) return bytes;
+	const fixed = midiBytes(at60, transpose);
+	const from = tempoOffset(bytes);
+	const to = tempoOffset(fixed);
+	if (from < 0 || to < 0) return bytes;
+	fixed.set(bytes.subarray(from, from + 3), to);
+	return fixed;
 }
 
 export function downloadMidi(abc: string, filename = safeFilename(abcTitle(abc)), transpose = 0) {
