@@ -2,13 +2,115 @@ X:1
 T:花
 T:Hana
 C:作詞 武島羽衣 / 作曲 滝廉太郎
-S:組歌「四季」第1曲（1900年）
+S:組歌「四季」第1曲（1900年）、河野敏彦氏による浄書（IMSLP、CC0）による
 Z:c1t0d0s0 (CC0)
-M:C|
-L:1/8
-Q:1/2=90
-K:F
-C3 C F2 z F | G F E D C4 | A, C F G A2 c2 | G4 z4 |
-C3 C F2 z F | G F D E C4 | G3 G G2 A2 | F4 z4 |
-c3 c c3 A | B3 B B2 z G | A4 D2 G2 | C6 z2 |
-C3 C F2 F2 | G F E D C4 | G2 G3/2 A/ B2 G2 | F4 z4 |]
+M:2/4
+L:1/16
+Q:"Allegro moderato" 1/4=60
+%%score [V1 V2] {RH | LH}
+V:V1 name="I" snm="I"
+V:V2 name="II" snm="II"
+V:RH name="Pf." clef=treble
+V:LH clef=bass
+K:G
+% 再生時の音色と音量。主旋律（第1声部）がはっきり聞こえるよう、第2声部とピアノ伴奏は弱めにする
+% %%MIDI program: 73 フルート / 71 クラリネット（General MIDI）
+% %%MIDI beat: 小節の1拍目・表拍・裏拍の強さ（0〜127）
+V:V1
+%%MIDI program 73
+%%MIDI beat 110 105 100 1
+V:V2
+%%MIDI program 71
+%%MIDI beat 80 75 70 1
+V:RH
+%%MIDI beat 55 50 45 1
+V:LH
+%%MIDI beat 55 50 45 1
+[V:V1] z8 | z8 | z8 | z8 |
+[V:V2] z8 | z8 | z8 | z8 |
+[V:RH] [DG]B,[DG]B, [FA]D[GB]D | [Ac]E[Ge]E [Ad]E[Ac]E | [GB]D[DG]B, [DFA]C[DFA]C | .[B,DG]2.[B,DG]2 .[B,DG]2z2 |
+[V:LH] [G,,G,]6[F,,F,]2 | [E,,E,]2[C,,C,]2 [A,,,A,,]4 | [D,,D,]4 [D,,D,]4 | .[G,,G,]2.[G,,G,]2 .[G,,G,]2z2 |
+[V:V1] D3 D G2 z G | AG FE D4 | B,D GA B2 d2 | A6 z2 |
+w: は る の う ら _ ら _ の す _ み _ だ が わ
+[V:V2] D3 D B,2 z B, | CE DC B,4 | B,2 B,D G2 G2 | F6 z2 |
+w: は る の う ら _ ら _ の す み _ だ が わ
+[V:RH] [DG]B,[DG]B, [DG]B,[DG]B, | [EG]G,[EG]G, [DG]G,[DG]G, | [DG]B,[DG]B, [DG]B,[DG]G, | [DF]A,[DF]A, [CDE]A,[CDF]A, |
+[V:LH] [G,,G,]8 | C,4 B,,4 | [G,,G,-]6[B,,G,]2 | D,4 D,,4 |
+[V:V1] D3 D G2 z G | AG EF D4 | A3 A A2 B2 | G6 z2 |
+w: の ぼ り く だ _ り _ の ふ な び と が
+[V:V2] D3 D B,2 z B, | CE DC B,4 | A,3 F FE DC | B,6 z2 |
+w: の ぼ り く だ _ り _ の ふ な び _ と _ が
+[V:RH] [DG]B,[DG]B, [DG]B,[DG]B, | [EG]G,[EG]G, [DG]G,[DG]G, | [DF]A,[DF]A, [DF]A,[DF]A, | [B,G]DB,D G,.D.G.B |
+[V:LH] [G,,G,]8 | C,4 B,,4 | D,4-D,^C,D,D,, | G,,6z2 |
+[V:V1] d3 d d2 z B | c3 c c2 z A | B4 E2 A2 | D6 z2 |
+w: か い の し ず く も は な と ち る
+[V:V2] G3 A B2 z G | A3 G F2 z F | D4 D2 ^C2 | D6 z2 |
+w: か い の し ず く も は な と ち る
+[V:RH] [GBd]D[GBd]D [GBd]D[GB]D | [FAc]D[FAc]D [FAc]D[FA]D | [GB]D[GB]C [EA]B,[EG]A, | [DF]A,[DF]A, [DF]2z2 |
+[V:LH] [G,,G,]8 | [D,,D,]8 | [G,,G,]2[E,,E,]2 [C,,C,]2[^C,,^C,]2 | [D,,D,]4-[D,,D,].C,.B,,.A,, |
+[V:V1] D3 D G2 G2 | AG FE D4 | A2 A3/2B/ c2 A2 | G6 z2 |
+w: な が め を な _ に _ に た と _ う べ き
+[V:V2] D3 D B,2 B,2 | CE DC B,4 | A,2 D2 D2 EF | G6 z2 |
+w: な が め を な _ に _ に た と う べ _ き
+[V:RH] [DG]B,[DG]B, [DG]B,[DG]B, | [EG]G,[EG]G, [DG]G,[DG]G, | [DF]A,[DF]A, [DF]A,[DF]A, | [B,G]DB,D G,zB,/D/G/B/ |
+[V:LH] [G,,G,]8 | C,4 B,,4 | D,4 D,,4 | G,,4-G,,D,/G,/z2 |
+[V:V1] z8 | z8 | z8 | z8 |
+[V:V2] z8 | z8 | z8 | z8 |
+[V:RH] [GB-d-][DB-d-][GB-d-][D-Bd]/[DBd]/ [Bd-][Dd][GB-][DB] | [FA-c-][DA-c-][FA-c-][D-Ac]/[DAc]/ [Ac-][Dc][FA-][DA] | [DGB]4 .[A,E]2.[A,EA]2 | [F,A,D]4 [F,-C-E]2[F,CF]2 |
+[V:LH] [G,,G,]8 | [D,,D,]8 | [G,,G,]2[E,,E,]2 [C,,C,]2[^C,,^C,]2 | [D,,D,]4 [D,,D,]4 |
+[V:V1] D3 D G2 z G | AG FE D4 | B,D GA B2 G2 | A6 z2 |
+w: み ず や あ け _ ぼ _ の つ _ ゆ _ あ び て
+[V:V2] D3 D G2 z G | AG FE D4 | B,D GA B2 G2 | A6 z2 |
+w: み ず や あ け _ ぼ _ の つ _ ゆ _ あ び て
+[V:RH] [DG]B,[DG]B, [DG]B,[DG]B, | [EG]G,[EG]G, [DG]G,[DG]G, | [DG]B,[DG]B, [DG]B,[DG]G, | [DF]A,[DF]A, [CDE]A,[CDF]A, |
+[V:LH] [G,,G,]8 | C,4 B,,4 | [G,,G,-]6[B,,G,]2 | D,4 D,,4 |
+[V:V1] D3 D G2 z G | AG EF D4 | A3 A A2 B2 | G6 z2 |
+w: わ れ に も の _ い _ う さ く ら ぎ を
+[V:V2] D3 D G2 z G | AG EF D4 | A3 A A2 B2 | G6 z2 |
+w: わ れ に も の _ い _ う さ く ら ぎ を
+[V:RH] [DG]B,[DG]B, [DG]B,[DG]B, | [EG]G,[EG]G, [DG]G,[DG]G, | [DF]A,[DF]A, [DF]A,[DF]A, | [B,G]DB,D G,.D.G.B |
+[V:LH] [G,,G,]8 | C,4 B,,4 | D,4-D,^C,D,D,, | G,,6z2 |
+[V:V1] d3 d d2 z B | c3 c c2 z A | B4 E2 A2 | D6 z2 |
+w: み ず や ゆ う ぐ れ て を の べ て
+[V:V2] d3 d d2 z B | c3 c c2 z A | B4 E2 A2 | D6 z2 |
+w: み ず や ゆ う ぐ れ て を の べ て
+[V:RH] [GBd]D[GBd]D [GBd]D[GB]D | [FAc]D[FAc]D [FAc]D[FA]D | [GB]D[GB]C [EA]B,[EG]A, | [DF]A,[DF]A, [DF]2z2 |
+[V:LH] [G,,G,]8 | [D,,D,]8 | [G,,G,]2[E,,E,]2 [C,,C,]2[^C,,^C,]2 | [D,,D,]4-[D,,D,].C,.B,,.A,, |
+[V:V1] D3 D G2 G2 | AG FE D4 | A2 A3/2B/ c2 A2 | G6 z2 |
+w: わ れ さ し ま _ ね _ く あ お _ や ぎ を
+[V:V2] D3 D G2 G2 | AG FE D4 | A2 A3/2B/ c2 A2 | G6 z2 |
+w: わ れ さ し ま _ ね _ く あ お _ や ぎ を
+[V:RH] [DG]B,[DG]B, [DG]B,[DG]B, | [EG]G,[EG]G, [DG]G,[DG]G, | [DF]A,[DF]A, [DF]A,[DF]A, | [B,G]DB,D G,zB,/D/G/B/ |
+[V:LH] [G,,G,]8 | C,4 B,,4 | D,4 D,,4 | G,,4-G,,D,/G,/z2 |
+[V:V1] z8 | z8 | z8 | z8 |
+[V:V2] z8 | z8 | z8 | z8 |
+[V:RH] [GB-d-][DB-d-][GB-d-][D-Bd]/[DBd]/ [D-Bd][D-Ac][D-Ac][DGB] | [FA-c-][DA-c-][FA-c-][D-Ac]/[DAc]/ [D-Ac][D-GB][D-GB][DFA] | [DGB]4 .[A,E]2.[A,EA]2 | [F,A,D]4 z4 |
+[V:LH] [G,,G,]8 | [D,,D,]8 | .[G,,G,].[F,,F,].[E,,E,].[D,,D,] .[C,,C,]2.[^C,,^C,]2 | [D,,D,]4-[D,,D,] .[C,,C,].[A,,,A,,].[D,,D,] |
+[V:V1] D3 D G2 z G | AG FE D4 | B,DG A B2 d2 | A6 z2 |
+w: に し き お り _ な _ す ちょ _ _ う て い に
+[V:V2] D3 D B,2 z B, | CE DC B,4 | B,3 D G2 G2 | F6 z2 |
+w: に し き お り _ な _ す ちょ う て い に
+[V:RH] [DG]B,[DG]B, [DG]B,[DG]B, | [EG]G,[EG]G, [DG]G,[DG]G, | [DG]B,[DG]B, [DG]B,[DG]G, | [DF]A,[DF]A, [CDE]A,[CDF]A, |
+[V:LH] [G,,,G,,]8 | C,4 B,,4 | [G,,G,-]6[B,,G,]2 | D,4 D,,4 |
+[V:V1] D3 D G2 G2 | AG EF D4 | A3 A A2 B2 | G6 z2 |
+w: く る れ ば の _ ぼ _ る お ぼ ろ づ き
+[V:V2] D3 D B,2 B,2 | CE DC B,4 | A,3 F FE DC | B,6 z2 |
+w: く る れ ば の _ ぼ _ る お ぼ ろ _ づ _ き
+[V:RH] [DG]B,[DG]B, [DG]B,[DG]B, | [EG]G,[EG]G, [DG]G,[DG]G, | [DF]A,[DF]A, [DF]A,[DF]A, | [B,G]DB,D G,.D.G.B |
+[V:LH] [G,,G,]8 | C,4 B,,4 | D,4-D,^C,D,D,, | G,,6z2 |
+[V:V1] d2 d2 d2 z B | c2 c2 c2 z A | B4 E2 A2 | D6 z2 |
+w: げ に い っ こ く も せ ん き ん の
+[V:V2] G2 A2 B2 z G | A2 G2 F2 z F | D4 D2 ^C2 | D6 z2 |
+w: げ に い っ こ く も せ ん き ん の
+[V:RH] [GBd]D[GBd]D [GBd]D[GB]D | [FAc]D[FAc]D [FAc]D[FA]D | [GB]D[GB]C [EA]B,[EG]A, | [DF]A,[DF]A, [DF]2z2 |
+[V:LH] [G,,G,]8 | [D,,D,]8 | [G,,G,]2[E,,E,]2 [C,,C,]2[^C,,^C,]2 | [D,,D,]4-[D,,D,].C,.B,,.A,, |
+[V:V1] "^rit."D3 D G2 ^G2 | AB cd !fermata!e2 z2 | "^a tempo"d3 d A2 B2 | G6 z2 |
+w: な が め を な _ に _ に た と う べ き
+[V:V2] D3 C B,2 B,2 | CE AB !fermata!c2 z2 | B2A G FE DC | B,6 z2 |
+w: な が め を な _ に _ に た _ と う _ べ _ き
+[V:RH] "^rit."[B,D]G,[CDF]A, [EG]B,[E^G]B, | [EA]A,[EA]A, !fermata![G,EG]2[_B,EG]2 | "^a tempo"[DG]B,[DG]B, [DF]A,[DF]A, | [DG]B,[DG]B, [FA]D[GB]D |
+[V:LH] [G,,G,]2[F,,F,]2 [E,,E,]2[D,,D,]2 | [C,,C,]4 !fermata![C,,C,]2[^C,,^C,]2 | [D,,D,]4 [D,,D,]4 | [G,,,G,,]6[F,,,F,,]2 |
+[V:V1] z8 | z8 | z8 |]
+[V:V2] z8 | z8 | z8 |]
+[V:RH] [Ac]E[Ge]E [Ad]E[Ac]E | [GB]D[DG]B, "^rit."[DFA]C[DFA]C | [B,DG]6z2 |]
+[V:LH] [E,,,E,,]2[C,,C,]2 [A,,,A,,]4 | [D,,D,]4 [D,,D,]4 | .[G,,,G,,]2.D,,2 .G,,,2z2 |]

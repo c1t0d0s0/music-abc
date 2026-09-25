@@ -153,10 +153,10 @@ export const SONGS: SongMeta[] = [
 		subtitle: { ja: "", en: "Flowers" },
 		creators: [{ role: "lyricist", name: { ja: "武島羽衣", en: "Takeshima Hagoromo" }, born: 1872, died: 1967 }, TAKI],
 		published: 1900,
-		lyrics: "none",
+		lyrics: "sung",
 		note: {
-			ja: "組歌「四季」の第1曲。二部合唱の主旋律のみ。",
-			en: "The first song of the suite “Shiki” (The Four Seasons). Only the main melody of the two-part chorus.",
+			ja: "組歌「四季」の第1曲。二部合唱とピアノ伴奏の全曲（1〜3番）を収録しています。原調はイ長調ですが、教科書で歌われるト長調によります。",
+			en: "The first song of the suite “Shiki” (The Four Seasons): the complete two-part chorus with piano accompaniment (verses 1–3), in G major as sung in school textbooks (the original key is A major).",
 		},
 	},
 	{

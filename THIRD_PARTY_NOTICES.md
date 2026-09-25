@@ -63,3 +63,6 @@ Jeff Covey 氏によるバッハ協会版の浄書（Creative Commons Attributio
 イタリア山岳兵協会（ANA）が公開している校訂版（ノヴァーロの原譜）を照らし合わせて書き起こしました。
 ロシア国歌は、Wikimedia Commons にある2000年の連邦憲法法律の公式楽譜（パブリックドメイン）を参考にしました。
 「エリーゼのために」は、Mutopia Project で公開されている Stelios Samelis 氏による浄書（ブライトコプフ・ウント・ヘルテル版、パブリックドメイン）をもとに書き起こしました。
+「メヌエット ト長調」は、Mutopia Project で公開されている Allen Garvin 氏による浄書（バッハ協会版、パブリックドメイン）をもとに書き起こしました。
+「埴生の宿」のピアノ伴奏は、Mutopia Project で公開されている Stan Sanderson 氏による浄書（1852年版、パブリックドメイン）をハ長調に移して書き起こしました。
+「花」は、[IMSLP](https://imslp.org/wiki/Hana_(Taki,_Rentar%C5%8D)) で公開されている河野敏彦氏による浄書（二部合唱とピアノ、ト長調、CC0 1.0）をもとに書き起こしました。
