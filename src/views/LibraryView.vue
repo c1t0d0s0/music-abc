@@ -36,9 +36,8 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { messagesFor, t, tr, type Localized } from "../i18n";
-import { songs, type Song } from "../lib/songs";
-import type { Category } from "../songs/meta";
+import { t, tr } from "../i18n";
+import { groupSongs, type Song } from "../lib/songs";
 
 const query = ref("");
 
@@ -50,40 +49,7 @@ function creatorsText(song: Song) {
 	return song.creators.map((c) => tr(c.name)).join(" / ");
 }
 
-/** 表示中の言語にかかわらず、日本語・英語どちらの表記でも検索できるようにする */
-function both(text: Localized | string | undefined): string {
-	if (!text) return "";
-	return typeof text === "string" ? text : `${text.ja} ${text.en}`;
-}
-
-function matches(song: Song, q: string) {
-	const hay = [
-		both(song.title),
-		both(song.subtitle),
-		both(song.country),
-		messagesFor("ja").categories[song.category].title,
-		messagesFor("en").categories[song.category].title,
-		...song.creators.map((c) => both(c.name)),
-		song.abc.match(/^T:.*$/gm)?.join(" "),
-	]
-		.join(" ")
-		.toLowerCase();
-	return q
-		.toLowerCase()
-		.split(/\s+/)
-		.every((w) => hay.includes(w));
-}
-
-const groups = computed(() => {
-	const q = query.value.trim();
-	const order: Category[] = ["school", "anthems", "classical-folk"];
-	return order
-		.map((category) => ({
-			category,
-			songs: songs.filter((s) => s.category === category && (!q || matches(s, q))),
-		}))
-		.filter((g) => g.songs.length > 0);
-});
+const groups = computed(() => groupSongs(query.value));
 </script>
 
 <style scoped>

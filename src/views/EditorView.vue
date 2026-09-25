@@ -4,18 +4,15 @@
 		<p class="lead no-print">{{ t.editor.lead }}</p>
 
 		<div class="toolbar no-print">
-			<button type="button" class="btn" @click="newTune">{{ t.editor.new }}</button>
-			<label class="btn file">
-				{{ t.editor.openFile }}
-				<input type="file" accept=".abc,text/plain,text/vnd.abc" @change="openFile" />
-			</label>
-			<label class="load-song">
-				<span class="visually-hidden">{{ t.editor.loadSongLabel }}</span>
-				<select :value="''" @change="onSelectSong">
-					<option value="" disabled>{{ t.editor.loadSong }}</option>
-					<option v-for="s in songs" :key="s.id" :value="s.id">{{ tr(s.title) }}</option>
-				</select>
-			</label>
+			<div class="tool-set" role="group" :aria-label="t.editor.scoreTools">
+				<button type="button" class="btn" @click="newTune"><ToolIcon name="new" />{{ t.editor.new }}</button>
+				<label class="btn file">
+					<ToolIcon name="open" />{{ t.editor.openFile }}
+					<input type="file" accept=".abc,text/plain,text/vnd.abc" @change="openFile" />
+				</label>
+				<SongPicker @select="onPickSong" />
+			</div>
+			<span class="toolbar-divider" aria-hidden="true"></span>
 			<DownloadButtons :abc="abc" :filename="filename" />
 		</div>
 
@@ -61,6 +58,8 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AbcCodeInput from "../components/AbcCodeInput.vue";
 import DownloadButtons from "../components/DownloadButtons.vue";
+import SongPicker from "../components/SongPicker.vue";
+import ToolIcon from "../components/ToolIcon.vue";
 import VolumeControl from "../components/VolumeControl.vue";
 import {
 	EDITOR_STORAGE_KEY,
@@ -74,7 +73,7 @@ import {
 	storageSet,
 } from "../lib/abc-utils";
 import { CursorControl } from "../lib/cursor-control";
-import { findSong, localizedAbc, songs } from "../lib/songs";
+import { findSong, localizedAbc } from "../lib/songs";
 import { messagesFor, t, tr } from "../i18n";
 
 const DEFAULT_ABC = t.editor.defaultAbc;
@@ -196,10 +195,8 @@ async function openFile(ev: Event) {
 	if (file) replaceContent(await file.text());
 }
 
-function onSelectSong(ev: Event) {
-	const select = ev.target as HTMLSelectElement;
-	const song = findSong(select.value);
-	select.value = "";
+function onPickSong(id: string) {
+	const song = findSong(id);
 	if (song) replaceContent(localizedAbc(song));
 }
 
@@ -233,26 +230,62 @@ onBeforeUnmount(() => {
 	font-size: 0.92rem;
 }
 
+/* 操作を 1 本の帯にまとめ、「楽譜を用意する」と「書き出す」を区切り線で分ける */
 .toolbar {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
 	align-items: center;
+	gap: 10px 14px;
 	margin-bottom: 16px;
+	padding: 10px;
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	background: rgba(255, 253, 248, 0.75);
 }
 
+.tool-set {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.toolbar-divider {
+	align-self: stretch;
+	width: 1px;
+	margin: 4px 0;
+	background: var(--line);
+}
+
+/* ファイル選択はボタンの見た目のラベルで開く。入力欄は見えないがキーボードで選べるようにしておく */
 .file input {
-	display: none;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	pointer-events: none;
 }
 
-.load-song select {
-	padding: 0.45em 0.8em;
-	border: 1px solid var(--accent);
-	border-radius: 999px;
-	background: transparent;
-	color: var(--accent);
-	font: inherit;
-	font-size: 0.92rem;
+.file:focus-within {
+	outline: 3px solid var(--focus);
+	outline-offset: 2px;
+}
+
+@media (max-width: 560px) {
+	.toolbar {
+		gap: 10px;
+	}
+	.tool-set {
+		width: 100%;
+	}
+	.tool-set > .btn {
+		flex: 1 1 auto;
+	}
+	.tool-set > .song-picker {
+		flex-basis: 100%;
+	}
+	.toolbar-divider {
+		display: none;
+	}
 }
 
 .visually-hidden {

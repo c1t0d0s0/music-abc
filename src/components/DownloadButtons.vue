@@ -1,11 +1,13 @@
 <template>
-	<div class="downloads no-print" role="group" :aria-label="t.download.group">
-		<button type="button" class="btn" @click="run('midi')">MIDI</button>
-		<button type="button" class="btn" :disabled="busy === 'wav'" @click="run('wav')">
-			{{ busy === "wav" ? t.download.wavBusy : "WAV" }}
-		</button>
-		<button type="button" class="btn" @click="run('abc')">ABC</button>
-		<button type="button" class="btn" @click="print">{{ t.download.print }}</button>
+	<div class="downloads no-print">
+		<div class="btn-group" role="group" :aria-label="t.download.group">
+			<button type="button" class="btn" @click="run('midi')"><ToolIcon name="midi" />MIDI</button>
+			<button type="button" class="btn" :disabled="busy === 'wav'" @click="run('wav')">
+				<ToolIcon name="wav" />{{ busy === "wav" ? t.download.wavBusy : "WAV" }}
+			</button>
+			<button type="button" class="btn" @click="run('abc')"><ToolIcon name="abc" />ABC</button>
+			<button type="button" class="btn" @click="print"><ToolIcon name="print" />{{ t.download.print }}</button>
+		</div>
 		<p v-if="error" class="error" role="alert">{{ error }}</p>
 	</div>
 </template>
@@ -14,6 +16,7 @@
 import { ref } from "vue";
 import { t } from "../i18n";
 import { downloadAbc, downloadMidi, downloadWav } from "../lib/abc-utils";
+import ToolIcon from "./ToolIcon.vue";
 
 const props = withDefaults(defineProps<{ abc: string; filename: string; transpose?: number }>(), { transpose: 0 });
 
@@ -48,6 +51,18 @@ function print() {
 	flex-wrap: wrap;
 	gap: 8px;
 	align-items: center;
+}
+
+/* スマートフォンでは 4 つのボタンを横幅いっぱいに均等に並べる */
+@media (max-width: 560px) {
+	.downloads,
+	.btn-group {
+		width: 100%;
+	}
+	.btn-group > .btn {
+		flex: 1 1 0;
+		padding: 0 6px;
+	}
 }
 
 .error {

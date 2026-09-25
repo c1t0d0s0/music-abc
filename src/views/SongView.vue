@@ -39,9 +39,9 @@
 				</select>
 			</label>
 			<DownloadButtons :abc="abc" :filename="song.id" :transpose="transpose" />
-			<RouterLink class="btn primary" :to="{ path: '/editor', query: { song: song.id } }">{{
-				t.song.openInEditor
-			}}</RouterLink>
+			<RouterLink class="btn primary" :to="{ path: '/editor', query: { song: song.id } }"
+				><ToolIcon name="edit" />{{ t.song.openInEditor }}</RouterLink
+			>
 		</div>
 
 		<ScoreView :abc="abc" :transpose="transpose" />
@@ -71,6 +71,7 @@
 import { computed, ref, watch } from "vue";
 import DownloadButtons from "../components/DownloadButtons.vue";
 import ScoreView from "../components/ScoreView.vue";
+import ToolIcon from "../components/ToolIcon.vue";
 import { t, tr } from "../i18n";
 import { findSong, localizedAbc, songs } from "../lib/songs";
 
@@ -168,12 +169,29 @@ watch(
 	font-size: 0.9rem;
 }
 
+/* 移調の選択もボタンと同じ質感にそろえる */
 .transpose select {
-	padding: 4px 8px;
-	border-radius: 6px;
-	border: 1px solid var(--line);
-	background: #fff;
+	appearance: none;
+	min-height: 38px;
+	padding: 0 30px 0 12px;
+	border: 1px solid #d6ccba;
+	border-bottom-color: #bdb09a;
+	border-radius: 8px;
+	background:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%2355615c' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+			no-repeat right 10px center / 12px,
+		linear-gradient(#fffefb, #f6f0e6);
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.9),
+		0 1px 2px rgba(45, 74, 62, 0.08);
+	color: var(--ink);
 	font: inherit;
+	font-size: 0.92rem;
+	cursor: pointer;
+}
+
+.transpose select:hover {
+	border-color: var(--accent);
 }
 
 .hint {

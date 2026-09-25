@@ -1,5 +1,5 @@
-import { lang, messagesFor, tr, type Lang } from "../i18n";
-import { SONGS, type SongMeta } from "../songs/meta";
+import { lang, messagesFor, tr, type Lang, type Localized } from "../i18n";
+import { SONGS, type Category, type SongMeta } from "../songs/meta";
 
 const sources = import.meta.glob<string>("../songs/**/*.abc", {
 	query: "?raw",
@@ -58,4 +58,40 @@ export function localizedAbc(song: Song, to: Lang = lang): string {
 	const x = header.findIndex((l) => l.startsWith("X:"));
 	header.splice(x + 1, 0, ...added);
 	return [...header, ...lines.slice(k)].join("\n");
+}
+
+/** 表示中の言語にかかわらず、日本語・英語どちらの表記でも検索できるようにする */
+function bothLanguages(text: Localized | string | undefined): string {
+	if (!text) return "";
+	return typeof text === "string" ? text : `${text.ja} ${text.en}`;
+}
+
+/** 曲名・副題・国・カテゴリ・作者・楽譜の曲名のどれかに、空白で区切った語がすべて含まれるか */
+export function songMatches(song: Song, query: string): boolean {
+	const hay = [
+		bothLanguages(song.title),
+		bothLanguages(song.subtitle),
+		bothLanguages(song.country),
+		messagesFor("ja").categories[song.category].title,
+		messagesFor("en").categories[song.category].title,
+		...song.creators.map((c) => bothLanguages(c.name)),
+		song.abc.match(/^T:.*$/gm)?.join(" "),
+	]
+		.join(" ")
+		.toLowerCase();
+	return query
+		.toLowerCase()
+		.split(/\s+/)
+		.every((w) => hay.includes(w));
+}
+
+export const CATEGORY_ORDER: Category[] = ["school", "anthems", "classical-folk"];
+
+/** カテゴリごとにまとめた曲の一覧（絞り込みの語があれば一致する曲だけ）。空のカテゴリは含めない */
+export function groupSongs(query = ""): { category: Category; songs: Song[] }[] {
+	const q = query.trim();
+	return CATEGORY_ORDER.map((category) => ({
+		category,
+		songs: songs.filter((s) => s.category === category && (!q || songMatches(s, q))),
+	})).filter((g) => g.songs.length > 0);
 }
