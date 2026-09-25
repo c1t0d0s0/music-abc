@@ -62,3 +62,4 @@ Jeff Covey 氏によるバッハ協会版の浄書（Creative Commons Attributio
 イタリア国歌は、[Cantorion](https://cantorion.org/) で公開されているパブリックドメインの歌唱譜と、
 イタリア山岳兵協会（ANA）が公開している校訂版（ノヴァーロの原譜）を照らし合わせて書き起こしました。
 ロシア国歌は、Wikimedia Commons にある2000年の連邦憲法法律の公式楽譜（パブリックドメイン）を参考にしました。
+「エリーゼのために」は、Mutopia Project で公開されている Stelios Samelis 氏による浄書（ブライトコプフ・ウント・ヘルテル版、パブリックドメイン）をもとに書き起こしました。

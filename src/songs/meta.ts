@@ -346,6 +346,19 @@ export const SONGS: SongMeta[] = [
 		lyrics: "sung",
 	},
 	{
+		id: "fur-elise",
+		category: "classical-folk",
+		title: { ja: "エリーゼのために", en: "Für Elise" },
+		subtitle: { ja: "バガテル イ短調 WoO 59", en: "Bagatelle in A minor, WoO 59" },
+		creators: [{ role: "composer", name: "Ludwig van Beethoven", born: 1770, died: 1827 }],
+		published: 1867,
+		lyrics: "none",
+		note: {
+			ja: "ピアノ曲の全曲を、右手と左手の 2 段で収録しています。1810年に作曲され、1867年に出版されました。ブライトコプフ・ウント・ヘルテル版（1888年）によります。",
+			en: "The complete piano piece, in two staves for the right and left hands. Composed in 1810 and published in 1867. Based on the Breitkopf & Härtel edition (1888).",
+		},
+	},
+	{
 		id: "twinkle-twinkle",
 		category: "classical-folk",
 		title: { ja: "きらきら星", en: "Twinkle, Twinkle, Little Star" },

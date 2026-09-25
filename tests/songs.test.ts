@@ -47,7 +47,15 @@ function musicLineGroups(abc: string): LineGroup[] {
 	return groups;
 }
 
-type AbcEl = { el_type: string; duration?: number; rest?: unknown; type?: string };
+type AbcEl = {
+	el_type: string;
+	duration?: number;
+	rest?: unknown;
+	type?: string;
+	startTriplet?: number;
+	tripletMultiplier?: number;
+	endTriplet?: boolean;
+};
 
 describe("収録曲", () => {
 	it("すべての .abc にメタデータがあり、すべてのメタデータに .abc がある", () => {
@@ -88,9 +96,13 @@ describe("収録曲", () => {
 			for (let st = 0; st < staffCount; st++) {
 				const bars: { dur: number; endType: string }[] = [];
 				let cur = 0;
+				// 3連符などの中の音符は、書かれた長さに tripletMultiplier を掛けた長さで数える
+				let multiplier = 1;
 				for (const line of tune.lines) {
 					for (const el of (line.staff?.[st]?.voices?.[0] ?? []) as AbcEl[]) {
-						if (el.el_type === "note") cur += el.duration ?? 0;
+						if (el.startTriplet) multiplier = el.tripletMultiplier ?? 1;
+						if (el.el_type === "note") cur += (el.duration ?? 0) * multiplier;
+						if (el.endTriplet) multiplier = 1;
 						if (el.el_type === "bar") {
 							bars.push({ dur: cur, endType: el.type ?? "" });
 							cur = 0;

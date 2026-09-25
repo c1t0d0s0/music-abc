@@ -1,0 +1,49 @@
+X:1
+T:エリーゼのために
+T:Für Elise（バガテル イ短調 WoO 59）
+C:作曲 ルートヴィヒ・ヴァン・ベートーヴェン
+S:1810年作曲、ブライトコプフ・ウント・ヘルテル版（1888年）による
+Z:c1t0d0s0 (CC0)
+M:3/8
+L:1/16
+Q:"Poco moto" 1/8=144
+%%score {RH | LH}
+V:RH clef=treble
+V:LH clef=bass
+K:Am
+[V:RH] |: e^d | e^deB=dc | A2 z CEA | B2 z E^GB | c2 z Ee^d | e^deB=dc |
+[V:LH] |: z2 | z6 | A,,E,A, z z2 | E,,E,^G, z z2 | A,,E,A, z z2 | z6 |
+[V:RH] A2 z CEA | B2 z EcB | [1 A4 :| [2 A2 z B | cd |: e3 Gfe |
+[V:LH] A,,E,A, z z2 | E,,E,^G, z z2 | [1 A,,E,A, z :| [2 A,,E,A, z | z2 |: C,G,C z z2 |
+[V:RH] d3 Fed | c3 Edc | B2 z Ee z | z ee' z z ^d | e2 z ^ded | e^deB=dc |
+[V:LH] G,,G,B, z z2 | A,,E,A, z z2 | E,,E,E z z [K:clef=treble]  E | e z z ^de z | z ^de z z2 | z6 [K:clef=bass] |
+[V:RH] A2 z CEA | B2 z E^GB | c2 z Ee^d | e^deB=dc | A2 z CEA | B2 z EcB |
+[V:LH] A,,E,A, z z2 | E,,E,^G, z z2 | A,,E,A, z z2 | z6 | A,,E,A, z z2 | E,,E,^G, z z2 |
+[V:RH] [1 A2 z Bcd :| [2 A2 z [Ec][Fc][EGc] || {FA}c4 f3/2e/ | e2 d2 _b3/2a/ | agfedc | _B2 A2 {B}A/G/A/B/ |
+[V:LH] [1 A,,E,A, z z2 :| [2 A,,E,A,[_B,C][A,C][G,B,C] || F,A,CA,CA, | F,_B,DB,DB, | F,E[F,G,_B,]E[F,G,B,]E | F,A,CA,CA, |
+[V:RH] c4 d^d | e3 efA | c4 d3/2B/ | c/g/G/g/A/g/B/g/c/g/d/g/ | e/g/c'/b/a/g/f/e/d/g/f/d/ | c/g/G/g/A/g/B/g/c/g/d/g/ |
+[V:LH] F,A,CA,CA, | E,A,CA,[D,D]F, | G,EG,EG,F [K:clef=treble] | [CE]2 z [FG][EG][DFG] | [CEG]2 [K:clef=bass]  [F,A,]2 [G,B,]2 [K:clef=treble] | C2 z [FG][EG][DFG] |
+[V:RH] e/g/c'/b/a/g/f/e/d/g/f/d/ | e/f/e/^d/e/B/e/d/e/B/e/d/ | e3 Be^d | e3 Be^d | e^deded | e^deB=dc |
+[V:LH] [CEG]2 [K:clef=bass]  [F,A,]2 [G,B,]2 | [^G,B,]2 z2 z2 | z6 | z6 | z6 | z6 |
+[V:RH] A2 z CEA | B2 z E^GB | c2 z Ee^d | e^deB=dc | A2 z CEA | B2 z EcB |
+[V:LH] A,,E,A, z z2 | E,,E,^G, z z2 | A,,E,A, z z2 | z6 | A,,E,A, z z2 | E,,E,^G, z z2 |
+[V:RH] A2 z Bcd | e3 Gfe | d3 Fed | c3 Edc | B2 z Ee z | z ee' z z ^d |
+[V:LH] A,,E,A, z z2 | C,G,C z z2 | G,,G,B, z z2 | A,,E,A, z z2 | E,,E,E z z [K:clef=treble]  E | e z z ^de z |
+[V:RH] e z z ^ded | e^deB=dc | A2 z CEA | B2 z E^GB | c2 z Ee^d | e^deB=dc |
+[V:LH] z ^de z z2 | z6 [K:clef=bass] | A,,E,A, z z2 | E,,E,^G, z z2 | A,,E,A, z z2 | z6 |
+[V:RH] A2 z CEA | B2 z EcB | A2 z2 z2 | [EG_B^c]6 | [FAd]4 [^ce][df] | [^Gdf]4 [Gdf]2 |
+[V:LH] A,,E,A, z z2 | E,,E,^G, z z2 | A,,A,,A,,A,,A,,A,, | A,,A,,A,,A,,A,,A,, | A,,A,,A,,A,,A,,A,, | A,,A,,A,,A,,A,,A,, |
+[V:RH] [Ace]6 | [Fd]4 [Ec][DB] | [C^FA]4 [CA]2 | [CA]2 [Ec]2 [DB]2 | [CA]6 | [EG_B^c]6 |
+[V:LH] A,,A,,A,,A,,A,,A,, | [D,,A,,][D,,A,,][D,,A,,][D,,A,,][D,,A,,][D,,A,,] | [^D,,A,,][D,,A,,][D,,A,,][D,,A,,][D,,A,,][D,,A,,] | [E,,A,,][E,,A,,][E,,A,,][E,,A,,][E,,^G,,][E,,G,,] | [A,,,A,,]A,,A,,A,,A,,A,, | A,,A,,A,,A,,A,,A,, |
+[V:RH] [FAd]4 [^ce][df] | [df]4 [df]2 | [df]6 | [G_e]4 [Fd][_Ec] | [DF_B]4 [DFA]2 | [DF^G]4 [DFG]2 |
+[V:LH] A,,A,,A,,A,,A,,A,, | A,,A,,A,,A,,A,,A,, | _B,,B,,B,,B,,B,,B,, | _B,,B,,B,,B,,B,,B,, | _B,,B,,B,,B,,B,,B,, | B,,B,,B,,B,,B,,B,, |
+[V:RH] [CEA]4 z2 | [EB]2 z2 z2 | (3A,CE (3Ace (3dcB | (3Ace (3ac'e' (3d'c'b | (3ac'e' (3a'c''e'' (3d''c''b' | (3_b'a'^g' (3=g'^f'=f' (3e'^d'=d' |
+[V:LH] C,4 z2 | [E,^G,]2 z2 z2 | A,,,2 z2 [A,CE]2 | [A,CE]2 z2 [A,CE]2 | [A,CE]2 z2 [A,CE]2 | [A,CE]2 z2 z2 |
+[V:RH] (3^c'=c'b (3_ba^g (3=g^f=f | e^deB=dc | A2 z CEA | B2 z E^GB | c2 z Ee^d | e^deB=dc |
+[V:LH] z6 | z6 | A,,E,A, z z2 | E,,E,^G, z z2 | A,,E,A, z z2 | z6 |
+[V:RH] A2 z CEA | B2 z EcB | A2 z Bcd | e3 Gfe | d3 Fed | c3 Edc |
+[V:LH] A,,E,A, z z2 | E,,E,^G, z z2 | A,,E,A, z z2 | C,G,C z z2 | G,,G,B, z z2 | A,,E,A, z z2 |
+[V:RH] B2 z Ee z | z ee' z z ^d | e z z ^ded | e^deB=dc | A2 z CEA | B2 z E^GB |
+[V:LH] E,,E,E z z [K:clef=treble]  E | e z z ^de z | z ^de z z2 | z6 [K:clef=bass] | A,,E,A, z z2 | E,,E,^G, z z2 |
+[V:RH] c2 z Ee^d | e^deB=dc | A2 z CEA | B2 z EcB | A2 z2 |]
+[V:LH] A,,E,A, z z2 | z6 | A,,E,A, z z2 | E,,E,^G, z z2 | [A,,,A,,]2 z2 |]
