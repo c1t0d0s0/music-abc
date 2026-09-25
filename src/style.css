@@ -237,6 +237,7 @@ h3 {
 	.abcjs-inline-audio {
 		display: none !important;
 	}
+	html,
 	body,
 	.score-paper {
 		background: #fff !important;
@@ -247,5 +248,19 @@ h3 {
 	}
 	.abcjs-cursor {
 		display: none;
+	}
+	/* 画面用の最小の高さや余白で、楽譜が次のページに送られないようにする */
+	main {
+		min-height: 0 !important;
+		padding-bottom: 0 !important;
+	}
+	.score-paper {
+		border: none !important;
+		padding: 0 !important;
+	}
+	/* 楽譜の 1 段（abcjs が 1 行ずつ作る要素）の途中では改ページしない */
+	.score-paper > div,
+	.score-paper svg {
+		break-inside: avoid;
 	}
 }

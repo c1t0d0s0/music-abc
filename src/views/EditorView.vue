@@ -1,6 +1,6 @@
 <template>
 	<div class="container editor-page">
-		<h1>{{ t.editor.heading }}</h1>
+		<h1 class="no-print">{{ t.editor.heading }}</h1>
 		<p class="lead no-print">{{ t.editor.lead }}</p>
 
 		<div class="toolbar no-print">
@@ -368,6 +368,23 @@ onBeforeUnmount(() => {
 	/* 入力欄の下にある楽譜まで、スクロールせずに届きやすくする */
 	.input-pane :deep(code-input) {
 		min-height: 260px;
+	}
+}
+
+/*
+ * 印刷では楽譜だけを紙面の幅いっぱいに出す。
+ * 画面の 2 列レイアウトや、楽譜の欄を上に貼り付ける sticky のままだと、
+ * ブラウザによっては楽譜の欄を分割できず、丸ごと 2 ページ目に送ってしまう。
+ */
+@media print {
+	.layout {
+		display: block;
+	}
+	.output-pane {
+		position: static;
+	}
+	.score-paper {
+		min-height: 0;
 	}
 }
 </style>
