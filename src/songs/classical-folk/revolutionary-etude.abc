@@ -23,12 +23,12 @@ K:Cm
 [V:LH2] x16 | x16 |
 [V:RH1] .[fgd'f']2!accent!a'g' !accent!f'd'e'd' !accent!=bgag !accent!fded | !accent!=BGAG !accent!FDED x8 |
 [V:RH2] x16 | x16 |
-[V:LH1] .=B,,,2[K:clef=treble]"^con fuoco"!accent!ag !accent!fded !accent!=BGAG !accent!FDED | [K:clef=bass]!accent!=B,G,A,G, !accent!F,D,E,D, !accent!=B,,G,,A,,G,, !accent!F,,D,,E,,D,, |
-[V:LH2] x2[K:clef=treble]x14 | [K:clef=bass]x8 !accent!=B,G,A,G, !accent!F,D,E,D, |
+[V:LH1] .=B,,,2[K:clef=treble]"^con fuoco"!accent!ag !accent!fded !accent!=BGAG !accent!FDED | [K:clef=bass]!accent!=B,G,A,G, !accent!F,D,E,D, !accent![=B,,B,][G,,G,][A,,A,][G,,G,] !accent![F,,F,][D,,D,][E,,E,][D,,D,] |
+[V:LH2] x2[K:clef=treble]x14 | [K:clef=bass]x16 |
 [V:RH1] x16 | x16 |
 [V:RH2] x16 | x16 |
-[V:LH1] C,,=B,,,G,,F,, E,,D,,E,,D,, C,,B,,,B,,A,, G,,F,,G,,F,, | E,,D,,E,D, C,=B,,C,B,, A,,G,,A,,G,, F,,E,,F,,E,, |
-[V:LH2] C,=B,,G,F, E,D,E,D, "^cresc."C,B,,B,A, G,F,G,F, | E,D,ED C=B,CB, A,G,A,G, F,E,F,E, |
+[V:LH1] [C,,C,][=B,,,=B,,][G,,G,][F,,F,] [E,,E,][D,,D,][E,,E,][D,,D,] "^cresc."[C,,C,][B,,,B,,][_B,,B,][A,,A,] [G,,G,][F,,F,][G,,G,][F,,F,] | [E,,E,][D,,D,][E,E][D,D] [C,C][=B,,=B,][C,C][B,,B,] [A,,A,][G,,G,][A,,A,][G,,G,] [F,,F,][E,,E,][F,,F,][E,,E,] |
+[V:LH2] x16 | x16 |
 [V:RH1] x16 | z8 z3!f![cc'] [dd']3[ee'] |
 [V:RH2] x16 | x16 |
 [V:LH1] C,,G,,C,D, E,G,CD EDCG, E,D,C,G,, | C,,G,,C,D, E,D,C,G,, C,,G,,C,D, E,D,C,G,, |
@@ -103,12 +103,12 @@ K:Cm
 [V:LH2] x16 | x16 |
 [V:RH1] .[fgd'g']2!accent!a'g' !accent!f'd'e'd' !accent!=bgag !accent!fded | !accent!=BGAG !accent!FDED x8 |
 [V:RH2] x16 | x16 |
-[V:LH1] .=B,,2[K:clef=treble]!accent!ag !accent!fded !accent!=BGAG !accent!FDED | [K:clef=bass]!accent!=B,G,A,G, !accent!F,D,E,D, !accent!=B,,G,,A,,G,, !accent!F,,D,,E,,D,, |
-[V:LH2] x2[K:clef=treble]x14 | [K:clef=bass]x8 !accent!=B,G,A,G, !accent!F,D,E,D, |
+[V:LH1] .=B,,2[K:clef=treble]!accent!ag !accent!fded !accent!=BGAG !accent!FDED | [K:clef=bass]!accent!=B,G,A,G, !accent!F,D,E,D, !accent![=B,,B,][G,,G,][A,,A,][G,,G,] !accent![F,,F,][D,,D,][E,,E,][D,,D,] |
+[V:LH2] x2[K:clef=treble]x14 | [K:clef=bass]x16 |
 [V:RH1] x16 | x16 |
 [V:RH2] x16 | x16 |
-[V:LH1] C,,=B,,,G,,F,, E,,D,,E,,D,, C,,B,,,B,,A,, G,,F,,G,,F,, | E,,D,,E,D, C,=B,,C,B,, A,,G,,A,,G,, F,,E,,F,,E,, |
-[V:LH2] C,=B,,G,F, E,D,E,D, "^cresc."C,B,,B,A, G,F,G,F, | E,D,ED C=B,CB, A,G,A,G, F,E,F,E, |
+[V:LH1] [C,,C,][=B,,,=B,,][G,,G,][F,,F,] [E,,E,][D,,D,][E,,E,][D,,D,] "^cresc."[C,,C,][B,,,B,,][_B,,B,][A,,A,] [G,,G,][F,,F,][G,,G,][F,,F,] | [E,,E,][D,,D,][E,E][D,D] [C,C][=B,,=B,][C,C][B,,B,] [A,,A,][G,,G,][A,,A,][G,,G,] [F,,F,][E,,E,][F,,F,][E,,E,] |
+[V:LH2] x16 | x16 |
 [V:RH1] x16 | z8 z3!f![cc'] (3:2:3[^c^c']2[dd']3[ee'] |
 [V:RH2] x16 | x16 |
 [V:LH1] C,,G,,C,D, E,G,CD EDCG, E,D,C,G,, | C,,G,,C,D, E,D,C,G,, C,,G,,C,D, E,D,C,G,, |
@@ -175,9 +175,9 @@ K:Cm
 [V:LH2] x16 | x16 |
 [V:RH1] !ff!.[=EGc=e]2a'g' =e'c'_d'c' bgag ec_dc | BGAG =EC_DC x8 |
 [V:RH2] x16 | x16 |
-[V:LH1] .C,2[K:clef=treble]"^ed appassionato"ag =ec_dc BGAG =EC_DC | [K:clef=bass]B,G,A,G, =E,C,_D,C, B,,G,,A,,G,, =E,,C,,_D,,C,, |
-[V:LH2] x2[K:clef=treble]x14 | [K:clef=bass]x8 B,G,A,G, =E,C,_D,C, |
+[V:LH1] .C,2[K:clef=treble]"^ed appassionato"ag =ec_dc BGAG =EC_DC | [K:clef=bass]B,G,A,G, =E,C,_D,C, [B,,B,][G,,G,][A,,A,][G,,G,] [=E,,E,][C,,C,][_D,,D,][C,,C,] |
+[V:LH2] x2[K:clef=treble]x14 | [K:clef=bass]x16 |
 [V:RH1] x16 | x16 |]
 [V:RH2] x16 | x16 |]
-[V:LH1] !accent!.[F,,,F,,]8 !accent!.[F,,,F,,]8 | !accent!.[C,,,C,,]4 !accent!.[C,,,C,,]4 z8 |]
-[V:LH2] !accent!.[C,F,=A,C]8 !accent!.[C,F,_A,C]8 | !accent!.[C,F,G,C]4 !accent!.[C,=E,G,C]4 x8 |]
+[V:LH1] !accent!.[F,,,F,,C,F,=A,C]8 !accent!.[F,,,F,,C,F,_A,C]8 | !accent!.[C,,,C,,C,F,G,C]4 !accent!.[C,,,C,,C,=E,G,C]4 z8 |]
+[V:LH2] x16 | x16 |]
