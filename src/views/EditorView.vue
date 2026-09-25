@@ -13,7 +13,7 @@
 				<SongPicker @select="onPickSong" />
 			</div>
 			<span class="toolbar-divider" aria-hidden="true"></span>
-			<DownloadButtons :abc="abc" :filename="filename" />
+			<DownloadButtons :abc="abc" :filename="filename" :program="program" />
 		</div>
 
 		<div ref="layoutEl" class="layout" :style="layoutStyle">
@@ -61,6 +61,7 @@
 			<section class="output-pane" :aria-label="t.editor.scoreLabel">
 				<div class="player no-print">
 					<div ref="audioEl" class="audio"></div>
+					<InstrumentPicker v-model="program" />
 					<VolumeControl />
 				</div>
 				<div ref="paperEl" class="score-paper"></div>
@@ -71,10 +72,11 @@
 
 <script setup lang="ts">
 import abcjs, { type AbcElem, type Editor } from "abcjs";
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AbcCodeInput from "../components/AbcCodeInput.vue";
 import DownloadButtons from "../components/DownloadButtons.vue";
+import InstrumentPicker from "../components/InstrumentPicker.vue";
 import SongPicker from "../components/SongPicker.vue";
 import ToolIcon from "../components/ToolIcon.vue";
 import VolumeControl from "../components/VolumeControl.vue";
@@ -90,6 +92,7 @@ import {
 	storageSet,
 } from "../lib/abc-utils";
 import { CursorControl } from "../lib/cursor-control";
+import { INSTRUMENTS } from "../lib/instruments";
 import { findSong, localizedAbc } from "../lib/songs";
 import { messagesFor, t, tr } from "../i18n";
 
@@ -175,7 +178,7 @@ async function onReady(ta: HTMLTextAreaElement) {
 		synth: {
 			el: audioEl.value!,
 			cursorControl: new CursorControl(() => paperEl.value ?? null),
-			options: { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true },
+			options: synthOptions(),
 		},
 		abcjsParams: visualParams(),
 	});
@@ -222,6 +225,31 @@ function onPickSong(id: string) {
  * PC 幅の作業レイアウト。
  * 入力欄と楽譜を画面の高さいっぱいに広げ、間の仕切りで左右の幅を変えられるようにする。
  */
+/*
+ * 再生の音色。ブラウザに保存し、再生と MIDI・WAV のダウンロードに使う。
+ * ABC の中で %%MIDI program を指定している声部は、そちらが優先される。
+ */
+const PROGRAM_KEY = "music-abc:editor-program";
+const savedProgram = Number(storageGet(PROGRAM_KEY));
+const program = ref(INSTRUMENTS.some((i) => i.program === savedProgram) ? savedProgram : 0);
+
+function synthOptions() {
+	return {
+		displayLoop: true,
+		displayRestart: true,
+		displayPlay: true,
+		displayProgress: true,
+		displayWarp: true,
+		program: program.value,
+	};
+}
+
+watch(program, (p) => {
+	storageSet(PROGRAM_KEY, String(p));
+	// 再生中なら止めて、新しい音色で鳴らせるように準備し直す
+	editor?.synthParamChanged(synthOptions());
+});
+
 const SPLIT_KEY = "music-abc:editor-split";
 const DEFAULT_SPLIT = 42; // 入力欄の幅（%）
 const split = ref(clampSplit(Number(storageGet(SPLIT_KEY)) || DEFAULT_SPLIT));

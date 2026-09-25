@@ -29,9 +29,12 @@ export function downloadAbc(abc: string, filename = safeFilename(abcTitle(abc)))
 	setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-/** ABC から標準 MIDI ファイルのバイト列を作る（複数曲ある場合は最初の曲） */
-export function abcToMidiBytes(abc: string, transpose = 0): Uint8Array {
-	const out = abcjs.synth.getMidiFile(abc, { midiOutputType: "binary", midiTranspose: transpose }) as
+/**
+ * ABC から標準 MIDI ファイルのバイト列を作る（複数曲ある場合は最初の曲）。
+ * program は既定の音色（General MIDI の番号）。ABC の中で声部ごとに音色を指定している場合は、そちらが優先される。
+ */
+export function abcToMidiBytes(abc: string, transpose = 0, program = 0): Uint8Array {
+	const out = abcjs.synth.getMidiFile(abc, { midiOutputType: "binary", midiTranspose: transpose, program }) as
 		| Uint8Array[]
 		| Uint8Array;
 	const bytes = Array.isArray(out) ? out[0] : out;
@@ -39,19 +42,19 @@ export function abcToMidiBytes(abc: string, transpose = 0): Uint8Array {
 	return bytes;
 }
 
-export function downloadMidi(abc: string, filename = safeFilename(abcTitle(abc)), transpose = 0) {
-	const bytes = abcToMidiBytes(abc, transpose);
+export function downloadMidi(abc: string, filename = safeFilename(abcTitle(abc)), transpose = 0, program = 0) {
+	const bytes = abcToMidiBytes(abc, transpose, program);
 	const url = URL.createObjectURL(new Blob([bytes as BlobPart], { type: "audio/midi" }));
 	triggerDownload(url, `${filename}.mid`);
 	setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export async function downloadWav(abc: string, filename = safeFilename(abcTitle(abc)), transpose = 0) {
+export async function downloadWav(abc: string, filename = safeFilename(abcTitle(abc)), transpose = 0, program = 0) {
 	// 画面には描かず、解析結果だけを使う
 	const visualObj = abcjs.renderAbc("*", abc, { visualTranspose: transpose })[0];
 	if (!visualObj) throw new Error(t.download.parseError);
 	const synth = new abcjs.synth.CreateSynth();
-	await synth.init({ visualObj, options: { midiTranspose: transpose } });
+	await synth.init({ visualObj, options: { midiTranspose: transpose, program } });
 	await synth.prime();
 	const url = synth.download();
 	triggerDownload(url, `${filename}.wav`);
