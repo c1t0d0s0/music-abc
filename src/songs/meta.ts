@@ -208,6 +208,10 @@ export const SONGS: SongMeta[] = [
 		],
 		published: 1889,
 		lyrics: "sung",
+		note: {
+			ja: "上段が歌の旋律、下の2段がピアノ伴奏です。伴奏は1852年に出版された楽譜（ヘ長調）を、歌に合わせてハ長調に移しています。",
+			en: "The top staff is the sung melody; the two lower staves are the piano accompaniment, transposed from an 1852 edition (in F major) to C major to match the song.",
+		},
 	},
 
 	// ---- 各国の国歌 ----

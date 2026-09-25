@@ -2,21 +2,47 @@ X:1
 T:埴生の宿
 T:Hanyū no Yado (Home! Sweet Home!)
 C:作詞 里見義 / 作曲 ヘンリー・ビショップ
-S:原曲 1823年、日本語詞 中等唱歌集（1889年）
+S:原曲 1823年、日本語詞 中等唱歌集（1889年）、伴奏 1852年版
 Z:c1t0d0s0 (CC0)
 M:4/4
 L:1/4
 Q:1/4=76
+%%score Voice {RH | LH}
+V:Voice clef=treble
+V:RH clef=treble
+V:LH clef=bass
 K:C
-C | E3/2 F/ F3/2 G/ | G2 E G | F3/2 E/ F3/2 D/ | E2 z
+% 再生時の音色と音量。歌の旋律がはっきり聞こえるよう、旋律は合唱の音色にし、ピアノ伴奏は弱めにする
+% %%MIDI program: 52 合唱（General MIDI）
+% %%MIDI beat: 小節の1拍目・表拍・裏拍の強さ（0〜127）
+V:Voice
+%%MIDI program 52
+%%MIDI beat 110 105 100 1
+V:RH
+%%MIDI beat 60 55 50 1
+V:LH
+%%MIDI beat 60 55 50 1
+[V:Voice] C | E3/2 F/ F3/2 G/ | G2 E G | F3/2 E/ F3/2 D/ | E2 z
 w: は にゅ う の や ど も わ が _ や _ ど
-C | E3/2 F/ F3/2 G/ | G2 E G | F3/2 E/ F D | C2 z
+[V:RH] C3/4D/4 | [CE]3/2 F/ [B,F]3/2 G/ | [EG]3/2 E/ [CE] [EG] | [B,F]3/2 E/ [B,F] [B,D] | [CE]3
+[V:LH] z | C,,/G,,/C,/G,,/ D,,/G,,/D,/G,,/ | C,,/G,,/C,/G,,/ C,,/G,,/C,/G,,/ | D,,/G,,/D,/G,,/ D,,/G,,/D,/G,,/ | C,,/G,,/C,/G,,/ C,,/G,,/
+[V:Voice] C | E3/2 F/ F3/2 G/ | G2 E G | F3/2 E/ F D | C2 z
 w: た ま _ の よ そ い う ら _ や ま じ
-G | c3/2 B/ A3/2 G/ | G2 E G | F3/2 E/ F D | E2 z
+[V:RH] C3/4D/4 | [CE]3/2 F/ [B,F]3/2 G/ | [EG]2 [CE] [EG] | [B,F]3/2 E/ [B,F] [B,D] | C2 z
+[V:LH] C,/G,,/ | C,,/G,,/C,/G,,/ D,,/G,,/D,/G,,/ | C,,/G,,/C,/G,,/ C,,/G,,/C,/G,,/ | D,,/G,,/D,/G,,/ G,,,/G,,/[B,,F,]/G,,/ | [C,E,]/G,,/E,,/G,,/ C,,
+[V:Voice] G | c3/2 B/ A3/2 G/ | G2 E G | F3/2 E/ F D | E2 z
 w: の ど _ か な り や は る _ の そ ら
-G | c3/2 B/ A3/2 G/ | G2 E G | F2 F D | C3 z |
+[V:RH] G | [C-Ec]3/2 [C-GB]/ [C-FA]3/2 [CEG]/ | [CEG]2 E [EG] | [B,-F]3/2 [B,-E]/ [B,-F] [B,D] | [G,CE]3
+[V:LH] z | C,,/G,,/[C,E,]/G,,/ F,,/C,/[F,A,]/C,/ | C,,/G,,/[C,E,]/G,,/ C,,/G,,/[C,E,]/G,,/ | D,,/G,,/D,/G,,/ D,,/G,,/[B,,F,]/G,,/ | C,,/G,,/C,/B,,/ A,,/G,,/
+[V:Voice] G | c3/2 B/ A3/2 G/ | G2 E G | G F2 D | C3 z |
 w: は な _ は あ る じ と り は と も
-G4 | F2 D2 | C2 D2 | E2 z
+[V:RH] [CG]/G/ | [C-Ec]3/2 [C-GB]/ [C-FA]3/2 [CEG]/ | [C-EG]2 [C-E] [CEG] | [EG] [B,F]2 [F,B,D] | [E,G,C]3 z |
+[V:LH] E,,/D,,/ | C,,/G,,/[C,E,]/G,,/ F,,/C,/[F,A,]/C,/ | C,,/G,,/[C,E,]/G,,/ C,,/G,,/[C,E,]/G,,/ | G,,,/G,,/D,/G,,/ G,,,/G,,/D,/G,,/ | C,/G,,/E,,/G,,/ C,, z |
+[V:Voice] G4 | F2 D2 | C2 D2 | E2 z
 w: おお わ が や ど よ
-G | c3/2 B/ A3/2 G/ | G2 E G | G A F D | C2 z2 |]
+[V:RH] [CEG]4 | [A,DF]2 [A,D]2 | [G,C] z [G,D] z | [G,CE]2 z
+[V:LH] z/G,,/C,/E,/ G,/E,/C,/G,,/ | z/F,,/A,,/D,/ F,/D,/A,,/F,,/ | [G,,C,E,] z [G,,B,,F,] z | [C,,C,]2 z
+[V:Voice] G | c3/2 B/ A3/2 G/ | G2 E G | F3/2 E/ F D | C2 z2 |]
 w: た の _ し と も _ た の _ も し や
+[V:RH] G | [C-Ec]3/2 [C-GB]/ [C-FA]3/2 [CEG]/ | [C-EG]2 [C-E] [CEG] | [B,F]3/2 E/ [B,F] [F,B,D] | [E,G,C]3 z |]
+[V:LH] z | C,,/G,,/[C,E,]/G,,/ F,,/C,/[F,A,]/C,/ | C,,/G,,/[C,E,]/G,,/ C,,/G,,/[C,E,]/G,,/ | G,,,/G,,/[B,,F,]/G,,/ G,,,/G,,/D,/G,,/ | C,/G,,/E,,/G,,/ C,, z |]
