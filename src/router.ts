@@ -9,7 +9,7 @@ export const router = createRouter({
 	routes: [
 		{ path: "/", name: "library", component: LibraryView, meta: { title: "" } },
 		{ path: "/song/:id", name: "song", component: () => import("./views/SongView.vue"), props: true },
-		{ path: "/editor", name: "editor", component: () => import("./views/EditorView.vue"), meta: { title: t.pageTitle.editor } },
+		{ path: "/editor", name: "editor", component: () => import("./views/EditorView.vue"), meta: { title: t.pageTitle.editor, wide: true } },
 		{ path: "/about", name: "about", component: () => import("./views/AboutView.vue"), meta: { title: t.pageTitle.about } },
 		{ path: "/:pathMatch(.*)*", redirect: "/" },
 	],

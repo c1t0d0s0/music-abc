@@ -1,6 +1,6 @@
 <template>
 	<header class="site-header">
-		<div class="container bar">
+		<div class="container bar" :class="{ 'container--wide': wide }">
 			<RouterLink to="/" class="brand">
 				<svg viewBox="0 0 32 32" aria-hidden="true" width="28" height="28">
 					<rect width="32" height="32" rx="6" fill="currentColor" />
@@ -21,7 +21,7 @@
 		<RouterView />
 	</main>
 	<footer class="site-footer">
-		<div class="container">
+		<div class="container" :class="{ 'container--wide': wide }">
 			<p>
 				{{ t.footer.before }}<a href="https://github.com/paulrosen/abcjs" rel="noopener">abcjs</a>{{ t.footer.abcjs
 				}}<a href="https://github.com/abcjs-music/abcjs-editor" rel="noopener">abcjs-editor</a>{{ t.footer.abcjsEditor }}
@@ -33,7 +33,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 import { t } from "./i18n";
+
+const route = useRoute();
+/** エディタなど、PC では横幅いっぱいに使うページか */
+const wide = computed(() => !!route.meta.wide);
 </script>
 
 <style scoped>

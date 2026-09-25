@@ -56,6 +56,18 @@ h3 {
 	padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
 }
 
+/* エディタなど、PC ではブラウザの横幅いっぱいに使うページ */
+.container--wide {
+	max-width: none;
+}
+
+@media (min-width: 960px) {
+	.container--wide {
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+}
+
 /*
  * ボタン: 生成りの紙の上に置いた小さな道具のように、白い面と少し濃い下の縁で厚みを出す。
  * 押すと沈む。主要な操作（.primary）だけ深緑で塗る。

@@ -1,5 +1,5 @@
 <template>
-	<div class="container editor-page">
+	<div class="container container--wide editor-page">
 		<h1 class="no-print">{{ t.editor.heading }}</h1>
 		<p class="lead no-print">{{ t.editor.lead }}</p>
 
@@ -16,7 +16,7 @@
 			<DownloadButtons :abc="abc" :filename="filename" />
 		</div>
 
-		<div class="layout">
+		<div ref="layoutEl" class="layout" :style="layoutStyle">
 			<section class="input-pane no-print" :aria-label="t.editor.inputLabel">
 				<AbcCodeInput ref="inputRef" :initial-value="initial" @input="onInput" @ready="onReady" />
 				<div ref="warningsEl" class="warnings" aria-live="polite"></div>
@@ -40,6 +40,23 @@
 					</p>
 				</details>
 			</section>
+
+			<!-- PC 幅では、入力欄と楽譜の幅をドラッグや左右キーで変えられる -->
+			<div
+				class="splitter no-print"
+				role="separator"
+				tabindex="0"
+				aria-orientation="vertical"
+				aria-valuemin="25"
+				aria-valuemax="75"
+				:aria-valuenow="Math.round(split)"
+				:aria-label="t.editor.resizePanes"
+				:title="t.editor.resizePanes"
+				:class="{ dragging }"
+				@pointerdown="startDrag"
+				@keydown="onSplitterKey"
+				@dblclick="setSplit(DEFAULT_SPLIT)"
+			></div>
 
 			<section class="output-pane" :aria-label="t.editor.scoreLabel">
 				<div class="player no-print">
@@ -87,6 +104,7 @@ const inputRef = ref<InstanceType<typeof AbcCodeInput>>();
 const warningsEl = ref<HTMLElement>();
 const audioEl = ref<HTMLElement>();
 const paperEl = ref<HTMLElement>();
+const layoutEl = ref<HTMLElement>();
 
 let textarea: HTMLTextAreaElement | null = null;
 let editor: Editor | null = null;
@@ -200,14 +218,79 @@ function onPickSong(id: string) {
 	if (song) replaceContent(localizedAbc(song));
 }
 
+/*
+ * PC 幅の作業レイアウト。
+ * 入力欄と楽譜を画面の高さいっぱいに広げ、間の仕切りで左右の幅を変えられるようにする。
+ */
+const SPLIT_KEY = "music-abc:editor-split";
+const DEFAULT_SPLIT = 42; // 入力欄の幅（%）
+const split = ref(clampSplit(Number(storageGet(SPLIT_KEY)) || DEFAULT_SPLIT));
+const dragging = ref(false);
+/** レイアウトの上端（ページの先頭から）。画面の高さからこれを引いた分を入力欄と楽譜に使う */
+const layoutTop = ref(0);
+
+const layoutStyle = computed(() => ({
+	"--split": `${split.value}%`,
+	"--layout-top": `${layoutTop.value}px`,
+}));
+
+function clampSplit(v: number) {
+	return Math.min(75, Math.max(25, v));
+}
+
+function setSplit(v: number) {
+	split.value = clampSplit(v);
+	storageSet(SPLIT_KEY, String(Math.round(split.value)));
+}
+
+function startDrag(ev: PointerEvent) {
+	if (ev.button !== 0 || !layoutEl.value) return;
+	const el = ev.currentTarget as HTMLElement;
+	el.setPointerCapture(ev.pointerId);
+	dragging.value = true;
+	const rect = layoutEl.value.getBoundingClientRect();
+	const onMove = (e: PointerEvent) => setSplit(((e.clientX - rect.left) / rect.width) * 100);
+	const onUp = () => {
+		dragging.value = false;
+		el.removeEventListener("pointermove", onMove);
+		el.removeEventListener("pointerup", onUp);
+		el.removeEventListener("pointercancel", onUp);
+	};
+	el.addEventListener("pointermove", onMove);
+	el.addEventListener("pointerup", onUp);
+	el.addEventListener("pointercancel", onUp);
+	ev.preventDefault();
+}
+
+function onSplitterKey(ev: KeyboardEvent) {
+	const step = ev.shiftKey ? 10 : 2;
+	if (ev.key === "ArrowLeft") setSplit(split.value - step);
+	else if (ev.key === "ArrowRight") setSplit(split.value + step);
+	else if (ev.key === "Home") setSplit(25);
+	else if (ev.key === "End") setSplit(75);
+	else return;
+	ev.preventDefault();
+}
+
+function measureLayoutTop() {
+	if (layoutEl.value) layoutTop.value = Math.round(layoutEl.value.getBoundingClientRect().top + window.scrollY);
+}
+
+let layoutTopObserver: ResizeObserver | undefined;
+
 onMounted(() => {
 	// 読み込み済みの曲を URL に残さない（再読み込みで上書きしないように）
 	if (route.query.song) router.replace({ query: {} });
+	measureLayoutTop();
+	// ツールバーの折り返しなどで上の高さが変わったら測り直す
+	layoutTopObserver = new ResizeObserver(measureLayoutTop);
+	layoutTopObserver.observe(document.body);
 });
 
 onBeforeUnmount(() => {
 	unmounted = true;
 	stopObserving?.();
+	layoutTopObserver?.disconnect();
 	clearTimeout(saveTimer);
 	storageSet(EDITOR_STORAGE_KEY, abc.value);
 	try {
@@ -302,14 +385,104 @@ onBeforeUnmount(() => {
 	gap: 16px;
 }
 
+.splitter {
+	display: none;
+}
+
+/*
+ * PC 幅: 入力欄 | 仕切り | 楽譜 を横に並べ、画面の高さいっぱいに広げる。
+ * 入力欄と楽譜はそれぞれの欄の中でスクロールするので、ページ全体はスクロールしなくてよい。
+ */
 @media (min-width: 960px) {
 	.layout {
-		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-		align-items: start;
+		grid-template-columns: minmax(280px, var(--split, 42%)) 14px minmax(320px, 1fr);
+		gap: 0;
+		height: max(480px, calc(100vh - var(--layout-top, 200px) - 16px));
+		height: max(480px, calc(100dvh - var(--layout-top, 200px) - 16px));
 	}
+
+	.input-pane,
 	.output-pane {
-		position: sticky;
-		top: 8px;
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+	}
+
+	/* 入力欄を欄の高さいっぱいにする（高さは仕切りと画面の大きさで決まるので、手動のリサイズは使わない） */
+	.input-pane :deep(.code-input-wrapper) {
+		flex: 1 1 auto;
+		min-height: 0;
+	}
+	.input-pane :deep(code-input) {
+		height: 100%;
+		min-height: 0;
+		resize: none;
+	}
+
+	.warnings:empty {
+		display: none;
+	}
+
+	/* 記法のヒントは開いても入力欄を押しつぶしすぎないよう、高さを抑えてスクロールさせる */
+	.cheat[open] {
+		max-height: 40%;
+		overflow-y: auto;
+	}
+
+	.output-pane .score-paper {
+		flex: 1 1 auto;
+		min-height: 0;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
+
+	.splitter {
+		display: block;
+		position: relative;
+		cursor: col-resize;
+		touch-action: none;
+	}
+
+	/* 仕切りの中央の線と、つまみの印 */
+	.splitter::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 50%;
+		width: 1px;
+		background: var(--line);
+		transition: background 0.15s;
+	}
+
+	.splitter::after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 6px;
+		height: 36px;
+		border: 1px solid var(--line);
+		border-radius: 4px;
+		background: #fffdf9;
+		transform: translate(-50%, -50%);
+		transition: border-color 0.15s;
+	}
+
+	.splitter:hover::before,
+	.splitter.dragging::before,
+	.splitter:focus-visible::before {
+		background: var(--accent);
+	}
+
+	.splitter:hover::after,
+	.splitter.dragging::after,
+	.splitter:focus-visible::after {
+		border-color: var(--accent);
+	}
+
+	.splitter:focus-visible {
+		outline: none;
 	}
 }
 
@@ -379,6 +552,10 @@ onBeforeUnmount(() => {
 @media print {
 	.layout {
 		display: block;
+		height: auto !important;
+	}
+	.output-pane .score-paper {
+		overflow: visible !important;
 	}
 	.output-pane {
 		position: static;
