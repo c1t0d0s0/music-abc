@@ -42,6 +42,7 @@ const GTM_ID = 'G-XXXXXXXXXX';
 ```
 
 - `config.js` is listed in `.gitignore` and is not committed. If the file is missing or the ID is empty, no tag is added.
+- You can also pass the ID via the `GA_ID` (or `GTM_ID`) environment variable (e.g. `vars.GA_ID` in GitHub Actions).
 - The development server (`npm run dev`) never sends analytics.
 - A page view is sent on every navigation with a URL such as `/song/furusato`, because routing is hash-based. Turn off "Page changes based on browser history events" in GA4 enhanced measurement, or page views will be counted twice.
 - When an ID is set, the Licenses page explains that the site uses analytics.

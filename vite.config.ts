@@ -19,13 +19,22 @@ const abcjsEditorNotice = [
 ].join("\n");
 
 /**
- * プロジェクト直下の config.js（git 管理外）から GTM_ID を読む。
- * config.js は実行せず、文字列として ID だけを取り出す。
- * ファイルがない・ID が空・形式が正しくない場合は空文字を返し、アクセス解析のタグは入れない。
+ * Google アナリティクス 4 または Google タグマネージャーの ID を取得する。
+ * 1. 環境変数 GA_ID または GTM_ID が設定されていればそれを優先
+ * 2. なければプロジェクト直下の config.js（git 管理外）から GTM_ID を読む
  *   G-XXXXXXX   … Google アナリティクス 4 の測定 ID（gtag.js を埋め込む）
  *   GTM-XXXXXXX … Google タグマネージャーのコンテナ ID
  */
 function readAnalyticsId(): string {
+	const envId = (process.env.GA_ID || process.env.GTM_ID || "").trim();
+	if (envId) {
+		if (!/^(G|GTM)-[A-Z0-9]+$/.test(envId)) {
+			console.warn(`環境変数の ID の形式が正しくないため、アクセス解析のタグを入れません: ${envId}`);
+			return "";
+		}
+		return envId;
+	}
+
 	const file = path.join(root, "config.js");
 	if (!fs.existsSync(file)) return "";
 	const id = fs.readFileSync(file, "utf8").match(/\bGTM_ID\s*=\s*["'`]([^"'`]*)["'`]/)?.[1]?.trim() ?? "";
