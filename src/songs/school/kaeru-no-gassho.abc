@@ -7,6 +7,43 @@ Z:c1t0d0s0 (CC0)
 M:4/4
 L:1/4
 Q:1/4=112
+%%score [V1 V2 V3 V4]
+V:V1 name="I" snm="I"
+V:V2 name="II" snm="II"
+V:V3 name="III" snm="III"
+V:V4 name="IV" snm="IV"
 K:C
-"^1"C D E F | E D C2 | "^2"E F G A | G F E2 |
-"^3"C z C z | C z C z | "^4"C/C/D/D/ E/E/F/F/ | E D C2 |]
+% 再生時の音量。主旋律（最初に入る I）がはっきり聞こえるよう、追いかける輪唱の声部は弱めにする
+% %%MIDI beat: 小節の1拍目・表拍・裏拍の強さ（0〜127）
+V:V1
+%%MIDI beat 110 105 100 1
+V:V2
+%%MIDI beat 50 45 40 1
+V:V3
+%%MIDI beat 50 45 40 1
+V:V4
+%%MIDI beat 50 45 40 1
+[V:V1] C D E F | E D C2 | E F G A | G F E2 |
+[V:V2] z4 | z4 | C D E F | E D C2 |
+[V:V3] z4 | z4 | z4 | z4 |
+[V:V4] z4 | z4 | z4 | z4 |
+[V:V1] C z C z | C z C z | C/C/D/D/ E/E/F/F/ | E D C2 |
+[V:V2] E F G A | G F E2 | C z C z | C z C z |
+[V:V3] C D E F | E D C2 | E F G A | G F E2 |
+[V:V4] z4 | z4 | C D E F | E D C2 |
+[V:V1] C D E F | E D C2 | E F G A | G F E2 |
+[V:V2] C/C/D/D/ E/E/F/F/ | E D C2 | C D E F | E D C2 |
+[V:V3] C z C z | C z C z | C/C/D/D/ E/E/F/F/ | E D C2 |
+[V:V4] E F G A | G F E2 | C z C z | C z C z |
+[V:V1] C z C z | C z C z | C/C/D/D/ E/E/F/F/ | E D C2 |
+[V:V2] E F G A | G F E2 | C z C z | C z C z |
+[V:V3] C D E F | E D C2 | E F G A | G F E2 |
+[V:V4] C/C/D/D/ E/E/F/F/ | E D C2 | C D E F | E D C2 |
+[V:V1] z4 | z4 | z4 | z4 |
+[V:V2] C/C/D/D/ E/E/F/F/ | E D C2 | z4 | z4 |
+[V:V3] C z C z | C z C z | C/C/D/D/ E/E/F/F/ | E D C2 |
+[V:V4] E F G A | G F E2 | C z C z | C z C z |
+[V:V1] z4 | z4 |]
+[V:V2] z4 | z4 |]
+[V:V3] z4 | z4 |]
+[V:V4] C/C/D/D/ E/E/F/F/ | E D C2 |]

@@ -127,8 +127,8 @@ export const SONGS: SongMeta[] = [
 		published: 1942,
 		lyrics: "none",
 		note: {
-			ja: "旋律のみ。日本語詞（岡本敏明、1977年没）は保護期間中のため収録していません。1〜4の番号の位置から追いかけて輪唱できます。",
-			en: "Melody only. The Japanese lyrics (by Okamoto Toshiaki, d. 1977) are still under copyright. Start from the numbers 1–4 to sing it as a round.",
+			ja: "4声の輪唱です。2小節ずつ遅れて入り、各声部が旋律を2回くり返します。日本語詞（岡本敏明、1977年没）は保護期間中のため収録していません。",
+			en: "A four-part round: each voice enters two bars after the previous one and sings the melody twice. The Japanese lyrics (by Okamoto Toshiaki, d. 1977) are still under copyright.",
 		},
 	},
 	{
