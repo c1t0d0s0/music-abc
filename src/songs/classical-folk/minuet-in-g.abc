@@ -2,13 +2,28 @@ X:1
 T:メヌエット ト長調
 T:Minuet in G major (BWV Anh. 114)
 C:作曲 クリスティアン・ペツォールト（かつては J. S. バッハ作とされた）
-S:アンナ・マグダレーナ・バッハのための音楽帳（1725年）
+S:アンナ・マグダレーナ・バッハのための音楽帳（1725年）、バッハ協会版による
 Z:c1t0d0s0 (CC0)
 M:3/4
 L:1/8
 Q:1/4=120
+%%score {RH | LH}
+V:RH clef=treble
+V:LH clef=bass
 K:G
-|: d2 GABc | d2 G2 G2 | e2 cdef | g2 G2 G2 | c2 dcBA | B2 cBAG | F2 GABG | A6 |
-d2 GABc | d2 G2 G2 | e2 cdef | g2 G2 G2 | c2 dcBA | B2 cBAG | A2 BAGF | G6 :|
-|: b2 gabg | a2 defd | g2 efgd | ^c2 B^cA2 | AB^cdef | g2 f2 e2 | f2 A2 ^c2 | d6 |
-d2 GFG2 | e2 GFG2 | d2 c2 B2 | AGFGA2 | DEFGAB | c2 B2 A2 | Bd G2 F2 | G6 :|
+[V:RH] |: d2 GABc | d2 G2 G2 | e2 !mordent!cdef | g2 G2 G2 |
+[V:LH] |: [G,B,D]4 A,2 | B,6 | C6 | B,6 |
+[V:RH] !mordent!c2 dcBA | B2 cBAG | F2 GABG | {B}A6 |
+[V:LH] A,6 | G,6 | D2 B,2 G,2 | D2 D,C B,A, |
+[V:RH] d2 GABc | d2 G2 G2 | e2 !mordent!cdef | g2 G2 G2 |
+[V:LH] B,4 A,2 | G,2 B,2 G,2 | C6 | B,2 CB, A,G, |
+[V:RH] !mordent!c2 dcBA | B2 cBAG | A2 BAGF | G6 :|
+[V:LH] A,4 F,2 | G,4 B,2 | C2 D2 D,2 | G,4 G,,2 :|
+[V:RH] |: b2 gabg | a2 defd | g2 efgd | ^c2 B^cA2 |
+[V:LH] |: G,6 | F,6 | E,2 G,2 E,2 | A,4 A,,2 |
+[V:RH] AB^cdef | g2 f2 e2 | f2 A2 ^c2 | d6 |
+[V:LH] A,6 | B,2 D2 ^C2 | D2 F,2 A,2 | D2 D,2 =C2 |
+[V:RH] d2 GFG2 | e2 GFG2 | d2 c2 B2 | AGFGA2 |
+[V:LH] B,2- [B,D-]2 [B,D]2 | C2- [CE-]2 [CE]2 | B,2 A,2 G,2 | D4 z2 |
+[V:RH] DEFGAB | c2 !uppermordent!B2 A2 | Bd G2 F2 | [B,DG]6 :|
+[V:LH] D,4- [D,F,]2 | E,2 G,2 F,2 | G,2 B,,2 D,2 | G,2 D,2 G,,2 :|

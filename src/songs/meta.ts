@@ -437,8 +437,8 @@ export const SONGS: SongMeta[] = [
 		published: 1725,
 		lyrics: "none",
 		note: {
-			ja: "長くバッハ作とされてきた曲。右手の旋律のみ。",
-			en: "Long attributed to J. S. Bach. Right-hand melody only.",
+			ja: "長くバッハ作とされてきた曲。チェンバロ曲の全曲を、右手と左手の 2 段で収録しています。バッハ協会版によります。",
+			en: "Long attributed to J. S. Bach. The complete keyboard piece in two staves, right and left hand, after the Bach-Gesellschaft edition.",
 		},
 	},
 	{
