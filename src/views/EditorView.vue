@@ -13,11 +13,22 @@
 				<SongPicker @select="onPickSong" />
 			</div>
 			<span class="toolbar-divider" aria-hidden="true"></span>
-			<DownloadButtons :abc="abc" :filename="filename" :program="program" />
+			<DownloadButtons :abc="abc" :filename="filename" />
 		</div>
 
 		<div ref="layoutEl" class="layout" :style="layoutStyle">
 			<section class="input-pane no-print" :aria-label="t.editor.inputLabel">
+				<!-- 声部ごとの音色。選ぶと ABC の %%MIDI program を書き込む（書き換える） -->
+				<div v-if="voices.length" class="voice-instruments" role="group" :aria-label="t.score.instrument">
+					<span class="voice-instruments-title" aria-hidden="true">{{ t.score.instrument }}</span>
+					<InstrumentPicker
+						v-for="v in voices"
+						:key="v.id ?? ''"
+						:model-value="v.program"
+						:label="v.name || undefined"
+						@update:model-value="(p: number) => setProgram(v.id, p)"
+					/>
+				</div>
 				<AbcCodeInput ref="inputRef" :initial-value="initial" @input="onInput" @ready="onReady" />
 				<div ref="warningsEl" class="warnings" aria-live="polite"></div>
 				<details class="cheat">
@@ -61,7 +72,6 @@
 			<section class="output-pane" :aria-label="t.editor.scoreLabel">
 				<div class="player no-print">
 					<div ref="audioEl" class="audio"></div>
-					<InstrumentPicker v-model="program" />
 					<VolumeControl />
 				</div>
 				<div ref="paperEl" class="score-paper"></div>
@@ -72,7 +82,7 @@
 
 <script setup lang="ts">
 import abcjs, { type AbcElem, type Editor } from "abcjs";
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AbcCodeInput from "../components/AbcCodeInput.vue";
 import DownloadButtons from "../components/DownloadButtons.vue";
@@ -92,7 +102,7 @@ import {
 	storageSet,
 } from "../lib/abc-utils";
 import { CursorControl } from "../lib/cursor-control";
-import { INSTRUMENTS } from "../lib/instruments";
+import { listVoicePrograms, setVoiceProgram } from "../lib/midi-program";
 import { findSong, localizedAbc } from "../lib/songs";
 import { messagesFor, t, tr } from "../i18n";
 
@@ -120,6 +130,7 @@ let dirty = false;
 const initial = pickInitial();
 const abc = ref(initial);
 const filename = computed(() => safeFilename(abcTitle(abc.value)));
+const voices = computed(() => listVoicePrograms(abc.value));
 
 function pickInitial(): string {
 	const saved = storageGet(EDITOR_STORAGE_KEY);
@@ -178,7 +189,7 @@ async function onReady(ta: HTMLTextAreaElement) {
 		synth: {
 			el: audioEl.value!,
 			cursorControl: new CursorControl(() => paperEl.value ?? null),
-			options: synthOptions(),
+			options: { displayLoop: true, displayRestart: true, displayPlay: true, displayProgress: true, displayWarp: true },
 		},
 		abcjsParams: visualParams(),
 	});
@@ -205,6 +216,43 @@ function replaceContent(value: string) {
 	return true;
 }
 
+/**
+ * 声部（null なら曲全体）の音色を ABC に書き込む。
+ * 書き込んだ行を選択して見せる（タッチ操作の端末ではキーボードが開くので、カーソルの位置を保つだけにする）
+ */
+function setProgram(id: string | null, program: number) {
+	const before = abc.value;
+	const after = setVoiceProgram(before, id, program);
+	if (after === before || !textarea) return;
+	const ta = textarea;
+	const { selectionStart, selectionEnd, scrollTop } = ta;
+	// 変わり始めた位置。そこより後ろのカーソルは、増えた文字数だけずらす
+	let diff = 0;
+	while (diff < before.length && before[diff] === after[diff]) diff++;
+	const shift = (pos: number) => (pos > diff ? pos + after.length - before.length : pos);
+
+	inputRef.value?.setValue(after);
+	onInput(after);
+	editor?.fireChanged();
+
+	const lineStart = after.lastIndexOf("\n", diff - 1) + 1;
+	const start = after.indexOf(`%%MIDI program ${program}`, lineStart);
+	if (!window.matchMedia("(pointer: coarse)").matches && start >= 0) {
+		const end = after.indexOf("\n", start);
+		ta.focus({ preventScroll: true });
+		ta.setSelectionRange(start, end < 0 ? after.length : end);
+		// 書き込んだ行が入力欄の中で見えるようにする
+		const lineHeight = parseFloat(getComputedStyle(ta).lineHeight) || 20;
+		const row = after.slice(0, start).split("\n").length - 1;
+		const y = row * lineHeight;
+		if (y < scrollTop || y > scrollTop + ta.clientHeight - lineHeight * 2) ta.scrollTop = y - ta.clientHeight / 3;
+		else ta.scrollTop = scrollTop;
+	} else {
+		ta.setSelectionRange(shift(selectionStart), shift(selectionEnd));
+		ta.scrollTop = scrollTop;
+	}
+}
+
 function newTune() {
 	replaceContent(DEFAULT_ABC);
 }
@@ -225,31 +273,6 @@ function onPickSong(id: string) {
  * PC 幅の作業レイアウト。
  * 入力欄と楽譜を画面の高さいっぱいに広げ、間の仕切りで左右の幅を変えられるようにする。
  */
-/*
- * 再生の音色。ブラウザに保存し、再生と MIDI・WAV のダウンロードに使う。
- * ABC の中で %%MIDI program を指定している声部は、そちらが優先される。
- */
-const PROGRAM_KEY = "music-abc:editor-program";
-const savedProgram = Number(storageGet(PROGRAM_KEY));
-const program = ref(INSTRUMENTS.some((i) => i.program === savedProgram) ? savedProgram : 0);
-
-function synthOptions() {
-	return {
-		displayLoop: true,
-		displayRestart: true,
-		displayPlay: true,
-		displayProgress: true,
-		displayWarp: true,
-		program: program.value,
-	};
-}
-
-watch(program, (p) => {
-	storageSet(PROGRAM_KEY, String(p));
-	// 再生中なら止めて、新しい音色で鳴らせるように準備し直す
-	editor?.synthParamChanged(synthOptions());
-});
-
 const SPLIT_KEY = "music-abc:editor-split";
 const DEFAULT_SPLIT = 42; // 入力欄の幅（%）
 const split = ref(clampSplit(Number(storageGet(SPLIT_KEY)) || DEFAULT_SPLIT));
@@ -554,6 +577,21 @@ onBeforeUnmount(() => {
 
 .player {
 	margin-bottom: 12px;
+}
+
+/* 入力欄の上の、声部ごとの音色の帯 */
+.voice-instruments {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 8px;
+	margin-bottom: 8px;
+}
+
+.voice-instruments-title {
+	color: var(--ink-soft);
+	font-size: 0.82rem;
+	font-weight: 700;
 }
 
 .score-paper {

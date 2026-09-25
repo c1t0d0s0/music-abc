@@ -77,6 +77,12 @@ export const INSTRUMENT_GROUPS: InstrumentGroup[] = [
 
 export const INSTRUMENTS: Instrument[] = INSTRUMENT_GROUPS.flatMap((g) => g.instruments);
 
+/** 一覧にない番号は、番号をそのまま名前にする（ABC に直接書かれた音色など） */
 export function findInstrument(program: number): Instrument {
-	return INSTRUMENTS.find((i) => i.program === program) ?? INSTRUMENTS[0]!;
+	return (
+		INSTRUMENTS.find((i) => i.program === program) ?? {
+			program,
+			name: { ja: `音色 ${program}`, en: `Program ${program}` },
+		}
+	);
 }

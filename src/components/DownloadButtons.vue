@@ -18,16 +18,7 @@ import { t } from "../i18n";
 import { downloadAbc, downloadMidi, downloadWav } from "../lib/abc-utils";
 import ToolIcon from "./ToolIcon.vue";
 
-const props = withDefaults(
-	defineProps<{
-		abc: string;
-		filename: string;
-		transpose?: number;
-		/** 既定の音色（General MIDI の番号）。ABC の中で指定している声部はそちらが優先される */
-		program?: number;
-	}>(),
-	{ transpose: 0, program: 0 },
-);
+const props = withDefaults(defineProps<{ abc: string; filename: string; transpose?: number }>(), { transpose: 0 });
 
 const busy = ref<"" | "wav">("");
 const error = ref("");
@@ -36,11 +27,11 @@ async function run(kind: "midi" | "wav" | "abc") {
 	error.value = "";
 	const name = props.transpose ? `${props.filename}_${props.transpose > 0 ? "+" : ""}${props.transpose}` : props.filename;
 	try {
-		if (kind === "midi") downloadMidi(props.abc, name, props.transpose, props.program);
+		if (kind === "midi") downloadMidi(props.abc, name, props.transpose);
 		if (kind === "abc") downloadAbc(props.abc, props.filename);
 		if (kind === "wav") {
 			busy.value = "wav";
-			await downloadWav(props.abc, name, props.transpose, props.program);
+			await downloadWav(props.abc, name, props.transpose);
 		}
 	} catch (e) {
 		error.value = t.download.error(e instanceof Error ? e.message : String(e));

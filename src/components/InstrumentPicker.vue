@@ -1,5 +1,6 @@
 <!--
-	再生の音色を選ぶ。再生バー（深緑）の上に置くボタンと、種類ごとに見出しを付けた一覧。
+	声部の音色を選ぶ。ABC の入力欄の上に置くボタンと、種類ごとに見出しを付けた一覧。
+	選んだ音色は親が ABC の %%MIDI program として書き込む。
 	キーボード: ボタンで ↓ / Enter / Space → 開く、一覧で ↑↓ Home End → 選択、Enter / Space → 決定、Esc → 閉じる
 -->
 <template>
@@ -11,23 +12,19 @@
 			aria-haspopup="listbox"
 			:aria-expanded="open"
 			:aria-controls="listId"
-			:aria-label="`${t.score.instrument}: ${tr(current.name)}`"
-			:title="`${t.score.instrument}: ${tr(current.name)}`"
+			:aria-label="triggerLabel"
+			:title="triggerLabel"
 			@click="toggle"
 			@keydown.down.prevent="openPanel"
 		>
-			<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
-				<path d="M8 15.5V4.5l8-2v10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
-				<ellipse cx="6" cy="15.5" rx="2.4" ry="1.9" fill="currentColor" />
-				<ellipse cx="14" cy="12.5" rx="2.4" ry="1.9" fill="currentColor" />
-			</svg>
+			<span v-if="label" class="trigger-voice">{{ label }}</span>
 			<span class="trigger-label">{{ tr(current.name) }}</span>
 			<svg class="chevron" :class="{ flipped: open }" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
 				<path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
 			</svg>
 		</button>
 
-		<div v-if="open" class="picker-panel">
+		<div v-if="open" class="picker-panel" :class="{ 'align-right': alignRight }">
 			<div
 				:id="listId"
 				ref="list"
@@ -46,13 +43,13 @@
 						:key="ins.program"
 						role="option"
 						class="picker-option"
-						:class="{ active: ins.program === active, chosen: ins.program === modelValue }"
-						:aria-selected="ins.program === modelValue"
+						:class="{ active: ins.program === active, chosen: ins.program === current.program }"
+						:aria-selected="ins.program === current.program"
 						@mousemove="active = ins.program"
 						@click="choose(ins.program)"
 					>
 						<span>{{ tr(ins.name) }}</span>
-						<svg v-if="ins.program === modelValue" class="check" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+						<svg v-if="ins.program === current.program" class="check" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
 							<path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
 						</svg>
 					</div>
@@ -72,9 +69,15 @@ import { computed, nextTick, onBeforeUnmount, ref } from "vue";
 import { t, tr } from "../i18n";
 import { findInstrument, INSTRUMENT_GROUPS, INSTRUMENTS } from "../lib/instruments";
 
-const props = defineProps<{ modelValue: number }>();
+const props = defineProps<{
+	/** 音色（General MIDI の番号）。null は指定なし（abcjs の既定のピアノで鳴る） */
+	modelValue: number | null;
+	/** 声部の名前。声部のない曲では付けない */
+	label?: string;
+}>();
 const emit = defineEmits<{ (e: "update:modelValue", program: number): void }>();
 
+const PANEL_WIDTH = 260;
 const listId = `instrument-list-${++pickerCount}`;
 const optionId = (program: number) => `${listId}-${program}`;
 
@@ -82,8 +85,13 @@ const root = ref<HTMLElement>();
 const trigger = ref<HTMLButtonElement>();
 const list = ref<HTMLElement>();
 const open = ref(false);
-const active = ref(props.modelValue);
-const current = computed(() => findInstrument(props.modelValue));
+const current = computed(() => findInstrument(props.modelValue ?? 0));
+const active = ref(current.value.program);
+/** 画面の右端からはみ出すときは、一覧をボタンの右端にそろえて開く */
+const alignRight = ref(false);
+const triggerLabel = computed(() =>
+	[props.label, `${t.score.instrument}: ${tr(current.value.name)}`].filter(Boolean).join(" "),
+);
 
 function scrollActiveIntoView() {
 	nextTick(() => document.getElementById(optionId(active.value))?.scrollIntoView({ block: "nearest" }));
@@ -92,6 +100,8 @@ function scrollActiveIntoView() {
 async function openPanel() {
 	if (open.value) return;
 	active.value = current.value.program;
+	const rect = root.value?.getBoundingClientRect();
+	alignRight.value = !!rect && rect.left + PANEL_WIDTH > document.documentElement.clientWidth - 8;
 	open.value = true;
 	document.addEventListener("pointerdown", onPointerDownOutside, true);
 	await nextTick();
@@ -169,41 +179,57 @@ onBeforeUnmount(() => document.removeEventListener("pointerdown", onPointerDownO
 	min-width: 0;
 }
 
-/* 再生バー（深緑）の上に置くボタン */
+/* ツールバーのボタンと同じ質感の、小さめのボタン */
 .picker-trigger {
 	display: inline-flex;
 	align-items: center;
-	gap: 6px;
-	max-width: 190px;
-	height: 30px;
-	padding: 0 10px 0 8px;
-	border: 1px solid rgba(247, 242, 234, 0.35);
-	border-radius: 999px;
-	background: rgba(255, 255, 255, 0.08);
-	color: var(--accent-ink);
+	gap: 8px;
+	max-width: 100%;
+	min-height: 32px;
+	padding: 0 10px 0 12px;
+	border: 1px solid #d6ccba;
+	border-bottom-color: #bdb09a;
+	border-radius: 8px;
+	background: linear-gradient(#fffefb, #f6f0e6);
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.9),
+		0 1px 2px rgba(45, 74, 62, 0.08);
+	color: var(--ink);
 	font: inherit;
 	font-size: 0.85rem;
 	cursor: pointer;
-	transition:
-		background 0.15s,
-		border-color 0.15s;
+	transition: border-color 0.15s;
 }
 
 .picker-trigger:hover,
 .picker-trigger[aria-expanded="true"] {
-	border-color: rgba(247, 242, 234, 0.7);
-	background: rgba(255, 255, 255, 0.16);
+	border-color: var(--accent);
+}
+
+.picker-trigger:focus-visible {
+	outline: 3px solid var(--focus);
+	outline-offset: 2px;
+}
+
+.trigger-voice {
+	overflow: hidden;
+	max-width: 10em;
+	color: var(--ink-soft);
+	font-size: 0.78rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .trigger-label {
 	overflow: hidden;
+	font-weight: 700;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
 
 .chevron {
 	flex: 0 0 auto;
-	opacity: 0.8;
+	color: var(--ink-soft);
 	transition: transform 0.15s;
 }
 
@@ -214,8 +240,8 @@ onBeforeUnmount(() => document.removeEventListener("pointerdown", onPointerDownO
 /* 収録曲の一覧と同じ、紙の上に一枚重ねたパネル */
 .picker-panel {
 	position: absolute;
-	top: calc(100% + 10px);
-	right: 0;
+	top: calc(100% + 6px);
+	left: 0;
 	z-index: 20;
 	display: flex;
 	flex-direction: column;
@@ -228,8 +254,14 @@ onBeforeUnmount(() => document.removeEventListener("pointerdown", onPointerDownO
 		0 14px 36px rgba(31, 42, 38, 0.18),
 		0 2px 6px rgba(31, 42, 38, 0.08);
 	overflow: hidden;
-	transform-origin: top right;
+	transform-origin: top left;
 	animation: picker-in 0.14s ease-out;
+}
+
+.picker-panel.align-right {
+	right: 0;
+	left: auto;
+	transform-origin: top right;
 }
 
 @keyframes picker-in {
@@ -299,13 +331,6 @@ onBeforeUnmount(() => document.removeEventListener("pointerdown", onPointerDownO
 	color: var(--ink-soft);
 	font-size: 0.75rem;
 	line-height: 1.5;
-}
-
-/* 狭い画面ではボタンを音符のアイコンだけにする */
-@media (max-width: 560px) {
-	.trigger-label {
-		display: none;
-	}
 }
 
 @media (prefers-reduced-motion: reduce) {
