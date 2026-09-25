@@ -1,4 +1,4 @@
-# ABC Score Library
+# ABC Score Studio
 
 English | [日本語](README.ja.md)
 

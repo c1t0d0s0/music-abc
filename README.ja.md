@@ -1,4 +1,4 @@
-# ABC 譜面ライブラリ
+# ABC 譜面スタジオ
 
 [English](README.md) | 日本語
 

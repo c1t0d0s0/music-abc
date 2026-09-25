@@ -28,7 +28,7 @@ export function tr(text: Localized | string, to: Lang = lang): string {
 }
 
 const ja = {
-	siteName: "ABC 譜面ライブラリ",
+	siteName: "ABC 譜面スタジオ",
 	siteDescription:
 		"ABC記譜の譜面を表示・編集・再生・MIDIダウンロードできるWebアプリ。著作権の切れた唱歌・国歌・名曲を収録。",
 	nav: { label: "メインメニュー", library: "曲をさがす", editor: "エディタ", about: "ライセンス" },
@@ -168,7 +168,7 @@ w: ド レ ミ ファ ソ ラ シ ド ド シ ラ ソ ファ ミ レ ド
 export type Messages = typeof ja;
 
 const en: Messages = {
-	siteName: "ABC Score Library",
+	siteName: "ABC Score Studio",
 	siteDescription:
 		"View, edit, and play sheet music written in ABC notation and download it as MIDI. Includes public-domain school songs, national anthems, and classical melodies.",
 	nav: { label: "Main menu", library: "Songs", editor: "Editor", about: "Licenses" },
