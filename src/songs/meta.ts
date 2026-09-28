@@ -376,6 +376,19 @@ export const SONGS: SongMeta[] = [
 		},
 	},
 	{
+		id: "fantaisie-impromptu",
+		category: "classical-folk",
+		title: { ja: "幻想即興曲", en: "Fantaisie-Impromptu" },
+		subtitle: { ja: "即興曲第4番 嬰ハ短調 作品66（遺作）", en: "Impromptu No. 4 in C-sharp minor, Op. 66 (posthumous)" },
+		creators: [{ role: "composer", name: { ja: "フレデリック・ショパン", en: "Frédéric Chopin" }, born: 1810, died: 1849 }],
+		published: 1855,
+		lyrics: "none",
+		note: {
+			ja: "ピアノ曲の全曲（138小節）を、右手と左手の 2 段で収録しています。1834年に作曲され、ショパンの没後の1855年に出版されました。ヘルマン・ショルツ校訂版によります。",
+			en: "The complete piano piece (138 bars), in two staves for the right and left hands. Composed in 1834 and published posthumously in 1855. Based on the edition by Hermann Scholtz.",
+		},
+	},
+	{
 		id: "twinkle-twinkle",
 		category: "classical-folk",
 		title: { ja: "きらきら星", en: "Twinkle, Twinkle, Little Star" },

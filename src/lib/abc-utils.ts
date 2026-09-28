@@ -1,4 +1,4 @@
-import abcjs, { type AbcVisualParams } from "abcjs";
+import abcjs, { type AbcVisualParams, type TuneObject } from "abcjs";
 import { t } from "../i18n";
 
 /** ABC 文字列から最初の T: 行のタイトルを取り出す */
@@ -29,52 +29,46 @@ export function downloadAbc(abc: string, filename = safeFilename(abcTitle(abc)))
 	setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-function midiBytes(abc: string, transpose: number): Uint8Array {
-	const out = abcjs.synth.getMidiFile(abc, { midiOutputType: "binary", midiTranspose: transpose }) as
+/** abcjs が MIDI ファイルを書くときの、全音符あたりのティック数 */
+const MIDI_TICKS_PER_WHOLE = 480 * 4;
+
+/**
+ * ABC から標準 MIDI ファイルのバイト列を作る（複数曲ある場合は最初の曲）。
+ *
+ * abcjs（6.x）の MIDI ファイルの書き出しには、ブラウザでの再生にはない2つの問題があるため、
+ * abcjs が書き出す直前の音の並び（setUpAudio の結果）を整えてから書かせる。
+ * - 音と音の間隔をティック単位に丸めながら書き進めるため、途中でテンポが変わる曲では丸めの誤差が積み重なり、
+ *   声部ごとに少しずつずれていく（幻想即興曲では左手が 0.1 秒以上遅れる）。
+ *   音の始まりと終わりを、あらかじめティックの整数倍にそろえておけば誤差は積み重ならない。
+ * - スタッカートで音を短くする量にテンポを2回掛けてしまい、♩=60 以外では音が鳴り始める前に止まる。
+ *   ブラウザでの再生と同じく、短くする量を音の長さの 2/3 までに抑えて、終わりの時刻を先に計算しておく。
+ */
+export function abcToMidiBytes(abc: string, transpose = 0): Uint8Array {
+	const tune: TuneObject | undefined = abcjs.parseOnly(abc)[0];
+	if (!tune) throw new Error(t.download.midiError);
+	const setUpAudio = tune.setUpAudio.bind(tune);
+	tune.setUpAudio = (options) => {
+		const seq = setUpAudio(options);
+		const tick = (x: number) => Math.round(x * MIDI_TICKS_PER_WHOLE) / MIDI_TICKS_PER_WHOLE;
+		for (const track of seq.tracks) {
+			for (const ev of track) {
+				if (ev.cmd !== "note") continue;
+				const gap = Math.min(ev.gap, (ev.duration * 2) / 3);
+				const start = tick(ev.start);
+				const end = tick(ev.start + ev.duration - gap);
+				ev.start = start;
+				ev.duration = Math.max(end - start, 1 / MIDI_TICKS_PER_WHOLE);
+				ev.gap = 0;
+			}
+		}
+		return seq;
+	};
+	const out = abcjs.synth.getMidiFile(tune, { midiOutputType: "binary", midiTranspose: transpose }) as
 		| Uint8Array[]
 		| Uint8Array;
 	const bytes = Array.isArray(out) ? out[0] : out;
 	if (!bytes || bytes.length === 0) throw new Error(t.download.midiError);
 	return bytes;
-}
-
-/** MIDI のテンポ（FF 51 03 tt tt tt）の値が始まる位置 */
-function tempoOffset(bytes: Uint8Array): number {
-	for (let i = 0; i + 5 < bytes.length; i++) {
-		if (bytes[i] === 0xff && bytes[i + 1] === 0x51 && bytes[i + 2] === 0x03) return i + 3;
-	}
-	return -1;
-}
-
-/** ヘッダーの Q: を ♩=60 にした ABC。曲の途中でテンポが変わるものは扱わない（null） */
-function withTempo60(abc: string): string | null {
-	const lines = abc.split("\n");
-	const k = lines.findIndex((l) => /^K:/.test(l));
-	if (k < 0) return null;
-	const body = lines.slice(k + 1);
-	if (body.some((l) => /^Q:/.test(l) || /\[Q:/.test(l))) return null;
-	const header = lines.slice(0, k).filter((l) => !/^Q:/.test(l));
-	return [...header, "Q:1/4=60", ...lines.slice(k)].join("\n");
-}
-
-/**
- * ABC から標準 MIDI ファイルのバイト列を作る（複数曲ある場合は最初の曲）。
- *
- * abcjs（6.x）は MIDI ファイルを書くとき、スタッカートの音を短くする量にテンポを2回掛けてしまうため、
- * ♩=60 以外ではスタッカートの音が「鳴り始める前に止まる」壊れた MIDI になる（ブラウザでの再生は別の処理で問題ない）。
- * 音の位置はテンポに関係なく決まるので、スタッカートのある曲は ♩=60 として作り、テンポの値だけを本来のものに差し替える。
- */
-export function abcToMidiBytes(abc: string, transpose = 0): Uint8Array {
-	const bytes = midiBytes(abc, transpose);
-	if (!/(^|[\s|(\]}])\.[A-Ga-gz[!"^_=]/m.test(abc.slice(abc.search(/^K:/m)))) return bytes;
-	const at60 = withTempo60(abc);
-	if (!at60) return bytes;
-	const fixed = midiBytes(at60, transpose);
-	const from = tempoOffset(bytes);
-	const to = tempoOffset(fixed);
-	if (from < 0 || to < 0) return bytes;
-	fixed.set(bytes.subarray(from, from + 3), to);
-	return fixed;
 }
 
 export function downloadMidi(abc: string, filename = safeFilename(abcTitle(abc)), transpose = 0) {
