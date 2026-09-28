@@ -2,16 +2,45 @@ X:1
 T:Das Lied der Deutschen
 T:ドイツの歌（ドイツ）
 C:Musik: Joseph Haydn / Text: August Heinrich Hoffmann von Fallersleben
-S:旋律 1797年、歌詞 1841年（国歌は第3節）
+S:旋律 1797年、歌詞 1841年（国歌は第3節）、和声は弦楽四重奏曲 作品76-3 による
 Z:c1t0d0s0 (CC0)
 M:4/4
 L:1/8
 Q:1/4=76
+%%score [V1 V2 V3 V4]
+V:V1 name="Violino I" snm="Vn. I"
+V:V2 name="Violino II" snm="Vn. II"
+V:V3 name="Viola" snm="Va." clef=alto
+V:V4 name="Violoncello" snm="Vc." clef=bass
 K:Eb
-|: E3 F | G2 F2 A2 G2 | F D E2 c2 B2 | A2 G2 F2 G E | B4 :|
+% 再生時の音色と音量。主旋律（第1ヴァイオリン）がはっきり聞こえるよう、ほかの声部は弱めにする
+% %%MIDI program: 40 バイオリン / 41 ビオラ / 42 チェロ（General MIDI）
+% %%MIDI beat: 小節の1拍目・表拍・裏拍の強さ（0〜127）
+V:V1
+%%MIDI program 40
+%%MIDI beat 110 105 100 1
+V:V2
+%%MIDI program 40
+%%MIDI beat 50 45 40 1
+V:V3
+%%MIDI program 41
+%%MIDI beat 50 45 40 1
+V:V4
+%%MIDI program 42
+%%MIDI beat 65 60 55 1
+[V:V1] |: E3 F | G2 F2 A2 G2 | F D E2 c2 B2 | A2 G2 F2 G E | B4 :|
 w: Ei-nig-keit und Recht und Frei-_heit für das deut-sche Va-ter-_land!
 w: Da-nach lasst uns al-le stre-_ben brü-der-lich mit Herz und_ Hand!
-F2 G2 | F D B,2 A2 G2 | F D B,2 B2 A2 | G3 G =A2 =A B | B4
+[V:V2] |: G,3 B, | E2 D2 F2 E2 | A,2 G,2 A2 G2 | D2 E2 C4 | B,4 :|
+[V:V3] |: E,2 z2 | z4 B,2 B,2 | D, F, E,2 z4 | F,2 G,2 C2 E,2 | D,4 :|
+[V:V4] |: E,2 z2 | z4 D,2 E,2 | B,,2 E,,2 z4 | B,,2 E,2 A,,2 =A,,2 | B,,4 :|
+[V:V1] F2 G2 | F D B,2 A2 G2 | F D B,2 B2 A2 | G3 G =A2 =A B | B4 |:
 w: Ei-nig-keit_ und Recht und Frei-_heit sind des Glü-ckes Un-ter-_pfand.
-|: e3 d | d c B2 c3 B | B A G2 F3 G/A/ | B c A F E2 G F | E4 :|]
+[V:V2] D2 E2 | D2 z2 D2 E2 | D2 z2 G2 F2 | E6 E D | D4 |:
+[V:V3] B,2 B,2 | B,2 z2 F,2 E, G, | B,2 z2 B,2 C D | E2 E,2 C2 C B, | B,4 |:
+[V:V4] B,,2 B,,2 | B,,2 z2 B,,2 B,,2 | B,,2 z2 G,,2 A,, B,, | C,4 F,,2 F,,2 | B,,4 |:
+[V:V1] e3 d | d c B2 c3 B | B A G2 F3 G/A/ | B c A F E2 G F | E4 :|]
 w: Blüh im Glan-_ze die-ses Glü-_ckes, blü-he_ deut-_sches_ Va-ter-_land!
+[V:V2] [E,E]3 E | E3/2 F/ G2 A3 G | D2 E2 D3 E/ F/ | E2 C F E2 D2 | E4 :|]
+[V:V3] [E,B,]4 | C3/2 D/ E2 E3 E | [B,F]2 [B,G]2 B,4 | E,2 C A, G,2 {/B,}A,2 | G,4 :|]
+[V:V4] G,3 G, | A,2 E,2 A,,3 E, | B,,2 E,2 A,,4 | G,,2 A,,2 B,,2 B,,2 | E,,4 :|]
