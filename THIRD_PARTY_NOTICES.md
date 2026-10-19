@@ -70,3 +70,4 @@ Jeff Covey 氏によるバッハ協会版の浄書（Creative Commons Attributio
 「幻想即興曲」は、Mutopia Project で公開されている Guy D. Lederfein 氏による浄書（ヘルマン・ショルツ校訂版、パブリックドメイン）をもとに書き起こしました。
 ドイツ国歌の和声は、Mutopia Project で公開されている Maurizio Tomasi 氏による浄書（ハイドン 弦楽四重奏曲 作品76-3、Kalmus 版、パブリックドメイン）の第2楽章の主題をもとに書き起こしました。
 「Amazing Grace」の和声は、[Open Hymnal Project](http://openhymnal.org/) で公開されている E. O. エクセル（1900年）の4声の和声（パブリックドメイン）のデータをもとにしました。
+イギリス国歌の和声は、Open Hymnal Project で公開されている Evangelical Lutheran Hymn-Book（1931年）の4声の和声（パブリックドメイン）のデータをもとにしました。

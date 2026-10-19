@@ -258,6 +258,10 @@ export const SONGS: SongMeta[] = [
 		creators: [{ role: "lyricsMusic", name: { ja: "作者不詳", en: "Anonymous" }, anonymous: true }],
 		published: 1745,
 		lyrics: "sung",
+		note: {
+			ja: "上段が歌の旋律、下段が和音の伴奏です。伴奏は Evangelical Lutheran Hymn-Book（1931年、Open Hymnal Project）の4声の和声（アルト・テノール・バス）を1段にまとめ、ト長調に移しています。",
+			en: "The upper staff is the melody and the lower staff is the chordal accompaniment, combining the lower three parts (alto, tenor, and bass) of the four-part setting from the Evangelical Lutheran Hymn-Book (1931, Open Hymnal Project), transposed to G major.",
+		},
 	},
 	{
 		id: "la-marseillaise",
