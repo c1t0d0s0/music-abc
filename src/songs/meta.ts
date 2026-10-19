@@ -299,8 +299,8 @@ export const SONGS: SongMeta[] = [
 		published: 1841,
 		lyrics: "sung",
 		note: {
-			ja: "国歌として歌われる第3節を収録。上段の旋律に、ハイドン自身による弦楽四重奏曲 作品76-3「皇帝」第2楽章の主題の和声（第2ヴァイオリン・ヴィオラ・チェロ）を、変ホ長調に移して付けています。",
-			en: "The third stanza, which is sung as the national anthem. The melody is harmonized with Haydn's own four-part setting from the theme of his String Quartet Op. 76 No. 3 “Emperor” (2nd movement), transposed to E-flat major.",
+			ja: "国歌として歌われる第3節を収録。上段が歌の旋律、下段が和音の伴奏です。伴奏はハイドン自身による弦楽四重奏曲 作品76-3「皇帝」第2楽章の主題の和声（第2ヴァイオリン・ヴィオラ・チェロ）を1段にまとめ、変ホ長調に移しています。",
+			en: "The third stanza, which is sung as the national anthem. The upper staff is the melody and the lower staff is the chordal accompaniment, combining the lower three parts (second violin, viola, and cello) of Haydn's own setting from the theme of his String Quartet Op. 76 No. 3 “Emperor” (2nd movement), transposed to E-flat major.",
 		},
 	},
 
