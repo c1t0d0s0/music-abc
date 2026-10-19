@@ -416,9 +416,14 @@ export const SONGS: SongMeta[] = [
 				name: { ja: "アメリカ民謡（New Britain）", en: "American folk tune (“New Britain”)" },
 				anonymous: true,
 			},
+			{ role: "arranger", name: "Edwin Othello Excell", born: 1851, died: 1921 },
 		],
 		published: 1835,
 		lyrics: "sung",
+		note: {
+			ja: "ソプラノの旋律に、E. O. エクセルによる4声の和声（1900年）を付けています。Open Hymnal Project で公開されているパブリックドメインのデータによります。",
+			en: "The melody is set in four parts with the harmonization by E. O. Excell (1900), from the public-domain data of the Open Hymnal Project.",
+		},
 	},
 	{
 		id: "frere-jacques",

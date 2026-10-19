@@ -1,14 +1,35 @@
 X:1
 T:Amazing Grace
 T:アメイジング・グレイス
-C:Words: John Newton / Tune: "New Britain"（アメリカ民謡）
-S:詞 1779年、旋律 1835年
+C:Words: John Newton / Tune: "New Britain"（アメリカ民謡）/ Setting: E. O. Excell
+S:詞 1779年、旋律 1835年、和声 1900年（Open Hymnal Project のデータによる）
 Z:c1t0d0s0 (CC0)
 M:3/4
 L:1/4
 Q:1/4=80
+%%score {(S A) | (T B)}
+V:S clef=treble stem=up
+V:A clef=treble stem=down
+V:T clef=bass stem=up
+V:B clef=bass stem=down
 K:G
-D | G2 B/G/ | B2 A | G2 E | D2 D | G2 B/G/ | B2 A | d2 B |
-w: A-ma-zing_ grace! How sweet the sound That saved a_ wretch like me! I
-d3/2 B/ d/B/ | G2 D | E3/2 G/ G/E/ | D2 D | G2 B/G/ | B2 A | G2 |]
-w: once_ was_ lost, but now_ am_ found; Was blind, but_ now I see.
+% 再生時の音量。主旋律（ソプラノ）がはっきり聞こえるよう、ほかの声部は弱めにする
+% %%MIDI beat: 小節の1拍目・表拍・裏拍の強さ（0〜127）
+V:S
+%%MIDI beat 110 105 100 1
+V:A
+%%MIDI beat 60 55 50 1
+V:T
+%%MIDI beat 60 55 50 1
+V:B
+%%MIDI beat 70 65 60 1
+[V:S] D | G2 B/G/ | B2 A | G2 E | D2 D | G2 B/G/ | B2 A | d3- | d2 B |
+w: A-ma-zing_ grace! How sweet the sound That saved a_ wretch like me!_ I
+[V:A] B, | B,2 D | D2 C | B,2 C | B,2 B, | B,2 D | D2 D | D3- | D2 D |
+[V:T] G, | D,2 G, | G,2 F, | G,2 G, | G,2 G, | D,2 G, | G,2 F, | G,3- | G,2 G, |
+[V:B] G,, | G,,2 G,,/B,,/ | D,2 D, | E,2 C, | G,,2 G,, | G,,2 G,,/B,,/ | D,2 C, | B,,3- | B,,2 G,, |
+[V:S] d3/2 B/ d/B/ | G2 D | E3/2 G/ G/E/ | D2 D | G2 B/G/ | B2 A | G3- | G2 |]
+w: once_ was_ lost, but now_ am_ found; Was blind, but_ now I see._
+[V:A] D2 D | D2 D | C3/2 D/ C | B,2 D | B,2 D | G2 F | D3- | D2 |]
+[V:T] B,3/2 G,/ B,/G,/ | G,2 G, | G,2 E,/G,/ | G,2 G, | G,2 G,/B,/ | D2 C | B,3- | B,2 |]
+[V:B] G,2 G, | B,,2 B,, | C,3/2 B,,/ C, | G,,2 B,, | E,2 D, | D,2 D, | G,3- | G,2 |]
