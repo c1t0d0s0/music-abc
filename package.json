@@ -17,7 +17,7 @@
     "highlight.js": "^11.11.1",
     "highlightjs-abc": "github:paulrosen/highlightjs-abc#0dff0ab12ad49a365163e527f05ed62d06f3fdf6",
     "vue": "^3.5.43",
-    "vue-router": "^5.3.1"
+    "vue-router": "^5.4.0"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
