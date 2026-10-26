@@ -510,6 +510,19 @@ export const SONGS: SongMeta[] = [
 		},
 	},
 	{
+		id: "mendelssohn-violin-concerto-1",
+		category: "classical-folk",
+		title: { ja: "ヴァイオリン協奏曲 ホ短調 第1楽章", en: "Violin Concerto in E minor, 1st movement" },
+		subtitle: { ja: "作品64 より Allegro molto appassionato（冒頭）", en: "Op. 64: Allegro molto appassionato (opening)" },
+		creators: [{ role: "composer", name: { ja: "フェリックス・メンデルスゾーン", en: "Felix Mendelssohn" }, born: 1809, died: 1847 }],
+		published: 1845,
+		lyrics: "none",
+		note: {
+			ja: "第1楽章の冒頭から第1主題部を、独奏ヴァイオリンとピアノ伴奏（右手・左手）の3段で収録しています。1844年に完成し、1845年にライプツィヒ・ゲヴァントハウス管弦楽団により初演、同年に出版されました。",
+			en: "The opening first subject of the first movement, arranged for solo violin and piano accompaniment (right and left hands) in three staves. Completed in 1844, premiered in 1845 by the Leipzig Gewandhaus Orchestra, and published the same year.",
+		},
+	},
+	{
 		id: "greensleeves",
 		category: "classical-folk",
 		title: { ja: "グリーンスリーブス", en: "Greensleeves" },
