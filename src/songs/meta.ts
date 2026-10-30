@@ -463,8 +463,8 @@ export const SONGS: SongMeta[] = [
 		published: 1893,
 		lyrics: "none",
 		note: {
-			ja: "日本語詞「遠き山に日は落ちて」（堀内敬三、1983年没）は保護期間中のため収録していません。",
-			en: "The Japanese lyrics “Tōki yama ni hi wa ochite” (by Horiuchi Keizō, d. 1983) are still under copyright and are not included.",
+			ja: "上段が旋律、下段が和音の伴奏です。原調の変ニ長調（Des-dur）により、ドヴォルザーク自身のオーケストラ和声（弱音器付き弦楽合奏）に基づいています。日本語詞「遠き山に日は落ちて」（堀内敬三、1983年没）は保護期間中のため収録していません。",
+			en: "The upper staff is the melody and the lower staff is the chordal accompaniment, in the original key of D-flat major based on Dvořák’s own orchestral harmony for muted strings. The Japanese lyrics “Tōki yama ni hi wa ochite” (by Horiuchi Keizō, d. 1983) are still under copyright and are not included.",
 		},
 	},
 	{
