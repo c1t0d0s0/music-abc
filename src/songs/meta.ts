@@ -286,8 +286,8 @@ export const SONGS: SongMeta[] = [
 		published: 1880,
 		lyrics: "text",
 		note: {
-			ja: "英語の公式歌詞は後年（1980年・2018年）の改訂を含むため収録していません。",
-			en: "The official English lyrics include later revisions (1980 and 2018), so they are not included.",
+			ja: "上段が歌の旋律、下段が和音の伴奏です。英語の公式歌詞は後年（1980年・2018年）の改訂を含むため収録していません。",
+			en: "The upper staff is the melody and the lower staff is the chordal accompaniment. The official English lyrics include later revisions (1980 and 2018), so they are not included.",
 		},
 	},
 	{
