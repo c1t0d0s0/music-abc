@@ -7,24 +7,37 @@ Z:c1t0d0s0 (CC0)
 M:4/4
 L:1/4
 Q:1/4=66
+%%score {V1 | V2}
+V:V1 name="旋律" snm="旋"
+V:V2 name="伴奏" snm="伴" clef=bass
 K:Dm
-A A d e | f e d2 | B B A G | A3 z |
+% 再生時の音量。主旋律がはっきり聞こえるよう、伴奏は弱めにする
+% %%MIDI beat: 小節の1拍目・表拍・裏拍の強さ（0〜127）
+V:V1
+%%MIDI beat 110 105 100 1
+V:V2
+%%MIDI beat 60 55 50 1
+[V:V1] A A d e | f e d2 | B B A G | A3 z |
 w: は る こ う ろ う の は な の え ん
 w: あ き じ ん え い の し も の い ろ
 w: い ま こ う じょ う の よ わ の つ き
 w: て ん じょ う か げ は か わ ら ね ど
-A A d e | f e d2 | B G A3/2 A/ | D3 z |
+[V:V2] [D,F,A,] [D,F,A,] [D,F,A,] [^C,E,A,] | [D,F,A,] [A,,G,^C] [D,F,A,]2 | [G,,D,G,] [G,,D,G,] [F,,D,A,] [E,,^C,G,] | [A,,E,^C]3 z |
+[V:V1] A A d e | f e d2 | B G A3/2 A/ | D3 z |
 w: め ぐ る さ か ず き か げ さ し て
 w: な き ゆ く か り の か ず み せ て
 w: か わ ら ぬ ひ か り た が た め ぞ
 w: え い こ は う つ る よ の す が た
-F F E D | B3/2 B/ A2 | G A B3/2 B/ | A3 z |
+[V:V2] [D,F,A,] [D,F,A,] [D,F,A,] [^C,E,A,] | [D,F,A,] [A,,G,^C] [D,F,A,]2 | [G,,D,G,] [E,,^C,G,] [A,,E,^C]3/2 [A,,E,^C]/ | [D,F,A,]3 z |
+[V:V1] F F E D | B3/2 B/ A2 | G A B3/2 B/ | A3 z |
 w: ち よ の ま つ が え わ け い で し
 w: う ゆ る つ る ぎ に て り そ い し
 w: か き に の こ る は た だ か ず ら
 w: う つ さ ん と て か い ま も な お
-A A d e | f e d2 | B G A3/2 A/ | D3 z |]
+[V:V2] [F,,C,A,] [F,,C,A,] [C,G,C] [D,F,A,] | [G,,D,G,]3/2 [G,,D,G,]/ [D,F,A,]2 | [G,,D,B,] [F,,D,A,] [E,,^C,G,]3/2 [E,,^C,G,]/ | [A,,E,^C]3 z |
+[V:V1] A A d e | f e d2 | B G A3/2 A/ | D3 z |]
 w: む か し の ひ か り い ま い ず こ
 w: む か し の ひ か り い ま い ず こ
 w: ま つ に う た う は た だ あ ら し
 w: あ あ こ う じょ う の よ わ の つ き
+[V:V2] [D,F,A,] [D,F,A,] [D,F,A,] [^C,E,A,] | [D,F,A,] [A,,G,^C] [D,F,A,]2 | [G,,D,G,] [E,,^C,G,] [A,,E,^C]3/2 [A,,E,^C]/ | [D,F,A,]3 z |]

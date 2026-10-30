@@ -172,8 +172,8 @@ export const SONGS: SongMeta[] = [
 		published: 1901,
 		lyrics: "sung",
 		note: {
-			ja: "一般に歌われる山田耕筰の補作版（ニ短調）。",
-			en: "The commonly sung version revised by Yamada Kōsaku, in D minor.",
+			ja: "一般に歌われる山田耕筰の補作版（ニ短調）。上段が歌の旋律、下段が和音の伴奏です。",
+			en: "The commonly sung version revised by Yamada Kōsaku, in D minor. The upper staff is the vocal melody and the lower staff is the chordal accompaniment.",
 		},
 	},
 	{
