@@ -7,14 +7,25 @@ Z:c1t0d0s0 (CC0)
 M:3/4
 L:1/8
 Q:1/4=60
+%%score {V1 | V2}
+V:V1 name="旋律" snm="旋"
+V:V2 name="伴奏" snm="伴" clef=bass
 K:F
-C F F3 G | A c f d c2 | d F F2 G2 | A4 z2 |
+% 再生時の音量。主旋律がはっきり聞こえるよう、伴奏は弱めにする
+% %%MIDI beat: 小節の1拍目・表拍・裏拍の強さ（0〜127）
+V:V1
+%%MIDI beat 110 105 100 1
+V:V2
+%%MIDI beat 60 55 50 1
+[V:V1] C F F3 G | A c f d c2 | d F F2 G2 | A4 z2 |
 w: ゆ う や け こ や け _ の あ か と ん ぼ
 w: や _ ま の は た け _ の く わ の み を
 w: じゅ う ご で ね え や _ は よ め に ゆ き
 w: ゆ う や け こ や け _ の あ か と ん ぼ
-A d c3 d | f d c d c A | c A F A G F | F4 z2 |]
+[V:V2] [F,,C,A,]2 [A,,F,C]2 [C,B,E]2 | [F,,C,A,]2 [B,,F,D]2 [A,,F,C]2 | [B,,F,D]2 [B,,F,_D]2 [C,B,E]2 | [F,,C,A,]4 z2 |
+[V:V1] A d c3 d | f d c d c A | c A F A G F | F4 z2 |]
 w: お わ れ て み た の _ は _ い つ の _ ひ _ か
 w: こ か ご に つ ん だ _ は _ ま ぼ ろ _ し _ か
 w: お さ と の た よ り _ も _ た え は _ て _ た
 w: と ま っ て い _ る _ よ _ さ お の _ さ _ き
+[V:V2] [D,F,A,]2 [^C,E,A,]2 [C,F,A,]2 | [B,,F,D]2 [A,,F,C]2 [G,,D,B,]2 | [C,F,A,]2 [C,G,B,]2 [C,E,B,]2 | [F,,C,A,]4 z2 |]

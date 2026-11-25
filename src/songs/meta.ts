@@ -93,6 +93,10 @@ export const SONGS: SongMeta[] = [
 		],
 		published: 1927,
 		lyrics: "sung",
+		note: {
+			ja: "上段が歌の旋律、下段が和音の伴奏です。山田耕筰自身のピアノ伴奏の和声（ヘ長調）に基づいています。",
+			en: "The upper staff is the vocal melody and the lower staff is the chordal accompaniment, based on Yamada Kōsaku’s own piano harmony in F major.",
+		},
 	},
 	{
 		id: "natsu-wa-kinu",
@@ -117,6 +121,10 @@ export const SONGS: SongMeta[] = [
 		],
 		published: 1918,
 		lyrics: "none",
+		note: {
+			ja: "上段が旋律、下段が和音の伴奏です。原調の変イ長調（Ab）により、成田為三自身のピアノ伴奏（セノオ楽譜版）の和声に基づいています。",
+			en: "The upper staff is the melody and the lower staff is the chordal accompaniment, in the original key of A-flat major based on Narita Tamezō’s own piano harmony (Senow edition).",
+		},
 	},
 	{
 		id: "kaeru-no-gassho",
